@@ -252,6 +252,41 @@
       "categorie": "Framework",
       "simpleIcons": "hibernate",
       "forme": "service"
+    },
+    {
+      "slug": "springmvc",
+      "label": "Spring MVC",
+      "categorie": "Framework",
+      "simpleIcons": "spring",
+      "forme": "service"
+    },
+    {
+      "slug": "drawio",
+      "label": "draw.io",
+      "categorie": "Livraison",
+      "simpleIcons": "diagramsdotnet",
+      "forme": "service"
+    },
+    {
+      "slug": "jsonschema",
+      "label": "JSON Schema",
+      "categorie": "API",
+      "simpleIcons": "json",
+      "forme": "service"
+    },
+    {
+      "slug": "oci",
+      "label": "Conteneurs OCI",
+      "categorie": "Plateforme",
+      "simpleIcons": "opencontainersinitiative",
+      "forme": "service"
+    },
+    {
+      "slug": "sbom",
+      "label": "SBOM",
+      "categorie": "Livraison",
+      "simpleIcons": "spdx",
+      "forme": "stockage"
     }
   ]
 }

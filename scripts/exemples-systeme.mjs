@@ -3,7 +3,7 @@
 // un seul schéma viole la règle « un seul niveau d'abstraction par schéma ».
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, marqueur } from './schema.mjs';
 
 const T = (x, y, s, o = {}) =>
   `<text x="${x}" y="${y}"${o.a ? ` text-anchor="${o.a}"` : ''} font-size="${o.f || 11}"${o.g ? ` font-weight="600"` : ''} fill="${o.c || DOUX}"${o.m ? ` font-family="'IBM Plex Mono',monospace"` : ''}>${esc(s)}</text>`;
@@ -34,7 +34,7 @@ const noeud = (n) => {
 
 const lien = (e) => `<path d="${e.d}" fill="none" stroke="${LIGNE}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fl)"/>`;
 
-function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], marques = [], notes = [] }) {
+function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], marques = [], notes = [], apres = '' }) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="${esc(titre)}">
   <title>${esc(titre)}</title>
   <defs>${fleche()}</defs>
@@ -46,6 +46,7 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   ${noeuds.map(noeud).join('\n  ')}
   ${notes.map((n) => T(n[0], n[1], n[2], { a: n[3], f: n[4] || 10.5 })).join('\n  ')}
   ${marques.map((m) => badge(m[0], m[1], m[2], m[3] || 0.74)).join('\n  ')}
+  ${apres}
 </svg>
 `;
   fs.writeFileSync(path.join(ROOT, 'docs', f), svg);
@@ -186,4 +187,55 @@ rendre({
   marques: [['rest', 108, 200, 0.62]],
   notes: [[212, 282, 'consomme', 'end'], [1106, 218, 'SQL', 'middle'], [1106, 350, 'PUT', 'middle'],
           [499, 218, 'appelle', 'middle'], [779, 218, 'persiste', 'middle']],
+});
+
+/* ══════════════ 4 · chaîne de livraison ══════════════ */
+// C'est ici que vit la moitié des « concepts candidats » : un formateur, un
+// analyseur, une couverture ne sont pas des composants du système — ils sont des
+// étapes qui le produisent. Les mettre dans une vue d'exécution serait un
+// mélange de niveaux d'abstraction.
+
+const etape = (x, t, s, ico) => ({ x, y: 180, w: 170, h: 64, t, s, ico, forme: 'service' });
+const outil = (x, y, t, s, ico, forme = 'service') => ({ x, y, w: 190, h: forme === 'stockage' ? 66 : 48, t, s, ico, forme });
+
+const M = [
+  marqueur(790, 168, 'immuable'),
+  marqueur(990, 168, 'SemVer'),
+  marqueur(586, 380, 'contract-first'),
+  marqueur(1216, 168, 'moindre privilège', '#C0392F'),
+];
+
+rendre({
+  f: 'exemple-livraison.svg', w: 1400, h: 700,
+  titre: 'Livraison — de la modification au déploiement',
+  sous: 'Niveau chaîne · aucune de ces boîtes n’existe à l’exécution',
+  zones: [{ x: 40, y: 120, w: 1030, h: 360, t: 'Intégration continue', s: 'déclenchée à chaque poussée' }],
+  noeuds: [
+    etape(64, 'Compilation', 'Maven', 'maven'),
+    etape(264, 'Qualité', 'Spotless · format', 'formateur'),
+    etape(464, 'Tests', 'JUnit 5', 'junit'),
+    etape(664, 'Empaquetage', 'image OCI', 'oci'),
+    etape(864, 'Publication', 'registre', 'registre'),
+
+    outil(264, 272, 'Analyse statique', 'Error Prone · NullAway', 'analyse-statique'),
+    outil(264, 330, 'Test d’architecture', 'ArchUnit', 'test-architecture'),
+    outil(464, 272, 'Couverture', 'JaCoCo', 'couverture'),
+    outil(464, 330, 'Test de mutation', 'PIT', 'test-mutation'),
+    outil(464, 388, 'Test de contrat', 'OpenAPI · AsyncAPI', 'test-contrat'),
+    outil(664, 266, 'SBOM', 'SPDX', 'sbom', 'stockage'),
+
+    { x: 1160, y: 180, w: 200, h: 64, t: 'Déploiement', s: 'Kubernetes', ico: 'kubernetes', forme: 'service' },
+    { x: 1160, y: 300, w: 200, h: 64, t: 'Décisions', s: 'ADR versionnés', ico: 'decision', forme: 'service' },
+    { x: 1160, y: 400, w: 200, h: 64, t: 'Schémas', s: 'draw.io versionné', ico: 'drawio', forme: 'service' },
+  ],
+  liens: [
+    { d: 'M234,212 H256' }, { d: 'M434,212 H456' }, { d: 'M634,212 H656' }, { d: 'M834,212 H856' },
+    { d: 'M1034,212 H1152' },
+    { d: 'M359,244 V264' }, { d: 'M359,320 V322' },
+    { d: 'M559,244 V264' }, { d: 'M559,320 V322' }, { d: 'M559,378 V380' },
+    { d: 'M749,244 V258' },
+  ],
+  marques: [],
+  notes: [[1078, 202, 'artefact signé', 'middle']],
+  apres: M.join(''),
 });

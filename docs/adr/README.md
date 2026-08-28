@@ -11,3 +11,4 @@ on en ajoute une nouvelle qui remplace l'ancienne.
 | [0003](0003-grammaire-de-formes.md) | Une grammaire de formes, normative et fermée | Acceptée · amendée par 0005 |
 | [0004](0004-excalidraw-voie-secondaire.md) | Garder la voie Excalidraw, en second | Acceptée |
 | [0005](0005-forme-noeud-et-precisions.md) | Neuvième forme : le nœud de déploiement | Acceptée |
+| [0006](0006-marqueurs-de-qualite.md) | Les qualités sont des marqueurs, pas des badges | Acceptée |

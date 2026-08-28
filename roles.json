@@ -273,6 +273,83 @@
       "famille": "Code",
       "forme": "stockage",
       "tabler": "adjustments"
+    },
+    {
+      "slug": "compilation",
+      "label": "Compilation",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "hammer"
+    },
+    {
+      "slug": "formateur",
+      "label": "Formateur de code",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "wand"
+    },
+    {
+      "slug": "analyse-statique",
+      "label": "Analyse statique",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "bug"
+    },
+    {
+      "slug": "test-architecture",
+      "label": "Test d'architecture",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "ruler-measure"
+    },
+    {
+      "slug": "couverture",
+      "label": "Couverture",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "percentage"
+    },
+    {
+      "slug": "test-mutation",
+      "label": "Test de mutation",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "virus"
+    },
+    {
+      "slug": "test-contrat",
+      "label": "Test de contrat",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "file-check"
+    },
+    {
+      "slug": "contrat-evenements",
+      "label": "Contrat d'événements",
+      "famille": "API",
+      "forme": "service",
+      "tabler": "file-typography"
+    },
+    {
+      "slug": "outbox",
+      "label": "Table d'expédition",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "send"
+    },
+    {
+      "slug": "evenement-domaine",
+      "label": "Événement de domaine",
+      "famille": "Messaging",
+      "forme": "flux",
+      "tabler": "flare"
+    },
+    {
+      "slug": "decision",
+      "label": "Décision d'architecture",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "notebook"
     }
   ]
 }

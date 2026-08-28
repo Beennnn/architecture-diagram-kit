@@ -17,7 +17,8 @@
   couches, avec le dimensionnement de chaque brique.
 - **Trois vues d'un même système**, à trois niveaux d'abstraction :
   [socle matériel](exemple-infra.svg) · [plateforme Kubernetes](exemple-k8s.svg) ·
-  [intérieur d'un service](exemple-composant.svg).
+  [intérieur d'un service](exemple-composant.svg) ·
+  [chaîne de livraison](exemple-livraison.svg).
 
 ## Utiliser le jeu
 
@@ -38,3 +39,5 @@ Format [Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-archit
   en second
 - **[0005](adr/0005-forme-noeud-et-precisions.md)** — Neuvième forme : le nœud
   de déploiement
+- **[0006](adr/0006-marqueurs-de-qualite.md)** — Les qualités sont des marqueurs,
+  pas des badges

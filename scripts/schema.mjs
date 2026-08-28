@@ -29,6 +29,8 @@ export function badge(slug, cx, cy, e = 0.82) {
 // Géométrie des formes : voir formes.json et docs/adr/0003-grammaire-de-formes.md
 export const boite = ({ x, y, w, h, forme }) => {
   if (forme === 'stockage') {
+    // sous 60 px, les deux ellipses du cylindre recouvrent le libellé
+    if (h < 60) throw new Error(`Cylindre trop bas (${h} px) : un « stockage » exige au moins 60 px de haut.`);
     return `<path d="M${x} ${y + 14} v${h - 28} a${w / 2} 13 0 0 0 ${w} 0 v-${h - 28}" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`
          + `<ellipse cx="${x + w / 2}" cy="${y + 14}" rx="${w / 2}" ry="13" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`;
   }
@@ -44,3 +46,13 @@ export const boite = ({ x, y, w, h, forme }) => {
 
 export const fleche = () => `<marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">`
   + `<path d="M0,1 L9,5 L0,9" fill="none" stroke="${LIGNE}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>`;
+
+// Un MARQUEUR qualifie une boîte ou une flèche — « immuable », « idempotent »,
+// « RLS ». Ce n'est ni une forme ni un badge : une qualité n'est pas un objet
+// qu'on peut montrer du doigt. Voir docs/adr/0006-marqueurs.md.
+export const marqueur = (x, y, texte, ton = '#0B6E7F') => {
+  const w = Math.round(texte.length * 5.6 + 16);
+  return `<g><rect x="${x}" y="${y}" width="${w}" height="18" rx="9" fill="#FFFFFF" stroke="${ton}" stroke-width="1.1"/>`
+    + `<text x="${x + w / 2}" y="${y + 12.5}" text-anchor="middle" font-size="9.5" font-weight="600"`
+    + ` font-family="'IBM Plex Mono',monospace" fill="${ton}">${esc(texte)}</text></g>`;
+};
