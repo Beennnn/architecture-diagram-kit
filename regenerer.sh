@@ -71,6 +71,7 @@ node scripts/specimen.mjs
 node scripts/specimen-rendus.mjs
 node scripts/specimen-fonds.mjs
 node scripts/specimen-accent.mjs
+node scripts/specimen-fleches.mjs
 node scripts/styles.mjs
 
 echo
