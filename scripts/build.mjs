@@ -21,6 +21,13 @@ for (const [name, dir] of Object.entries(SRC)) {
 
 const { protocoles } = JSON.parse(fs.readFileSync(path.join(ROOT, 'protocoles.json'), 'utf8'));
 const { produits } = JSON.parse(fs.readFileSync(path.join(ROOT, 'produits.json'), 'utf8'));
+const { roles } = JSON.parse(fs.readFileSync(path.join(ROOT, 'roles.json'), 'utf8'));
+const { formes } = JSON.parse(fs.readFileSync(path.join(ROOT, 'formes.json'), 'utf8'));
+
+// La grammaire de formes est normative : une forme inconnue arrête le build.
+for (const e of [...produits, ...roles]) {
+  if (e.forme && !formes[e.forme]) throw new Error(`Forme inconnue pour « ${e.slug} » : « ${e.forme} ». Voir formes.json.`);
+}
 
 // Simple Icons indexe par titre ; on retrouve le slug comme le fait leur SDK.
 const siRaw = JSON.parse(fs.readFileSync(SI_DATA, 'utf8'));
@@ -75,7 +82,14 @@ const rowsProduits = produits.map((p) => {
   return { ...p, type: 'produit', marqueOfficielle: Boolean(sSvg), famille: p.categorie, hex, marque, source, tSvg, lSvg: null, sSvg };
 });
 
-const tout = [...rows, ...rowsProduits];
+// Les rôles n'ont jamais de marque : ils décrivent une fonction, pas un produit.
+const rowsRoles = roles.map((r) => {
+  const tSvg = readIcon(SRC.tabler, r.tabler, 'Tabler');
+  fs.writeFileSync(path.join(OUT, 'tabler', `${r.slug}.svg`), `${tSvg}\n`);
+  return { ...r, type: 'role', marqueOfficielle: false, hex: null, marque: null, source: null, tSvg, lSvg: null, sSvg: null };
+});
+
+const tout = [...rows, ...rowsProduits, ...rowsRoles];
 
 const csvCell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
 fs.writeFileSync(
@@ -98,3 +112,4 @@ const avecLogo = rows.filter((r) => r.simpleIcons).length;
 const officiels = rows.filter((r) => r.marqueOfficielle).length;
 console.log(`  ${rows.length} protocoles · ${avecLogo} logos au catalogue, dont ${officiels} désignent le protocole lui-même`);
 console.log(`  ${rowsProduits.length} produits · ${rowsProduits.filter((r) => r.marqueOfficielle).length} portent leur logo officiel, ${rowsProduits.filter((r) => !r.marqueOfficielle).length} en repli picto`);
+console.log(`  ${rowsRoles.length} rôles d'infrastructure · picto générique, couleur de couche`);

@@ -5,7 +5,8 @@ Deux bibliothèques de formes, générées depuis `symboles/` :
 | Fichier | Contenu |
 |---|---|
 | `protocoles.xml` | 32 formes — HTTP, SSH, MQTT, SMTP… |
-| `produits.xml` | 9 formes — Java, Kafka, PostgreSQL, Kubernetes… |
+| `roles.xml` | 25 formes — répartiteur, cache, bastion, passerelle d'API… |
+| `produits.xml` | 25 formes — Java, Kafka, PostgreSQL, Kubernetes, Redis, nginx… |
 
 ## Installer
 

@@ -27,3 +27,5 @@ Format [Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-archit
   imposées, plutôt qu'une couleur par protocole
 - **[0002](adr/0002-reutiliser-les-logos-existants.md)** — Réutiliser le logo
   officiel dès qu'il existe et qu'il est redistribuable
+- **[0003](adr/0003-grammaire-de-formes.md)** — Une grammaire de formes,
+  normative et fermée

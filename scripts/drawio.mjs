@@ -102,9 +102,7 @@ function bibliotheque(fichier, lignes) {
   return { n: entrees.length, ko: (contenu.length / 1024).toFixed(0) };
 }
 
-const protocoles = rows.filter((r) => r.type === 'protocole');
-const produits = rows.filter((r) => r.type === 'produit');
-const a = bibliotheque('protocoles.xml', protocoles);
-const b = bibliotheque('produits.xml', produits);
-console.log(`  drawio/protocoles.xml · ${a.n} formes · ${a.ko} Ko`);
-console.log(`  drawio/produits.xml   · ${b.n} formes · ${b.ko} Ko`);
+for (const [type, fichier] of [['protocole', 'protocoles.xml'], ['produit', 'produits.xml'], ['role', 'roles.xml']]) {
+  const { n, ko } = bibliotheque(fichier, rows.filter((r) => r.type === type));
+  console.log(`  drawio/${fichier.padEnd(15)} · ${String(n).padStart(2)} formes · ${ko} Ko`);
+}

@@ -36,11 +36,24 @@ Ce dépôt produit des **bloc-marques** : un signe et un nom verrouillés
 ensemble. Ce ne sont pas des logos — on ne construit aucune identité de
 marque — mais des repères de lecture pour un schéma.
 
-## Deux populations
+## Trois populations
 
 - **Protocoles** (`protocoles.json`) — 32 spécifications : HTTP, SSH, MQTT…
-- **Produits** (`produits.json`) — 9 technologies : Java, Kafka, PostgreSQL,
-  Kubernetes…
+- **Produits** (`produits.json`) — 25 technologies nommées : Java, Kafka,
+  PostgreSQL, Kubernetes, Redis, nginx, Terraform…
+- **Rôles** (`roles.json`) — 25 fonctions d'infrastructure : répartiteur de
+  charge, cache, bastion, passerelle d'API… Un rôle décrit ce qu'une brique
+  **fait**, indépendamment du produit qui l'implémente : « cache », pas
+  « Redis ». C'est ce qui permet de dessiner un schéma avant d'avoir choisi la
+  technologie.
+
+## Grammaire de formes
+
+Huit formes, normatives et fermées — `service`, `application`, `stockage`,
+`flux`, `acteur`, `materiel`, `externe`, `frontiere`. La forme code la **nature**
+d'un objet, jamais son importance ni son état. Définies dans
+[`formes.json`](formes.json), le build échoue sur une forme inconnue. Les huit
+règles et leur justification : [ADR 0003](docs/adr/0003-grammaire-de-formes.md).
 
 ## Trois niveaux de signe
 
@@ -112,18 +125,21 @@ l'[ADR 0001](docs/adr/0001-six-couleurs-de-couche.md).
 
 ```
 protocoles.json           source de vérité : 32 protocoles
-produits.json             source de vérité : 9 produits
+produits.json             source de vérité : 25 produits
+roles.json                source de vérité : 25 rôles
+formes.json               la grammaire de formes
 scripts/couches.json      les 6 couches colorées
 docs/                     état de l'art, checklist, décisions (ADR)
 regenerer.sh              reconstruit tout depuis npm
 
-lockups/horizontal/       41 SVG · disposition par défaut
-lockups/empile/           41 SVG · nœud de schéma
-lockups/mono/             41 SVG · encre unique
-symboles/                 41 SVG · signe seul
+lockups/horizontal/       82 SVG · disposition par défaut
+lockups/empile/           82 SVG · nœud de schéma
+lockups/mono/             82 SVG · encre unique
+symboles/                 82 SVG · signe seul
 
 drawio/protocoles.xml     bibliothèque de formes draw.io · 32
-drawio/produits.xml       bibliothèque de formes draw.io · 9
+drawio/produits.xml       bibliothèque de formes draw.io · 25
+drawio/roles.xml          bibliothèque de formes draw.io · 25
 
 sources/tabler/           glyphes bruts · MIT
 sources/lucide/           glyphes bruts · ISC
@@ -165,6 +181,7 @@ Node ≥ 18 et npm. Versions épinglées dans `regenerer.sh`.
 
 - [0001 — Six couleurs de couche, imposées](docs/adr/0001-six-couleurs-de-couche.md)
 - [0002 — Réutiliser le logo officiel dès qu'il existe](docs/adr/0002-reutiliser-les-logos-existants.md)
+- [0003 — Une grammaire de formes, normative et fermée](docs/adr/0003-grammaire-de-formes.md)
 
 ## Ajouter un protocole
 

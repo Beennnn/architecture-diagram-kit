@@ -36,7 +36,9 @@ import { encreLisible as _encre, fondTeinte as _fond } from './couleurs.mjs';
 
 const CANVAS = '#FFFFFF';
 const CIBLE_FOND = 0.87;             // luminance visée pour TOUS les fonds
-const CONTRASTE_MIN = 3.5;           // encre / fond teinté
+const CONTRASTE_MIN = 4.5;           // encre / fond teinté — même seuil que le
+                                     // libellé draw.io : une seule règle de
+                                     // contraste dans tout le projet
 
 const fondTeinte = (c) => _fond(c, CANVAS, CIBLE_FOND);
 const encreLisible = (c, fond) => _encre(c, fond, CONTRASTE_MIN);

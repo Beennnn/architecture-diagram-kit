@@ -33,12 +33,12 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 // ─── nœuds ────────────────────────────────────────────────────────────────
 // symbole: null = aucun badge disponible (c'est le constat de l'exercice)
 const N = [
-  { x: 40,   y: 150, w: 150, h: 72, t: 'App mobile',        s: 'iOS · Android',   ico: null,          forme: 'acteur' },
-  { x: 40,   y: 310, w: 150, h: 72, t: 'Bornes',            s: '2 400 unités',    ico: null,          forme: 'materiel' },
-  { x: 40,   y: 470, w: 150, h: 72, t: 'Exploitation',      s: 'astreinte',       ico: null,          forme: 'acteur' },
+  { x: 40,   y: 150, w: 150, h: 72, t: 'App mobile',        s: 'iOS · Android',   ico: 'app-mobile',  forme: 'acteur' },
+  { x: 40,   y: 310, w: 150, h: 72, t: 'Bornes',            s: '2 400 unités',    ico: 'appareil',    forme: 'materiel' },
+  { x: 40,   y: 470, w: 150, h: 72, t: 'Exploitation',      s: 'astreinte',       ico: 'equipe',      forme: 'acteur' },
   { x: 280,  y: 150, w: 200, h: 72, t: 'API publique',      s: 'contrat OpenAPI', ico: 'openapi' },
   { x: 280,  y: 310, w: 200, h: 72, t: 'Ingestion',         s: 'Spring Boot',     ico: 'springboot' },
-  { x: 280,  y: 470, w: 200, h: 72, t: 'Bastion',           s: 'accès restreint', ico: null },
+  { x: 280,  y: 470, w: 200, h: 72, t: 'Bastion',           s: 'accès restreint', ico: 'bastion' },
   { x: 530,  y: 310, w: 200, h: 72, t: 'Bus de mesures',    s: '3 partitions',    ico: 'kafka',       forme: 'file' },
   { x: 760,  y: 150, w: 200, h: 72, t: 'Sessions',          s: 'Spring Boot',     ico: 'springboot' },
   { x: 530,  y: 470, w: 200, h: 72, t: 'Facturation',       s: 'Spring Boot',     ico: 'springboot' },
@@ -121,5 +121,6 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 `;
 fs.writeFileSync(path.join(ROOT, 'docs/exemple-voltis.svg'), svg);
 const sansBadge = N.filter((n) => !n.ico).map((n) => n.t);
+if (sansBadge.length) console.log(`  ⚠ nœuds sans badge disponible : ${sansBadge.join(', ')}`);
 console.log(`  docs/exemple-voltis.svg · ${(svg.length / 1024).toFixed(0)} Ko`);
-console.log(`  ${N.length - sansBadge.length}/${N.length} nœuds ont un badge · sans badge : ${sansBadge.join(', ')}`);
+console.log(`  ${N.length - sansBadge.length}/${N.length} nœuds portent un badge`);

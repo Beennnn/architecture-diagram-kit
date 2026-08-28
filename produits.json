@@ -1,16 +1,187 @@
 {
   "$comment": "Produits et technologies — par opposition aux protocoles de protocoles.json. Règle : si un logo officiel existe, on l'utilise, parce que les gens le reconnaissent sans légende. Un picto générique n'est un repli que lorsqu'aucun logo n'est redistribuable.",
   "produits": [
-    { "slug": "java",        "label": "Java",         "categorie": "Langage & build", "simpleIcons": "openjdk",
-      "note": "Le logo Java est une marque Oracle, non redistribuable. On emploie celui d'OpenJDK — l'implémentation de référence — que les développeurs Java reconnaissent." },
-    { "slug": "maven",       "label": "Maven",        "categorie": "Langage & build", "simpleIcons": "apachemaven" },
-    { "slug": "junit",       "label": "JUnit",        "categorie": "Test",            "simpleIcons": "junit5" },
-    { "slug": "springboot",  "label": "Spring Boot",  "categorie": "Framework",       "simpleIcons": "springboot" },
-    { "slug": "postgresql",  "label": "PostgreSQL",   "categorie": "Données",         "simpleIcons": "postgresql" },
-    { "slug": "s3",          "label": "S3",           "categorie": "Données",         "simpleIcons": null, "tabler": "bucket", "couleur": "#0B7A6E",
-      "note": "AWS ne redistribue pas ses marques sous licence libre. Le picto « bucket » reprend le vocabulaire même de S3, que ses utilisateurs reconnaissent." },
-    { "slug": "kafka",       "label": "Kafka",        "categorie": "Messaging",       "simpleIcons": "apachekafka" },
-    { "slug": "openapi",     "label": "OpenAPI",      "categorie": "API",             "simpleIcons": "openapiinitiative" },
-    { "slug": "kubernetes",  "label": "Kubernetes",   "categorie": "Plateforme",      "simpleIcons": "kubernetes" }
+    {
+      "slug": "java",
+      "label": "Java",
+      "categorie": "Langage & build",
+      "simpleIcons": "openjdk",
+      "note": "Le logo Java est une marque Oracle, non redistribuable. On emploie celui d'OpenJDK — l'implémentation de référence — que les développeurs Java reconnaissent.",
+      "forme": "service"
+    },
+    {
+      "slug": "maven",
+      "label": "Maven",
+      "categorie": "Langage & build",
+      "simpleIcons": "apachemaven",
+      "forme": "service"
+    },
+    {
+      "slug": "junit",
+      "label": "JUnit",
+      "categorie": "Test",
+      "simpleIcons": "junit5",
+      "forme": "service"
+    },
+    {
+      "slug": "springboot",
+      "label": "Spring Boot",
+      "categorie": "Framework",
+      "simpleIcons": "springboot",
+      "forme": "service"
+    },
+    {
+      "slug": "postgresql",
+      "label": "PostgreSQL",
+      "categorie": "Données",
+      "simpleIcons": "postgresql",
+      "forme": "stockage"
+    },
+    {
+      "slug": "s3",
+      "label": "S3",
+      "categorie": "Données",
+      "simpleIcons": null,
+      "tabler": "bucket",
+      "couleur": "#0B7A6E",
+      "note": "AWS ne redistribue pas ses marques sous licence libre. Le picto « bucket » reprend le vocabulaire même de S3, que ses utilisateurs reconnaissent.",
+      "forme": "stockage"
+    },
+    {
+      "slug": "kafka",
+      "label": "Kafka",
+      "categorie": "Messaging",
+      "simpleIcons": "apachekafka",
+      "forme": "flux"
+    },
+    {
+      "slug": "openapi",
+      "label": "OpenAPI",
+      "categorie": "API",
+      "simpleIcons": "openapiinitiative",
+      "forme": "service"
+    },
+    {
+      "slug": "kubernetes",
+      "label": "Kubernetes",
+      "categorie": "Plateforme",
+      "simpleIcons": "kubernetes",
+      "forme": "frontiere"
+    },
+    {
+      "slug": "quarkus",
+      "label": "Quarkus",
+      "categorie": "Framework",
+      "simpleIcons": "quarkus",
+      "forme": "service"
+    },
+    {
+      "slug": "tomcat",
+      "label": "Tomcat",
+      "categorie": "Framework",
+      "simpleIcons": "apachetomcat",
+      "forme": "service",
+      "note": "Cas faible assumé : la couleur de marque est très claire (#F8DC75), ce qui force une encre désaturée, et le logo est un dessin au trait délicat. Il passe le seuil de contraste (4,9:1) mais reste le moins lisible du jeu à petite taille. Préférer la disposition empilée, plus grande."
+    },
+    {
+      "slug": "gradle",
+      "label": "Gradle",
+      "categorie": "Langage & build",
+      "simpleIcons": "gradle",
+      "forme": "service"
+    },
+    {
+      "slug": "redis",
+      "label": "Redis",
+      "categorie": "Données",
+      "simpleIcons": "redis",
+      "forme": "stockage"
+    },
+    {
+      "slug": "elasticsearch",
+      "label": "Elasticsearch",
+      "categorie": "Données",
+      "simpleIcons": "elasticsearch",
+      "forme": "stockage"
+    },
+    {
+      "slug": "nginx",
+      "label": "nginx",
+      "categorie": "Réseau",
+      "simpleIcons": "nginx",
+      "forme": "service"
+    },
+    {
+      "slug": "docker",
+      "label": "Docker",
+      "categorie": "Plateforme",
+      "simpleIcons": "docker",
+      "forme": "frontiere"
+    },
+    {
+      "slug": "helm",
+      "label": "Helm",
+      "categorie": "Plateforme",
+      "simpleIcons": "helm",
+      "forme": "service"
+    },
+    {
+      "slug": "terraform",
+      "label": "Terraform",
+      "categorie": "Livraison",
+      "simpleIcons": "terraform",
+      "forme": "service"
+    },
+    {
+      "slug": "jenkins",
+      "label": "Jenkins",
+      "categorie": "Livraison",
+      "simpleIcons": "jenkins",
+      "forme": "service"
+    },
+    {
+      "slug": "gitlab",
+      "label": "GitLab",
+      "categorie": "Livraison",
+      "simpleIcons": "gitlab",
+      "forme": "service"
+    },
+    {
+      "slug": "grafana",
+      "label": "Grafana",
+      "categorie": "Observabilité",
+      "simpleIcons": "grafana",
+      "forme": "service"
+    },
+    {
+      "slug": "prometheus",
+      "label": "Prometheus",
+      "categorie": "Observabilité",
+      "simpleIcons": "prometheus",
+      "forme": "stockage"
+    },
+    {
+      "slug": "keycloak",
+      "label": "Keycloak",
+      "categorie": "Sécurité",
+      "simpleIcons": "keycloak",
+      "forme": "service"
+    },
+    {
+      "slug": "rabbitmq",
+      "label": "RabbitMQ",
+      "categorie": "Messaging",
+      "simpleIcons": "rabbitmq",
+      "forme": "flux",
+      "note": "Écarté comme signe de protocole par l'ADR 0002 — RabbitMQ n'est pas AMQP, WireGuard n'est pas « VPN ». En tant que produit, le logo redevient parfaitement légitime."
+    },
+    {
+      "slug": "wireguard",
+      "label": "WireGuard",
+      "categorie": "Sécurité",
+      "simpleIcons": "wireguard",
+      "forme": "service",
+      "note": "Écarté comme signe de protocole par l'ADR 0002 — RabbitMQ n'est pas AMQP, WireGuard n'est pas « VPN ». En tant que produit, le logo redevient parfaitement légitime."
+    }
   ]
 }
