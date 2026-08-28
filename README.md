@@ -80,6 +80,19 @@ sont des *implémentations*, et utiliser RabbitMQ pour AMQP désignerait un
 standard par un produit. Ils redeviennent légitimes ajoutés à
 `produits.json`.
 
+## Ce que la CI vérifie
+
+Un workflow relance `./regenerer.sh` sur chaque proposition, puis vérifie que
+l'arbre git est resté propre. Cette seconde vérification est la plus utile :
+elle prouve que la sortie versionnée correspond exactement à ses sources. Sans
+elle, un fichier généré modifié à la main passerait sans que personne le sache.
+
+La régénération porte au passage tous les garde-fous du dépôt — unicité des
+pictos, hauteur minimale d'un cylindre, étiquette qui recouvre une boîte,
+description qui déborde, légende posée sur un nœud, texte illisible en variante
+sombre, concordance de `formes.json` avec `FONDS`, fond de la grammaire absent
+d'une bibliothèque. Chacun fait échouer la génération, donc rougir la CI.
+
 ## Quatre dispositions
 
 | Dossier | Format | Usage |

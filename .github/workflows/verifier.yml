@@ -1,0 +1,67 @@
+# Les garde-fous de ce dépôt ne servaient à rien à la porte : ils ne
+# s'exécutaient que si quelqu'un lançait regenerer.sh à la main. Une
+# contribution qui casse la grammaire passait donc sans un bruit.
+#
+# Ce workflow ne réinvente aucun contrôle. Il lance la régénération complète —
+# qui porte déjà l'unicité des pictos, la hauteur des cylindres, les collisions
+# d'étiquettes, le débordement des descriptions, la légende sur une boîte, le
+# contraste en variante sombre, la concordance formes.json / FONDS, les fonds
+# absents des bibliothèques — puis il vérifie que l'arbre git est resté propre.
+#
+# Cette dernière vérification est la plus importante : elle prouve que la
+# sortie versionnée correspond exactement à ses sources. Sans elle, on peut
+# modifier un SVG généré à la main et personne ne le sait.
+name: Vérifier
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  regenerer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Les jeux d'icônes sont téléchargés à des versions épinglées : le cache
+      # est donc sûr, et sa clé les nomme pour qu'un changement de version le
+      # renouvelle au lieu de servir un contenu périmé.
+      - name: Cache des paquets d'icônes
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: icones-${{ hashFiles('regenerer.sh') }}
+
+      - run: npm ci
+
+      - name: Régénérer tout
+        run: ./regenerer.sh
+
+      - name: L'arbre git doit être resté propre
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "::error::La régénération modifie des fichiers versionnés : la sortie ne correspond pas à ses sources."
+            git status --short
+            echo "---- différences ----"
+            git --no-pager diff --stat
+            exit 1
+          fi
+          echo "La sortie est reproductible."
+
+      # Les générateurs valident leur propre structure, mais aucun ne relit le
+      # fichier écrit. Un XML mal formé passerait donc jusqu'à l'utilisateur.
+      - name: Les fichiers produits doivent être du XML bien formé
+        run: |
+          sudo apt-get install -y --no-install-recommends libxml2-utils >/dev/null
+          erreurs=0
+          for f in docs/*.svg drawio/*.xml specimen/*.html; do
+            [[ -e "$f" ]] || continue
+            case "$f" in *.html) continue;; esac
+            xmllint --noout "$f" || { echo "::error file=$f::XML mal formé"; erreurs=1; }
+          done
+          exit $erreurs
