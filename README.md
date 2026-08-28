@@ -79,10 +79,17 @@ standard par un produit. Ils redeviennent légitimes ajoutés à
 Ces fichiers sont **autonomes** : couleurs en dur, texte vectorisé, aucune
 dépendance. Glissez-les dans Figma, une diapositive, un README, une page web.
 
-⚠️ **Pour draw.io, prenez `symboles/`, pas `lockups/`.** draw.io sait composer :
-on lui donne le signe seul et il écrit le nom lui-même, ce qui garde le texte
-cherchable, modifiable (« HTTPS :8443 ») et réel à l'export. Le raisonnement
-complet est dans [l'état de l'art](docs/etat-de-l-art-schemas.md#5-la-conséquence-pour-drawio).
+### draw.io
+
+N'importez pas `lockups/` dans draw.io — **installez la bibliothèque de
+formes** : `File ▸ Open Library from ▸ Device…` puis `drawio/protocoles.xml` et
+`drawio/produits.xml`.
+
+Elle livre le **signe seul**, et draw.io écrit le nom lui-même comme étiquette.
+Le libellé reste ainsi cherchable (`Ctrl+F`), modifiable sur place
+(« HTTPS :8443 ») et exporté comme du vrai texte. Détails :
+[`drawio/README.md`](drawio/README.md) · raisonnement :
+[l'état de l'art](docs/etat-de-l-art-schemas.md#5-la-conséquence-pour-drawio).
 
 ## Comment la couleur est calculée
 
@@ -114,6 +121,9 @@ lockups/horizontal/       41 SVG · disposition par défaut
 lockups/empile/           41 SVG · nœud de schéma
 lockups/mono/             41 SVG · encre unique
 symboles/                 41 SVG · signe seul
+
+drawio/protocoles.xml     bibliothèque de formes draw.io · 32
+drawio/produits.xml       bibliothèque de formes draw.io · 9
 
 sources/tabler/           glyphes bruts · MIT
 sources/lucide/           glyphes bruts · ISC

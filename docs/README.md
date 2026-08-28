@@ -9,6 +9,11 @@
 - **[Relire un schéma — la checklist](checklist-relecture-schema.md)** — sept
   points, dans l'ordre de l'impact mesuré.
 
+## Utiliser le jeu
+
+- **[Bibliothèques draw.io](../drawio/README.md)** — installation, disposition
+  du libellé, et pourquoi on y livre le signe seul plutôt que le bloc-marque.
+
 ## Décisions
 
 Format [Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).

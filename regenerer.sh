@@ -58,6 +58,9 @@ node scripts/build.mjs
 echo "→ Assemblage des lockups (lockups/, symboles/)"
 node scripts/lockups.mjs
 
+echo "→ Bibliothèques draw.io (drawio/)"
+node scripts/drawio.mjs
+
 echo "→ Planches de specimen (specimen/)"
 node scripts/specimen-lockups.mjs
 node scripts/specimen.mjs

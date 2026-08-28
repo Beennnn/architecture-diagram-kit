@@ -32,37 +32,14 @@ const famVersCouche = {};
 for (const [cle, c] of Object.entries(couches)) for (const f of c.familles) famVersCouche[f] = cle;
 
 /* --------------------------------------------------------------- couleurs */
-const hx = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-const hex = (rgb) => '#' + rgb.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
-const canal = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
-const lum = (h) => { const [r, g, bl] = hx(h).map(canal); return 0.2126 * r + 0.7152 * g + 0.0722 * bl; };
-const contraste = (a, z) => { const [x, y] = [lum(a), lum(z)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
-const melange = (h, vers, part) => hex(hx(h).map((v, i) => v + (hx(vers)[i] - v) * part));
+import { encreLisible as _encre, fondTeinte as _fond } from './couleurs.mjs';
 
 const CANVAS = '#FFFFFF';
 const CIBLE_FOND = 0.87;             // luminance visée pour TOUS les fonds
 const CONTRASTE_MIN = 3.5;           // encre / fond teinté
 
-// Une part de teinte fixe donnerait des pastilles de poids très inégal : à 14 %,
-// le noir de BitTorrent tombe à 0,72 de luminance quand l'orange de RSS reste à
-// 0,90. On cherche donc la part qui amène chaque fond à la même luminance, ce
-// qui rend toute la série homogène quelle que soit la couleur de départ.
-function fondTeinte(couleur) {
-  if (lum(couleur) >= CIBLE_FOND) return melange(CANVAS, couleur, 0.18);
-  let bas = 0, haut = 1;
-  for (let i = 0; i < 30; i++) {
-    const m = (bas + haut) / 2;
-    if (lum(melange(CANVAS, couleur, m)) > CIBLE_FOND) bas = m; else haut = m;
-  }
-  return melange(CANVAS, couleur, (bas + haut) / 2);
-}
-
-// Assombrit l'encre jusqu'à ce qu'elle soit lisible sur son propre fond teinté.
-function encreLisible(couleur, fond) {
-  let c = couleur;
-  for (let i = 0; i < 24 && contraste(c, fond) < CONTRASTE_MIN; i++) c = melange(c, '#000000', 0.08);
-  return c;
-}
+const fondTeinte = (c) => _fond(c, CANVAS, CIBLE_FOND);
+const encreLisible = (c, fond) => _encre(c, fond, CONTRASTE_MIN);
 
 /* ------------------------------------------------------------ géométrie */
 const G = {
