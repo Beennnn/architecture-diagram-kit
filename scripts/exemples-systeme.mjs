@@ -58,6 +58,21 @@ const sousTitre = (x, y, n, taille) => {
     + T(x, y + 8, n.id, { f: taille - 1, m: 1, c: LIGNE });
 };
 
+// Une DESCRIPTION — le troisième champ que C4 exige, avec le nom et le type.
+// Nos vues d'exécution n'en portent pas : à douze ou dix-sept nœuds, une phrase
+// par boîte les rendrait illisibles. Elle a sa place au niveau contexte, où les
+// boîtes se comptent sur une main. Voir docs/audit-conventions.md.
+function plier(texte, largeurCar) {
+  const lignes = [];
+  let courante = '';
+  for (const mot of texte.split(' ')) {
+    if (courante && (courante + ' ' + mot).length > largeurCar) { lignes.push(courante); courante = mot; }
+    else courante = courante ? courante + ' ' + mot : mot;
+  }
+  if (courante) lignes.push(courante);
+  return lignes;
+}
+
 // Un nœud : titre + sous-titre, badge à gauche, deux tailles selon la hauteur
 const noeud = (n) => {
   const vd = n.vedette ? ACCENT : null;
@@ -73,6 +88,20 @@ const noeud = (n) => {
   const dec = n.forme === 'stockage' ? 6 : 0;
   const cy = n.y + n.h / 2 + dec;
   const it = petit ? 24 : 30, tx = n.x + (petit ? 40 : 50);
+  if (n.d) {
+    // Avec description, le bloc se cale en haut : le texte descend, il ne se
+    // centre pas autour d'un point qui bougerait avec le nombre de lignes.
+    const lignes = plier(n.d, Math.floor((n.w - 24) / 5.2));
+    if (n.y + 62 + lignes.length * 14 > n.y + n.h - 6) {
+      throw new Error(`« ${n.t} » : ${lignes.length} lignes de description ne tiennent pas dans ${n.h} px.`);
+    }
+    return `<g>${boite({ ...n, vedette: vd })}`
+      + (n.ico ? symbole(n.ico, n.x + 12, n.y + 14, 30) : '')
+      + T(n.x + 50, n.y + 28, n.t, { f: 13.5, g: 1, c: vd || ENCRE })
+      + T(n.x + 50, n.y + 43, n.s, { f: 10.5 })
+      + lignes.map((l, i) => T(n.x + 12, n.y + 68 + i * 14, l, { f: 10.5 })).join('')
+      + `</g>`;
+  }
   return `<g>${boite({ ...n, vedette: vd })}`
     + (n.ico ? symbole(n.ico, n.x + (petit ? 10 : 12), cy - it / 2, it) : '')
     + T(tx, n.s ? cy - 2 : cy + 4, n.t, { f: petit ? 12 : 13.5, g: 1, c: vd || ENCRE })
@@ -107,6 +136,13 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
       if (c.x < n.x + n.w + 6 && c.x + c.w > n.x - 6 && c.y < n.y + n.h + 6 && c.y + c.h > n.y - 6) {
         heurts.push(`  « ${c.t} » recouvre « ${n.t} » (étiquette ${Math.round(c.x)}..${Math.round(c.x + c.w)} × ${Math.round(c.y)}..${Math.round(c.y + c.h)})`);
       }
+    }
+  }
+  // La légende est une étiquette comme les autres : elle occupe deux rangées
+  // à partir de h - 46, et rien ne l'empêchait jusqu'ici de tomber sur une boîte.
+  for (const n of noeuds) {
+    if (n.y + n.h + 6 > h - 58) {
+      heurts.push(`  la légende (à partir de ${h - 58}) tombe sur « ${n.t} » (jusqu'à ${n.y + n.h})`);
     }
   }
   if (heurts.length) throw new Error(`${f} : étiquettes en collision :\n${heurts.join('\n')}`);
@@ -380,4 +416,50 @@ rendre({
     marqueur(576, 610, 'RLS par site', '#C0392F'),
     marqueur(850, 610, 'immuable'),
   ].join(''),
+});
+
+// ─── Vue de contexte ──────────────────────────────────────────────────────
+// Le niveau 1 de C4, qui nous manquait : qui se sert du système, et avec quoi
+// il parle. C'est la seule vue assez peu dense pour porter la description que
+// C4 exige — nom, type et description — sans devenir illisible. Six boîtes.
+rendre({
+  f: 'exemple-contexte.svg', w: 1240, h: 760,
+  titre: 'Voltis — contexte',
+  sous: 'Niveau contexte · qui se sert du système, et avec quoi il parle',
+  noeuds: [
+    { x: 40, y: 120, w: 250, h: 150, t: 'Conducteur', s: 'personne', ico: 'utilisateur', forme: 'acteur',
+      d: 'Recharge son véhicule, consulte son historique et reçoit une facture mensuelle.' },
+    { x: 40, y: 330, w: 250, h: 150, t: 'Exploitant réseau', s: 'personne', ico: 'equipe', forme: 'acteur',
+      d: 'Supervise le parc, traite les incidents et vérifie les décomptes avant émission.' },
+    { x: 40, y: 540, w: 250, h: 130, t: 'Borne de recharge', s: 'matériel · 2 400 unités', ico: 'appareil', forme: 'materiel',
+      d: 'Mesure l’énergie délivrée et remonte un relevé par session.' },
+
+    { x: 420, y: 250, w: 320, h: 180, t: 'Voltis', s: 'le système décrit ici', ico: 'springboot', forme: 'service', vedette: true,
+      d: 'Collecte les relevés des bornes, calcule les décomptes de consommation et émet les factures mensuelles.' },
+
+    { x: 880, y: 120, w: 300, h: 150, t: 'Fournisseur d’énergie', s: 'système externe', ico: 'webhook', forme: 'externe',
+      d: 'Publie les tarifs horaires que Voltis applique au calcul des décomptes.' },
+    { x: 880, y: 330, w: 300, h: 150, t: 'Relais courriel', s: 'système externe', ico: 'smtp', forme: 'externe',
+      d: 'Achemine les factures et les alertes d’exploitation vers leurs destinataires.' },
+    { x: 880, y: 540, w: 300, h: 130, t: 'Banque', s: 'système externe', ico: 'oauth', forme: 'externe',
+      d: 'Prélève le montant facturé sur le mandat du conducteur.' },
+  ],
+  liens: [
+    { d: 'M290,195 H414 V320' },
+    { d: 'M290,405 H414' },
+    { d: 'M290,605 H414 V436' },
+    { d: 'M740,320 H874' },
+    { d: 'M740,405 H874' },
+    { d: 'M740,436 H806 V605 H874' },
+  ],
+  marques: [
+    ['https', 352, 195, 'consulte et paie'],
+    ['mqtt', 352, 605, 'remonte ses relevés'],
+    ['rest', 807, 320, 'interroge les tarifs'],
+    ['smtp', 807, 405, 'envoie les factures'],
+  ],
+  notes: [
+    [352, 400, 'supervise', 'middle'],
+    [807, 600, 'prélève', 'middle'],
+  ],
 });

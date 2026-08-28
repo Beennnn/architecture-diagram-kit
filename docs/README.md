@@ -14,6 +14,10 @@
   avons dû corriger, et l'écart qui reste.
 - **[Relire un schéma — la checklist](checklist-relecture-schema.md)** — neuf
   points, dans l'ordre de l'impact mesuré.
+- **[Vue de contexte](exemple-contexte.svg)** — le niveau 1 de C4, qui nous
+  manquait : qui se sert du système et avec quoi il parle. C'est la seule vue
+  assez peu dense pour porter la description que C4 exige — nom, type et
+  description — sans devenir illisible.
 - **[Vue intégrale](exemple-integral.svg)** — le schéma qui exerce les neuf
   formes, l'imbrication de zones, l'accent, les identifiants d'instance et les
   trois régimes d'étiquette de flèche. Il sert de démonstration et de test de

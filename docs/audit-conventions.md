@@ -91,10 +91,16 @@ appris, la nôtre ne l'est pas. Le *dual coding* nous est donc plus nécessaire
 qu'à eux — c'est le même argument qui nous impose une légende là où les jeux AWS
 et Azure s'en passent.
 
-**C4 veut un nom, un type et une description par élément.** Nous avons le nom, la
-technologie et l'identifiant d'instance, mais pas de description. C'est un choix
-de densité : nos vues portent entre douze et dix-sept nœuds, une description par
-boîte les rendrait illisibles. À reconsidérer si une vue descend sous huit nœuds.
+**C4 veut un nom, un type et une description par élément.** Nos vues d'exécution
+portent le nom, la technologie et l'identifiant d'instance, mais pas de
+description : à douze ou dix-sept nœuds, une phrase par boîte les rendrait
+illisibles.
+
+La bonne réponse n'était pas de renoncer mais de reconnaître que la description
+appartient à un autre niveau. C4 la situe au niveau contexte, où les boîtes se
+comptent sur une main — et ce niveau nous manquait. `exemple-contexte.svg` le
+comble et porte les trois champs. La règle est donc : description au contexte,
+identifiant d'instance à l'exécution.
 
 ## Sources
 
