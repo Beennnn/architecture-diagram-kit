@@ -84,19 +84,27 @@ standard par un produit. Ils redeviennent légitimes ajoutés à
 
 | Dossier | Format | Usage |
 |---|---|---|
-| `lockups/horizontal/` | signe à gauche, nom à droite · 48 px de haut | **défaut** — annoter une flèche, légender |
-| `lockups/empile/` | signe au-dessus, nom dessous · 84 px de haut | représenter un nœud, à la place d'une boîte |
+| `symboles/` | le signe seul · 48 × 48 | **défaut dans un schéma** — dans une boîte, ou sur une flèche avec son nom à côté |
+| `lockups/horizontal/` | signe à gauche, nom à droite · 48 px de haut | hors schéma — une diapositive, un README, une page web |
+| `lockups/empile/` | signe au-dessus, nom dessous · 84 px de haut | une grille de logos, un pied de page |
 | `lockups/mono/` | horizontal, encre unique | impression N&B, schéma déjà colorié |
-| `symboles/` | le signe seul · 48 × 48 | repli quand la place manque — exige une légende |
+
+**Le bloc-marque n'annote pas une flèche.** Il fait environ 150 px pour des
+flèches qui en font 82 : posé dessus il déborde sur les boîtes, posé au-dessus
+il flotte sans qu'on sache à quelle flèche il appartient. Une flèche s'annote
+avec le symbole et le nom posés *sur* le trait, qui s'interrompt derrière eux —
+voir [`docs/rendus-fleches.svg`](docs/rendus-fleches.svg) pour l'arbitrage, et
+`annotation()` dans `scripts/schema.mjs` pour la primitive.
 
 Ces fichiers sont **autonomes** : couleurs en dur, texte vectorisé, aucune
 dépendance. Glissez-les dans Figma, une diapositive, un README, une page web.
 
 ### draw.io
 
-N'importez pas `lockups/` dans draw.io — **installez la bibliothèque de
-formes** : `File ▸ Open Library from ▸ Device…` puis `drawio/protocoles.xml` et
-`drawio/produits.xml`.
+N'importez pas `lockups/` dans draw.io — **installez les bibliothèques** :
+`File ▸ Open Library from ▸ Device…` puis `drawio/protocoles.xml`,
+`drawio/produits.xml`, `drawio/roles.xml` et surtout `drawio/grammaire.xml`,
+qui porte les neuf formes, leurs fonds, l'accent et la flèche annotée.
 
 Elle livre le **signe seul**, et draw.io écrit le nom lui-même comme étiquette.
 Le libellé reste ainsi cherchable (`Ctrl+F`), modifiable sur place
