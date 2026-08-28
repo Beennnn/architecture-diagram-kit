@@ -14,6 +14,9 @@
   avons dû corriger, et l'écart qui reste.
 - **[Relire un schéma — la checklist](checklist-relecture-schema.md)** — neuf
   points, dans l'ordre de l'impact mesuré.
+- **Variantes sombres** — chaque vue a sa jumelle `-sombre.svg`, produite par
+  `scripts/sombre.mjs`. Les symboles n'y sont pas retouchés : le vert de Spring
+  Boot est une couleur de marque, et l'inverser produirait un faux logo.
 - **[Vue de contexte](exemple-contexte.svg)** — le niveau 1 de C4, qui nous
   manquait : qui se sert du système et avec quoi il parle. C'est la seule vue
   assez peu dense pour porter la description que C4 exige — nom, type et
