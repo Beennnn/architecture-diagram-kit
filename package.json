@@ -1,0 +1,15 @@
+{
+  "name": "logo-libres",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Jeu d'icônes homogène et libre de droits pour les protocoles réseau, pensé pour les schémas d'architecture",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "build": "./regenerer.sh",
+    "build:offline": "./regenerer.sh --offline"
+  },
+  "dependencies": {
+    "opentype.js": "1.3.4"
+  }
+}

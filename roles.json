@@ -1,0 +1,355 @@
+{
+  "$comment": "Rôles d'infrastructure — ni protocoles, ni produits. Un rôle décrit ce qu'une brique FAIT, indépendamment du produit qui l'implémente : « cache » et non « Redis ». Signe : picto Tabler (niveau 3 de l'ADR 0002). Forme : voir formes.json et l'ADR 0003.",
+  "roles": [
+    {
+      "slug": "repartiteur",
+      "label": "Répartiteur de charge",
+      "famille": "Réseau",
+      "forme": "service",
+      "tabler": "arrows-split-2"
+    },
+    {
+      "slug": "reverse-proxy",
+      "label": "Reverse proxy",
+      "famille": "Réseau",
+      "forme": "service",
+      "tabler": "arrow-guide"
+    },
+    {
+      "slug": "passerelle-api",
+      "label": "Passerelle d'API",
+      "famille": "Réseau",
+      "forme": "service",
+      "tabler": "door-enter"
+    },
+    {
+      "slug": "cdn",
+      "label": "CDN",
+      "famille": "Réseau",
+      "forme": "service",
+      "tabler": "world-bolt"
+    },
+    {
+      "slug": "pare-feu",
+      "label": "Pare-feu",
+      "famille": "Réseau",
+      "forme": "service",
+      "tabler": "wall"
+    },
+    {
+      "slug": "service",
+      "label": "Service",
+      "famille": "Calcul",
+      "forme": "service",
+      "tabler": "box"
+    },
+    {
+      "slug": "worker",
+      "label": "Worker",
+      "famille": "Calcul",
+      "forme": "service",
+      "tabler": "settings-automation"
+    },
+    {
+      "slug": "tache-planifiee",
+      "label": "Tâche planifiée",
+      "famille": "Calcul",
+      "forme": "service",
+      "tabler": "clock-cog"
+    },
+    {
+      "slug": "fonction",
+      "label": "Fonction",
+      "famille": "Calcul",
+      "forme": "service",
+      "tabler": "bolt"
+    },
+    {
+      "slug": "cache",
+      "label": "Cache",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "stack-3"
+    },
+    {
+      "slug": "stockage-objet",
+      "label": "Stockage objet",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "archive"
+    },
+    {
+      "slug": "entrepot",
+      "label": "Entrepôt de données",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "building-warehouse"
+    },
+    {
+      "slug": "index-recherche",
+      "label": "Index de recherche",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "list-search"
+    },
+    {
+      "slug": "registre",
+      "label": "Registre d'images",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "packages"
+    },
+    {
+      "slug": "bastion",
+      "label": "Bastion",
+      "famille": "Sécurité",
+      "forme": "service",
+      "tabler": "door"
+    },
+    {
+      "slug": "coffre-secrets",
+      "label": "Coffre à secrets",
+      "famille": "Sécurité",
+      "forme": "stockage",
+      "tabler": "lock-square-rounded"
+    },
+    {
+      "slug": "autorite-certif",
+      "label": "Autorité de certification",
+      "famille": "Sécurité",
+      "forme": "service",
+      "tabler": "certificate-2"
+    },
+    {
+      "slug": "poste-client",
+      "label": "Poste client",
+      "famille": "Client",
+      "forme": "acteur",
+      "tabler": "device-desktop"
+    },
+    {
+      "slug": "app-mobile",
+      "label": "Application mobile",
+      "famille": "Client",
+      "forme": "acteur",
+      "tabler": "device-mobile"
+    },
+    {
+      "slug": "utilisateur",
+      "label": "Utilisateur",
+      "famille": "Client",
+      "forme": "acteur",
+      "tabler": "user"
+    },
+    {
+      "slug": "equipe",
+      "label": "Équipe",
+      "famille": "Client",
+      "forme": "acteur",
+      "tabler": "users"
+    },
+    {
+      "slug": "appareil",
+      "label": "Appareil connecté",
+      "famille": "Client",
+      "forme": "materiel",
+      "tabler": "access-point"
+    },
+    {
+      "slug": "journaux",
+      "label": "Journaux",
+      "famille": "Supervision",
+      "forme": "stockage",
+      "tabler": "list-details"
+    },
+    {
+      "slug": "metriques",
+      "label": "Métriques",
+      "famille": "Supervision",
+      "forme": "service",
+      "tabler": "chart-line"
+    },
+    {
+      "slug": "alerting",
+      "label": "Alerting",
+      "famille": "Supervision",
+      "forme": "service",
+      "tabler": "bell"
+    },
+    {
+      "slug": "serveur",
+      "label": "Serveur physique",
+      "famille": "Matériel",
+      "forme": "noeud",
+      "tabler": "server-2"
+    },
+    {
+      "slug": "vm",
+      "label": "Machine virtuelle",
+      "famille": "Matériel",
+      "forme": "noeud",
+      "tabler": "box-multiple"
+    },
+    {
+      "slug": "hyperviseur",
+      "label": "Hyperviseur",
+      "famille": "Matériel",
+      "forme": "service",
+      "tabler": "cpu"
+    },
+    {
+      "slug": "commutateur",
+      "label": "Commutateur",
+      "famille": "Réseau",
+      "forme": "service",
+      "tabler": "topology-star-3"
+    },
+    {
+      "slug": "routeur",
+      "label": "Routeur",
+      "famille": "Réseau",
+      "forme": "service",
+      "tabler": "router"
+    },
+    {
+      "slug": "noeud-cluster",
+      "label": "Nœud de cluster",
+      "famille": "Plateforme",
+      "forme": "noeud",
+      "tabler": "cube-3d-sphere"
+    },
+    {
+      "slug": "pod",
+      "label": "Pod",
+      "famille": "Plateforme",
+      "forme": "service",
+      "tabler": "container"
+    },
+    {
+      "slug": "service-cluster",
+      "label": "Service de cluster",
+      "famille": "Plateforme",
+      "forme": "service",
+      "tabler": "affiliate"
+    },
+    {
+      "slug": "volume",
+      "label": "Volume persistant",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "versions"
+    },
+    {
+      "slug": "controleur",
+      "label": "Contrôleur",
+      "famille": "Code",
+      "forme": "service",
+      "tabler": "api-app"
+    },
+    {
+      "slug": "service-applicatif",
+      "label": "Service applicatif",
+      "famille": "Code",
+      "forme": "service",
+      "tabler": "brackets"
+    },
+    {
+      "slug": "depot",
+      "label": "Dépôt",
+      "famille": "Code",
+      "forme": "service",
+      "tabler": "database-cog"
+    },
+    {
+      "slug": "entite",
+      "label": "Entité",
+      "famille": "Code",
+      "forme": "stockage",
+      "tabler": "table-options"
+    },
+    {
+      "slug": "configuration",
+      "label": "Configuration",
+      "famille": "Code",
+      "forme": "stockage",
+      "tabler": "adjustments"
+    },
+    {
+      "slug": "compilation",
+      "label": "Compilation",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "hammer"
+    },
+    {
+      "slug": "formateur",
+      "label": "Formateur de code",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "wand"
+    },
+    {
+      "slug": "analyse-statique",
+      "label": "Analyse statique",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "bug"
+    },
+    {
+      "slug": "test-architecture",
+      "label": "Test d'architecture",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "ruler-measure"
+    },
+    {
+      "slug": "couverture",
+      "label": "Couverture",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "percentage"
+    },
+    {
+      "slug": "test-mutation",
+      "label": "Test de mutation",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "virus"
+    },
+    {
+      "slug": "test-contrat",
+      "label": "Test de contrat",
+      "famille": "Test",
+      "forme": "service",
+      "tabler": "file-check"
+    },
+    {
+      "slug": "contrat-evenements",
+      "label": "Contrat d'événements",
+      "famille": "API",
+      "forme": "service",
+      "tabler": "file-typography"
+    },
+    {
+      "slug": "outbox",
+      "label": "Table d'expédition",
+      "famille": "Fichiers",
+      "forme": "stockage",
+      "tabler": "send"
+    },
+    {
+      "slug": "evenement-domaine",
+      "label": "Événement de domaine",
+      "famille": "Messaging",
+      "forme": "flux",
+      "tabler": "flare"
+    },
+    {
+      "slug": "decision",
+      "label": "Décision d'architecture",
+      "famille": "Livraison",
+      "forme": "service",
+      "tabler": "notebook"
+    }
+  ]
+}

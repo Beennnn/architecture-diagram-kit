@@ -1,0 +1,72 @@
+{
+  "$comment": "Regroupement des familles en couches colorées, pour les schémas d'architecture. Six teintes séparables, contrastées pour un glyphe blanc à 16 px.",
+  "couches": {
+    "web": {
+      "label": "Web & temps réel",
+      "clair": "#1B5FD9",
+      "sombre": "#6FA6FF",
+      "familles": [
+        "Web",
+        "Temps réel"
+      ]
+    },
+    "api": {
+      "label": "API",
+      "clair": "#7038D8",
+      "sombre": "#B08CFF",
+      "familles": [
+        "API",
+        "Framework",
+        "Code"
+      ]
+    },
+    "fichiers": {
+      "label": "Fichiers",
+      "clair": "#0B7A6E",
+      "sombre": "#43C9B8",
+      "familles": [
+        "Fichiers",
+        "Données"
+      ]
+    },
+    "messaging": {
+      "label": "Messages & mail",
+      "clair": "#B36208",
+      "sombre": "#F0A64B",
+      "familles": [
+        "Messaging",
+        "Mail"
+      ]
+    },
+    "acces": {
+      "label": "Accès & sécurité",
+      "clair": "#C0392F",
+      "sombre": "#FF8A80",
+      "familles": [
+        "Accès",
+        "Sécurité"
+      ]
+    },
+    "infra": {
+      "label": "Infrastructure",
+      "clair": "#4C5A66",
+      "sombre": "#A3B3C0",
+      "familles": [
+        "Réseau",
+        "Annuaire",
+        "Supervision",
+        "Média",
+        "P2P",
+        "Calcul",
+        "Client",
+        "Langage & build",
+        "Test",
+        "Plateforme",
+        "Livraison",
+        "Observabilité",
+        "Matériel",
+        "Système"
+      ]
+    }
+  }
+}

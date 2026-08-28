@@ -1,0 +1,457 @@
+<title>Formes, couleurs, flèches</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{
+  --paper:#F1F0EC; --surface:#FFFFFF; --surface-2:#F8F7F4;
+  --ink:#16181A; --ink-2:#3E444A; --muted:#6E767D;
+  --line:#D8D6D0; --line-2:#E7E5DF;
+  --accent:#0B6E7F; --accent-soft:#DCEFF2; --accent-ink:#075462;
+  --alerte:#A6402F; --alerte-soft:#F6E7E3;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+    --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+    --line:#2C3338; --line-2:#232A2E;
+    --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+    --alerte:#F0857A; --alerte-soft:#331C19;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+  --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+  --line:#2C3338; --line-2:#232A2E;
+  --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+  --alerte:#F0857A; --alerte-soft:#331C19;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 26px 100px}
+h1,h2,h3,.sans{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif}
+code{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.85em}
+a{color:var(--accent);text-underline-offset:2px}
+
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+.top .wrap{padding-top:56px;padding-bottom:40px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+h1{font-size:clamp(2.1rem,5.4vw,3.3rem);line-height:1.04;font-weight:700;letter-spacing:-.022em;margin:0 0 18px;text-wrap:balance}
+.chapo{font-size:1.12rem;color:var(--ink-2);margin:0;max-width:60ch}
+.chapo strong{color:var(--ink);font-weight:600}
+
+section{margin-top:56px}
+h2{font-size:1.5rem;font-weight:700;letter-spacing:-.015em;margin:0 0 6px;text-wrap:balance}
+h2 .num{font-family:"IBM Plex Mono",monospace;font-size:.62em;font-weight:500;color:var(--accent);margin-right:12px}
+.sub{color:var(--muted);font-size:.94rem;margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line);font-family:"IBM Plex Sans",sans-serif}
+h3{font-size:1.06rem;font-weight:600;margin:28px 0 8px}
+p{margin:0 0 16px}
+ul{margin:0 0 16px;padding-left:1.2em}
+li{margin-bottom:7px}
+
+.regle{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);
+  padding:15px 19px;margin:20px 0;font-family:"IBM Plex Sans",sans-serif;font-size:15px;line-height:1.6}
+.regle b{font-weight:600}
+.piege{background:var(--alerte-soft);border-radius:var(--r);padding:14px 18px;margin:18px 0;
+  font-family:"IBM Plex Sans",sans-serif;font-size:14.5px;line-height:1.6;color:var(--alerte)}
+.piege::before{content:"Le piège";display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:4px}
+
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin:22px 0}
+table{border-collapse:collapse;width:100%;min-width:620px;font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;line-height:1.5}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{background:var(--surface-2);font:600 10.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+tbody th{font-weight:600;white-space:nowrap;color:var(--ink)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+
+/* Les figures sont posées sur un fond clair constant : un schéma d'architecture
+   se lit sur canvas clair, et les teintes sont calibrées pour lui. */
+figure{margin:26px 0;background:#FFFFFF;border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 14px;overflow-x:auto}
+figure > svg{display:block;width:100%;height:auto;min-width:560px}
+figcaption{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;color:var(--muted);margin-top:13px;line-height:1.55;max-width:70ch}
+figcaption b{color:var(--ink-2);font-weight:600}
+.fig-t{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+
+.recap{margin-top:56px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 28px}
+.recap h2{font-size:1.25rem;margin-bottom:14px}
+.recap ol{counter-reset:c;list-style:none;padding:0;margin:0;font-family:"IBM Plex Sans",sans-serif;font-size:14.5px}
+.recap li{counter-increment:c;position:relative;padding-left:34px;margin-bottom:13px;line-height:1.55}
+.recap li::before{content:counter(c);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:5px;
+  background:var(--accent-soft);color:var(--accent-ink);font:600 11px/22px "IBM Plex Mono",monospace;text-align:center}
+.recap li b{font-weight:600}
+.recap li span{color:var(--muted);display:block;font-size:13px;margin-top:1px}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Guide pratique · formes, couleurs, flèches</p>
+    <h1>Faire un schéma qui se lit</h1>
+    <p class="chapo">La <a href="etat-de-l-art-schemas.html">note d'état de l'art</a> dit ce que la recherche établit. Celle-ci dit quoi faire. Une seule idée la traverse : <strong>chaque variable visuelle code une chose et une seule.</strong> La forme dit de quelle sorte d'objet il s'agit, la couleur à quel groupe il appartient, la taille son importance, la position le flux. Un schéma devient illisible le jour où l'une d'elles en code deux.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2><span class="num">01</span>Ce que chaque variable a le droit de dire</h2>
+  <p class="sub">Attribuez-les avant de dessiner, pas pendant</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th scope="col">Variable</th><th scope="col">Ce qu'elle code</th><th scope="col">Capacité</th><th scope="col">Fragilité</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Position</th><td>le flux, la séquence, l'appartenance</td><td>illimitée</td><td>aucune — la plus forte, ne la gaspillez pas</td></tr>
+        <tr><th scope="row">Cadre / zone</th><td>qui est dedans, qui est dehors</td><td>quelques zones</td><td>illisible si les zones se chevauchent</td></tr>
+        <tr><th scope="row">Forme</th><td>de quelle <em>sorte</em> d'objet il s'agit</td><td>5 à 7</td><td>aucune — survit au noir et blanc</td></tr>
+        <tr><th scope="row">Couleur</th><td>à quel <em>groupe</em> il appartient</td><td>6 au plus</td><td>daltonisme, impression, vidéoprojecteur</td></tr>
+        <tr><th scope="row">Taille, graisse</th><td>l'importance</td><td>3 niveaux</td><td>se confond avec « contient plus de texte »</td></tr>
+        <tr><th scope="row">Trait plein / pointillé</th><td>une dualité, une seule</td><td>2</td><td>inutilisable sans légende</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="regle">
+    <b>La forme est la variable la plus sous-employée.</b> Elle est gratuite, elle se retient, elle survit à une photocopie et au daltonisme. Beaucoup de schémas n'emploient que des rectangles et font ensuite porter tout le sens à la couleur — qui est la variable la plus fragile des deux.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Quelle forme pour quel usage</h2>
+  <p class="sub">Six formes suffisent, et elles se combinent</p>
+
+  <figure>
+    <svg viewBox="0 0 820 330" role="img" aria-label="Un système de paiement dessiné avec six formes : acteur, application, service, stockage, file et frontière réseau">
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g font-family="'IBM Plex Sans',sans-serif">
+
+      <!-- frontière : la variable « zone » -->
+      <rect x="128" y="34" width="516" height="272" rx="12" fill="#F2F5F6" stroke="#8896A2" stroke-width="1.4" stroke-dasharray="7 5"/>
+      <text x="142" y="54" fill="#5B6873" font-size="11.5" font-weight="600">Réseau privé</text>
+
+      <!-- acteur -->
+      <circle cx="60" cy="128" r="13" fill="none" stroke="#3E444A" stroke-width="1.8"/>
+      <path d="M60 143 v22 M42 152 h36 M60 165 l-13 18 M60 165 l13 18" fill="none" stroke="#3E444A" stroke-width="1.8" stroke-linecap="round"/>
+      <text x="60" y="204" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Client</text>
+      <text x="60" y="220" text-anchor="middle" font-size="10.5" fill="#6E767D">acteur</text>
+
+      <!-- application : rectangle arrondi -->
+      <rect x="158" y="96" width="118" height="60" rx="10" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="217" y="121" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Serveur web</text>
+      <text x="217" y="138" text-anchor="middle" font-size="10.5" fill="#6E767D">application</text>
+
+      <!-- service : rectangle à angles vifs -->
+      <rect x="326" y="96" width="118" height="60" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="385" y="121" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">API Commandes</text>
+      <text x="385" y="138" text-anchor="middle" font-size="10.5" fill="#6E767D">service</text>
+
+      <!-- stockage : cylindre -->
+      <path d="M486 110 v42 a46 13 0 0 0 92 0 v-42" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <ellipse cx="532" cy="110" rx="46" ry="13" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="532" y="132" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Commandes</text>
+      <text x="532" y="187" text-anchor="middle" font-size="10.5" fill="#6E767D">stockage</text>
+
+      <!-- file : rectangle très arrondi -->
+      <rect x="326" y="222" width="118" height="44" rx="22" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="385" y="241" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">File Paiements</text>
+      <text x="385" y="257" text-anchor="middle" font-size="10.5" fill="#6E767D">file</text>
+
+      <!-- worker -->
+      <rect x="498" y="218" width="118" height="52" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="557" y="240" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Régleur</text>
+      <text x="557" y="256" text-anchor="middle" font-size="10.5" fill="#6E767D">service</text>
+
+      <!-- externe : rectangle au trait distinct, pas un nuage -->
+      <rect x="676" y="218" width="118" height="52" fill="#F3F5F6" stroke="#8896A2" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <text x="735" y="240" text-anchor="middle" font-size="12.5" font-weight="600" fill="#3E444A">Banque</text>
+      <text x="735" y="256" text-anchor="middle" font-size="10.5" fill="#6E767D">externe</text>
+
+      <!-- flèches, toutes nommées -->
+      <g stroke="#5B6873" stroke-width="1.5" fill="none" marker-end="url(#a1)">
+        <path d="M84 126 H150"/>
+        <path d="M276 126 H318"/>
+        <path d="M444 126 H478"/>
+        <path d="M385 156 V214"/>
+        <path d="M444 244 H490"/>
+        <path d="M616 244 H668"/>
+      </g>
+      <g font-size="10.5" fill="#5B6873" text-anchor="middle">
+        <text x="117" y="114">HTTPS</text>
+        <text x="301" y="114">REST</text>
+        <text x="461" y="114">SQL</text>
+        <text x="385" y="192" text-anchor="middle">publie</text>
+        <text x="467" y="232">consomme</text>
+        <text x="642" y="232">règle</text>
+      </g>
+      </g>
+    </svg>
+    <figcaption><b>Six formes, chacune employée une fois pour une seule chose.</b> La frontière en pointillés est la variable la plus rentable du lot : elle dit d'un coup d'œil ce qui est à l'intérieur du réseau privé, et elle rend visible le seul lien qui en sort — vers la banque. Aucune couleur n'est nécessaire pour lire ce schéma.</figcaption>
+  </figure>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th scope="col">Forme</th><th scope="col">Usage</th><th scope="col">Remarque</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Rectangle</th><td>un service, un composant</td><td>le défaut ; ne cherchez pas mieux</td></tr>
+        <tr><th scope="row">Rectangle arrondi</th><td>une application, une interface</td><td>convention d'équipe — à mettre en légende</td></tr>
+        <tr><th scope="row">Cylindre</th><td>un stockage</td><td>convention universelle, ne la combattez pas</td></tr>
+        <tr><th scope="row">Rectangle très arrondi</th><td>une file, un bus, un sujet</td><td>lit bien parce qu'il évoque un tuyau</td></tr>
+        <tr><th scope="row">Personnage</th><td>un acteur humain</td><td>jamais pour un système automatisé</td></tr>
+        <tr><th scope="row">Cadre en pointillés</th><td>une frontière : réseau, confiance, déploiement, contexte</td><td><b>la plus sous-employée</b></td></tr>
+        <tr><th scope="row">Losange</th><td>une décision</td><td>logigramme <em>uniquement</em> — jamais en architecture</td></tr>
+        <tr><th scope="row">Nuage</th><td>—</td><td>à éviter : il veut dire « internet », « fournisseur cloud » ou « je ne sais pas » selon le lecteur</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="piege">
+    Faire porter à la forme une <em>importance</em> plutôt qu'une <em>nature</em>. Un composant critique n'a pas une forme spéciale : il a une taille, une position, ou un accent de couleur. Sinon la grammaire du schéma se contredit.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>La couleur ne code qu'une dimension</h2>
+  <p class="sub">La faute la plus fréquente, et la plus coûteuse</p>
+
+  <p>Sur un schéma réel, la tentation est permanente : on colore deux boîtes par équipe propriétaire, une troisième en rouge parce qu'elle est critique, une quatrième en bleu parce que c'est du Java. Chaque décision est raisonnable prise isolément. Ensemble, elles rendent la couleur illisible : le lecteur ne peut plus savoir ce qu'une teinte signifie.</p>
+
+  <figure>
+    <svg viewBox="0 0 780 210" role="img" aria-label="Le même schéma coloré selon trois critères mêlés à gauche, selon un seul critère à droite">
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g font-family="'IBM Plex Sans',sans-serif">
+      <text x="0" y="14" class="fig-t" fill="#A6402F">À éviter · trois critères mêlés</text>
+      <g stroke-width="1.5">
+        <rect x="0" y="34" width="96" height="46" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="120" y="34" width="96" height="46" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="240" y="34" width="96" height="46" rx="7" fill="#F7DEDA" stroke="#C0392F"/>
+        <rect x="120" y="120" width="96" height="46" rx="7" fill="#E4F0DE" stroke="#3D7A28"/>
+        <rect x="240" y="120" width="96" height="46" rx="7" fill="#EFEDE8" stroke="#8896A2"/>
+      </g>
+      <g font-size="11.5" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="48" y="62">Web</text><text x="168" y="62">API</text><text x="288" y="62">Paiement</text>
+        <text x="168" y="148">Batch</text><text x="288" y="148">Archive</text>
+      </g>
+      <g stroke="#8896A2" stroke-width="1.4" fill="none" marker-end="url(#a2)">
+        <path d="M96 57 H112"/><path d="M216 57 H232"/><path d="M168 80 V112"/><path d="M216 143 H232"/>
+      </g>
+      <g font-size="10" fill="#8896A2">
+        <text x="0" y="190">bleu = équipe A · rouge = critique · vert = Java · gris = déprécié</text>
+        <text x="0" y="204">quatre grammaires dans une seule variable</text>
+      </g>
+
+      <text x="440" y="14" class="fig-t" fill="#0B6E7F">Juste · un seul critère</text>
+      <g stroke-width="1.5">
+        <rect x="440" y="34" width="96" height="46" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="560" y="34" width="96" height="46" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="680" y="34" width="96" height="46" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="560" y="120" width="96" height="46" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="680" y="120" width="96" height="46" rx="7" fill="#DCEDEA" stroke="#0B7A6E"/>
+      </g>
+      <!-- la criticité passe sur une autre variable : un liseré épais -->
+      <rect x="680" y="34" width="96" height="46" rx="7" fill="none" stroke="#C0392F" stroke-width="3.2"/>
+      <g font-size="11.5" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="488" y="62">Web</text><text x="608" y="62">API</text><text x="728" y="62">Paiement</text>
+        <text x="608" y="148">Batch</text><text x="728" y="148">Archive</text>
+      </g>
+      <g stroke="#8896A2" stroke-width="1.4" fill="none" marker-end="url(#a2)">
+        <path d="M536 57 H552"/><path d="M656 57 H672"/><path d="M608 80 V112"/><path d="M656 143 H672"/>
+      </g>
+      <g font-size="10" fill="#8896A2">
+        <text x="440" y="190">la couleur ne dit plus que la couche : web · api · données</text>
+        <text x="440" y="204">la criticité est passée sur une autre variable — le liseré</text>
+      </g>
+      </g>
+    </svg>
+    <figcaption><b>À droite, la couleur ne répond qu'à une question :</b> « à quelle couche cela appartient-il ? » La criticité n'a pas disparu, elle a changé de variable — un liseré épais. Chaque information garde ainsi son canal, et la légende tient en trois lignes.</figcaption>
+  </figure>
+
+  <div class="regle">
+    <b>Une dimension par variable.</b> Si vous avez trois informations à coder — couche, criticité, équipe — il vous faut trois variables : couleur, liseré, position. Pas trois usages de la couleur.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Le gris porte la structure, la couleur porte le point</h2>
+  <p class="sub">Un schéma tout coloré n'a pas de sujet</p>
+
+  <p>Un schéma sert presque toujours à dire <em>une</em> chose : voici le chemin d'une requête, voici le composant qu'on ajoute, voici où ça casse. Si tout est coloré, rien ne l'est. La règle qui marche : <strong>la structure en neutres, et la couleur réservée à ce dont vous parlez.</strong></p>
+
+  <figure>
+    <svg viewBox="0 0 780 190" role="img" aria-label="Le même schéma entièrement coloré à gauche, en neutres avec un seul accent à droite">
+      <defs>
+        <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g font-family="'IBM Plex Sans',sans-serif">
+      <text x="0" y="14" class="fig-t" fill="#A6402F">Tout coloré · aucun sujet</text>
+      <g stroke-width="1.5">
+        <rect x="0" y="40" width="84" height="44" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="104" y="40" width="84" height="44" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="208" y="40" width="84" height="44" rx="7" fill="#FBE6CF" stroke="#B36208"/>
+        <rect x="104" y="112" width="84" height="44" rx="7" fill="#DCEDEA" stroke="#0B7A6E"/>
+        <rect x="208" y="112" width="84" height="44" rx="7" fill="#F7DEDA" stroke="#C0392F"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="42" y="67">Web</text><text x="146" y="67">API</text><text x="250" y="67">Cache</text>
+        <text x="146" y="139">Base</text><text x="250" y="139">Archive</text>
+      </g>
+      <g stroke="#8896A2" stroke-width="1.4" fill="none" marker-end="url(#a3)">
+        <path d="M84 62 H96"/><path d="M188 62 H200"/><path d="M146 84 V104"/><path d="M188 134 H200"/>
+      </g>
+      <text x="0" y="180" font-size="10" fill="#8896A2">cinq teintes, aucune hiérarchie : l'œil ne sait pas où se poser</text>
+
+      <text x="440" y="14" class="fig-t" fill="#0B6E7F">Neutres + un accent · le cache est le sujet</text>
+      <g stroke-width="1.5">
+        <rect x="440" y="40" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+        <rect x="544" y="40" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+        <rect x="648" y="40" width="84" height="44" rx="7" fill="#FBE6CF" stroke="#B36208" stroke-width="2.2"/>
+        <rect x="544" y="112" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+        <rect x="648" y="112" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle">
+        <text x="482" y="67" fill="#5B6873">Web</text><text x="586" y="67" fill="#5B6873">API</text>
+        <text x="690" y="67" fill="#8A4B06">Cache</text>
+        <text x="586" y="139" fill="#5B6873">Base</text><text x="690" y="139" fill="#5B6873">Archive</text>
+      </g>
+      <g stroke="#C3CBD1" stroke-width="1.4" fill="none" marker-end="url(#a3)">
+        <path d="M524 62 H536"/><path d="M586 84 V104"/><path d="M628 134 H640"/>
+      </g>
+      <g stroke="#B36208" stroke-width="2" fill="none" marker-end="url(#a3)">
+        <path d="M628 62 H640"/>
+      </g>
+      <text x="440" y="180" font-size="10" fill="#8896A2">une seule teinte saturée : le regard va droit au sujet</text>
+      </g>
+    </svg>
+    <figcaption><b>À droite, le schéma a un sujet.</b> Les neutres tiennent la structure — elle reste entièrement lisible — et la seule teinte saturée désigne ce dont parle le document. La flèche menant au cache porte le même accent : l'information est doublée, pas répétée en vain.</figcaption>
+  </figure>
+
+  <div class="regle">
+    <b>Une bonne proportion : les deux tiers du schéma en neutres.</b> Les six couleurs de couche ne sortent que lorsque le schéma parle réellement de couches — sur un schéma qui raconte un flux, elles sont du bruit.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Les sept règles de couleur</h2>
+  <p class="sub">Dans l'ordre où on les enfreint</p>
+
+  <ul>
+    <li><b>Jamais la couleur seule.</b> Toute information portée par une teinte doit l'être aussi par un mot, une forme ou une position. C'est le critère WCAG 1.4.1, et c'est aussi ce qui sauve le schéma à la photocopie.</li>
+    <li><b>Six catégories au maximum.</b> Au-delà, le lecteur retourne à la légende à chaque boîte, et la couleur cesse d'être un raccourci.</li>
+    <li><b>Le rouge est réservé.</b> Il veut dire problème, panne, danger — dans toutes les cultures techniques. Le dépenser pour « équipe Paiement » revient à crier sans raison.</li>
+    <li><b>Le fond reste neutre — mais neutre ne veut pas dire identique.</b> Les valeurs de gris codent la forme et l'emboîtement, et elles doivent être réellement séparées : nos quatre premiers fonds tenaient entre 1,05 et 1,08:1 avec le blanc, ce qui n'est pas un contraste faible mais une absence de contraste. Un vidéoprojecteur les rendait tous en blanc. L'échelle va désormais de 1,09:1 pour une zone à 1,27:1 pour un nœud de déploiement.</li>
+    <li><b>L'accent n'est pas une couche.</b> Une couleur, et une seule, est réservée à « c'est le sujet de ce schéma » : elle ne désigne jamais un domaine, elle est absente de la palette de couches, et la légende doit la nommer à part — sinon le lecteur la cherche parmi les couches. Une boîte accentuée par schéma : au-delà, elle ne désigne plus rien. Et parce qu'un magenta et une sarcelle deviennent la même couleur en deutéranopie, l'accent porte aussi un liseré plus épais : la règle « jamais la couleur seule » vaut d'abord pour lui.</li>
+    <li><b>Contraste : 4,5:1 pour le texte, 3:1 pour les traits.</b> Un vidéoprojecteur fatigué mange environ un tiers du contraste ; ce qui passe tout juste à l'écran disparaîtra en réunion.</li>
+    <li><b>La couleur de remplissage est douce, celle du trait est franche.</b> Un aplat saturé écrase le texte posé dessus ; une teinte à 10–15 % avec un trait plein garde les deux lisibles.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Les flèches</h2>
+  <p class="sub">Là où se cache le sens véritable</p>
+
+  <p>Les boîtes disent ce qui existe ; les flèches disent comment le système marche. C'est pourtant sur elles qu'on relâche l'effort.</p>
+
+  <ul>
+    <li><b>Nommez-les.</b> « lit les commandes dans » porte une information ; « utilise » n'en porte aucune. Si le nom ne vient pas, c'est souvent que la relation n'est pas claire dans votre tête.</li>
+    <li><b>Orientez-les vers celui qui reçoit l'appel</b>, et pas vers celui d'où viennent les données. Le sens de la flèche répond à « qui appelle qui », c'est-à-dire à qui doit connaître l'autre.</li>
+    <li><b>Bannissez la double flèche.</b> Elle masque justement qui prend l'initiative. Deux flèches distinctes, ou une seule, avec le retour implicite.</li>
+    <li><b>Plein contre pointillé : une seule dualité par schéma.</b> Synchrone / asynchrone, ou bien nominal / dégradé, mais pas les deux — et toujours en légende.</li>
+    <li><b>Orthogonales dans un schéma dense</b>, directes quand il est aéré. Et surtout : croisez le moins possible, c'est le facteur qui pèse le plus sur la compréhension.</li>
+  </ul>
+
+  <div class="piege">
+    L'épaisseur du trait pour dire « beaucoup de trafic ». C'est tentant et presque toujours faux : personne ne sait lire trois épaisseurs, et l'épaisseur sert déjà à distinguer le sujet du reste. Écrivez le débit sur la flèche.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>L'espacement dit qui va avec qui</h2>
+  <p class="sub">La variable qu'on croit décorative</p>
+
+  <p>Deux boîtes proches forment un groupe aux yeux du lecteur. C'est involontaire et immédiat, et cela se produit même si vous ne l'aviez pas prévu — donc un espacement irrégulier <em>ment</em>.</p>
+
+  <ul>
+    <li><b>Alignez sur une grille</b> — 10 px dans draw.io, activée par défaut. Un décalage de trois pixels se voit et se lit comme une intention.</li>
+    <li><b>L'écart entre deux groupes doit valoir au moins le double de l'écart à l'intérieur d'un groupe.</b> C'est la règle qui rend un regroupement évident sans tracer le moindre cadre.</li>
+    <li><b>Une seule largeur de boîte</b> par niveau. Les largeurs variables se lisent comme une hiérarchie qui n'existe pas.</li>
+    <li><b>Laissez respirer les bords.</b> Une marge extérieure généreuse fait paraître le schéma composé plutôt que subi.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Le test qui tranche</h2>
+  <p class="sub">Trente secondes, avant d'envoyer</p>
+
+  <figure>
+    <svg viewBox="0 0 780 170" role="img" aria-label="Le même schéma en couleur puis désaturé : à gauche l'information survit, à droite elle disparaît">
+      <g font-family="'IBM Plex Sans',sans-serif">
+      <text x="0" y="14" class="fig-t" fill="#0B6E7F">Résiste au gris · forme et texte codent aussi</text>
+      <g stroke-width="1.5">
+        <rect x="0" y="36" width="92" height="42" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <path d="M132 50 v28 a30 11 0 0 0 60 0 v-28" fill="#DCEDEA" stroke="#0B7A6E" stroke-width="1.5"/>
+        <ellipse cx="162" cy="50" rx="30" ry="11" fill="#DCEDEA" stroke="#0B7A6E" stroke-width="1.5"/>
+        <rect x="232" y="36" width="92" height="42" rx="21" fill="#FBE6CF" stroke="#B36208"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="46" y="62">API</text><text x="162" y="74">Base</text><text x="278" y="62">File</text>
+      </g>
+      <g stroke-width="1.5">
+        <rect x="0" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+        <path d="M132 120 v28 a30 11 0 0 0 60 0 v-28" fill="#E8E8E8" stroke="#6B6B6B" stroke-width="1.5"/>
+        <ellipse cx="162" cy="120" rx="30" ry="11" fill="#E8E8E8" stroke="#6B6B6B" stroke-width="1.5"/>
+        <rect x="232" y="106" width="92" height="42" rx="21" fill="#F0F0F0" stroke="#6B6B6B"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="46" y="132">API</text><text x="162" y="144">Base</text><text x="278" y="132">File</text>
+      </g>
+      <text x="0" y="166" font-size="10" fill="#8896A2">en gris, on lit encore : forme et libellé suffisent</text>
+
+      <text x="440" y="14" class="fig-t" fill="#A6402F">S'effondre · seule la couleur codait</text>
+      <g stroke-width="1.5">
+        <rect x="440" y="36" width="92" height="42" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="552" y="36" width="92" height="42" rx="7" fill="#DCEDEA" stroke="#0B7A6E"/>
+        <rect x="664" y="36" width="92" height="42" rx="7" fill="#FBE6CF" stroke="#B36208"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="486" y="62">Service</text><text x="598" y="62">Service</text><text x="710" y="62">Service</text>
+      </g>
+      <g stroke-width="1.5">
+        <rect x="440" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+        <rect x="552" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+        <rect x="664" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="486" y="132">Service</text><text x="598" y="132">Service</text><text x="710" y="132">Service</text>
+      </g>
+      <text x="440" y="166" font-size="10" fill="#8896A2">trois boîtes devenues indiscernables</text>
+      </g>
+    </svg>
+    <figcaption><b>Le test des niveaux de gris.</b> Désaturez le schéma. Si l'information survit, elle est portée par la forme, le texte et la position — donc elle résistera aussi au daltonisme, à l'impression et au vidéoprojecteur. Si le schéma s'effondre, la couleur portait seule, et il manque une variable.</figcaption>
+  </figure>
+</section>
+
+<div class="recap">
+  <h2>La recette, dans l'ordre</h2>
+  <ol>
+    <li><b>Écrivez d'abord ce que le schéma doit faire comprendre.</b><span>Une phrase. Si vous n'y arrivez pas, le schéma n'a pas de sujet et aucune mise en forme ne le sauvera.</span></li>
+    <li><b>Posez les boîtes, sans couleur.</b><span>Formes et positions seulement. Le schéma doit déjà être lisible à ce stade.</span></li>
+    <li><b>Supprimez les croisements de flèches.</b><span>Avant toute décoration. C'est le levier qui pèse le plus lourd.</span></li>
+    <li><b>Nommez chaque flèche.</b><span>Si le verbe ne vient pas, la relation n'est pas claire.</span></li>
+    <li><b>Ajoutez les cadres de zone.</b><span>Réseau, confiance, déploiement. Souvent, la couleur devient inutile ici.</span></li>
+    <li><b>Ajoutez la couleur en dernier, pour une seule dimension.</b><span>Et gardez les deux tiers du schéma en neutres.</span></li>
+    <li><b>Légende, titre, acronymes développés.</b><span>Le schéma doit se comprendre sans vous à côté.</span></li>
+    <li><b>Désaturez, puis faites-le lire par quelqu'un d'extérieur.</b><span>Ce qu'il demande, c'est ce qui manque.</span></li>
+  </ol>
+</div>
+
+</div>
