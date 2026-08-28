@@ -1,8 +1,18 @@
-# logo-libres
+# logo-libres — badges et schémas
 
-Un jeu de **bloc-marques** homogène et libre de droits pour les protocoles
-réseau — SSH, HTTP, FTP, REST, MQTT, SMTP… — pensé pour les **schémas
-d'architecture**.
+Deux choses, qui vont ensemble :
+
+1. **Un jeu de bloc-marques** homogène et libre de droits pour les protocoles
+   réseau et les technologies — SSH, HTTP, MQTT, Kafka, PostgreSQL, Kubernetes…
+2. **De quoi bien s'en servir** : l'état de l'art de la recherche sur les
+   schémas, une checklist de relecture, et les décisions de conception avec
+   leur justification.
+
+Le second point n'est pas de l'ornement. La littérature est constante sur un
+point : **ce qui décide de la lisibilité d'un schéma n'est presque jamais ce
+sur quoi on passe du temps** — un croisement de flèches supprimé vaut plus que
+toute l'iconographie du monde. Les badges ne servent à rien sur un schéma mal
+posé.
 
 ## Le problème
 
@@ -67,7 +77,12 @@ standard par un produit. Ils redeviennent légitimes ajoutés à
 | `symboles/` | le signe seul · 48 × 48 | repli quand la place manque — exige une légende |
 
 Ces fichiers sont **autonomes** : couleurs en dur, texte vectorisé, aucune
-dépendance. Glissez-les dans draw.io, Figma, Excalidraw ou une page web.
+dépendance. Glissez-les dans Figma, une diapositive, un README, une page web.
+
+⚠️ **Pour draw.io, prenez `symboles/`, pas `lockups/`.** draw.io sait composer :
+on lui donne le signe seul et il écrit le nom lui-même, ce qui garde le texte
+cherchable, modifiable (« HTTPS :8443 ») et réel à l'export. Le raisonnement
+complet est dans [l'état de l'art](docs/etat-de-l-art-schemas.md#5-la-conséquence-pour-drawio).
 
 ## Comment la couleur est calculée
 
@@ -92,7 +107,7 @@ l'[ADR 0001](docs/adr/0001-six-couleurs-de-couche.md).
 protocoles.json           source de vérité : 32 protocoles
 produits.json             source de vérité : 9 produits
 scripts/couches.json      les 6 couches colorées
-docs/adr/                 les décisions et leur justification
+docs/                     état de l'art, checklist, décisions (ADR)
 regenerer.sh              reconstruit tout depuis npm
 
 lockups/horizontal/       41 SVG · disposition par défaut
@@ -119,7 +134,19 @@ specimen/index.html       catalogue des glyphes, Tabler contre Lucide
 
 Node ≥ 18 et npm. Versions épinglées dans `regenerer.sh`.
 
-## Décisions
+## Documentation
+
+### Faire des schémas
+
+- **[Ce que la recherche dit des schémas](docs/etat-de-l-art-schemas.md)** —
+  Moody (*Physics of Notations*), Purchase (les croisements d'arêtes dominent),
+  Petre (la notation secondaire), la méta-analyse sur la contiguïté spatiale
+  (g = 0,63), le modèle C4. Et pourquoi cette littérature tranche la question de
+  l'intégration dans draw.io.
+- **[Relire un schéma — la checklist](docs/checklist-relecture-schema.md)** —
+  sept points, dans l'ordre de l'impact mesuré.
+
+### Décisions
 
 - [0001 — Six couleurs de couche, imposées](docs/adr/0001-six-couleurs-de-couche.md)
 - [0002 — Réutiliser le logo officiel dès qu'il existe](docs/adr/0002-reutiliser-les-logos-existants.md)

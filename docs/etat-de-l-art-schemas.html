@@ -1,0 +1,321 @@
+<title>Ce que la recherche dit des schémas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{
+  --paper:#F1F0EC; --surface:#FFFFFF; --surface-2:#F8F7F4;
+  --ink:#16181A; --ink-2:#3E444A; --muted:#6E767D;
+  --line:#D8D6D0; --line-2:#E7E5DF;
+  --accent:#0B6E7F; --accent-soft:#DCEFF2; --accent-ink:#075462;
+  --alerte:#A6402F; --alerte-soft:#F6E7E3;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+    --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+    --line:#2C3338; --line-2:#232A2E;
+    --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+    --alerte:#F0857A; --alerte-soft:#331C19;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+  --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+  --line:#2C3338; --line-2:#232A2E;
+  --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+  --alerte:#F0857A; --alerte-soft:#331C19;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px 100px}
+.large{max-width:1020px}
+h1,h2,h3,.sans{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.85em}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+.top .wrap{padding-top:56px;padding-bottom:40px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+h1{font-size:clamp(2.1rem,5.4vw,3.3rem);line-height:1.04;font-weight:700;letter-spacing:-.022em;margin:0 0 18px;text-wrap:balance}
+.chapo{font-size:1.12rem;color:var(--ink-2);margin:0;max-width:60ch}
+.chapo strong{color:var(--ink);font-weight:600}
+
+section{margin-top:54px}
+h2{font-size:1.5rem;font-weight:700;letter-spacing:-.015em;margin:0 0 6px;text-wrap:balance}
+h2 .num{font-family:"IBM Plex Mono",monospace;font-size:.62em;font-weight:500;color:var(--accent);margin-right:12px;letter-spacing:.06em}
+.sub{color:var(--muted);font-size:.94rem;margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line);font-family:"IBM Plex Sans",sans-serif}
+h3{font-size:1.08rem;font-weight:600;margin:30px 0 8px}
+p{margin:0 0 16px}
+p strong{font-weight:600}
+ul,ol{margin:0 0 16px;padding-left:1.25em}
+li{margin-bottom:7px}
+
+.cite{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:16px 20px;margin:22px 0}
+.cite p{margin:0 0 8px;font-size:.98rem}
+.cite p:last-child{margin-bottom:0}
+.cite .ref{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;color:var(--muted);display:block;margin-top:10px}
+.cite .ref b{color:var(--ink-2);font-weight:600}
+
+.tirer{background:var(--accent-soft);border:1px solid transparent;border-radius:var(--r);padding:14px 18px;margin:18px 0;
+  font-family:"IBM Plex Sans",sans-serif;font-size:14.5px;line-height:1.6;color:var(--accent-ink)}
+.tirer b{font-weight:600}
+.tirer::before{content:"Ce qu'on en tire";display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin-bottom:5px}
+
+.faible{background:var(--alerte-soft);border-radius:var(--r);padding:14px 18px;margin:18px 0;
+  font-family:"IBM Plex Sans",sans-serif;font-size:14.5px;line-height:1.6;color:var(--alerte)}
+.faible::before{content:"Où le jeu est faible";display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:5px}
+
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin:22px 0}
+table{border-collapse:collapse;width:100%;min-width:600px;font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;line-height:1.5}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{background:var(--surface-2);font:600 10.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+tbody th{font-weight:600;white-space:nowrap;color:var(--ink)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+td .ok{color:var(--accent);font-weight:600}
+td .ko{color:var(--alerte);font-weight:600}
+
+figure{margin:28px 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 22px 16px;overflow-x:auto}
+/* enfant direct seulement : « figure svg » atteindrait aussi les SVG imbriqués
+   des pictos et leur imposerait width:100%. */
+figure > svg{display:block;width:100%;height:auto;min-width:520px}
+figcaption{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.55}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 26px;margin-top:26px}
+.check ol{counter-reset:c;list-style:none;padding:0;margin:0;font-family:"IBM Plex Sans",sans-serif;font-size:14.5px}
+.check li{counter-increment:c;position:relative;padding-left:34px;margin-bottom:13px;line-height:1.55}
+.check li::before{content:counter(c);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:5px;
+  background:var(--accent-soft);color:var(--accent-ink);font:600 11px/22px "IBM Plex Mono",monospace;text-align:center}
+.check li b{font-weight:600}
+.check li span{color:var(--muted);display:block;font-size:13px;margin-top:1px}
+
+.sources{margin-top:54px;padding-top:22px;border-top:1px solid var(--line)}
+.sources h2{font-size:1.2rem}
+.sources ul{list-style:none;padding:0;font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;line-height:1.55}
+.sources li{margin-bottom:14px;padding-left:0}
+.sources .t{font-weight:600;color:var(--ink)}
+.sources .m{color:var(--muted);display:block;margin-top:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Note de synthèse · état de l'art</p>
+    <h1>Ce que la recherche dit des schémas</h1>
+    <p class="chapo">Il existe une littérature sur la conception des notations visuelles, et elle est largement ignorée de ceux qui font des schémas. Son résultat le plus constant : <strong>ce qui décide de la lisibilité d'un schéma n'est presque jamais ce sur quoi on passe du temps.</strong> Voici les sources qui font autorité, ce qu'elles établissent, et ce qu'elles impliquent pour notre jeu de bloc-marques.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2><span class="num">01</span>Le cadre de référence</h2>
+  <p class="sub">Moody, <i>The “Physics” of Notations</i>, IEEE TSE, 2009</p>
+
+  <p>C'est l'article fondateur, et il reste sans véritable concurrent. Moody part d'un constat sévère : en génie logiciel, l'effort de conception d'une notation porte quasi exclusivement sur la <em>sémantique</em> — ce que les symboles veulent dire — et la forme graphique est traitée en fin de course, au jugé. La discipline dispose de méthodes matures pour évaluer une sémantique, et d'aucune pour évaluer une syntaxe visuelle.</p>
+
+  <p>Il propose neuf principes, dérivés de la théorie de la perception et de la psychologie cognitive. Quatre nous concernent directement.</p>
+
+  <div class="cite">
+    <p><b>Dual Coding</b> — le texte et le graphique ensemble sont plus efficaces que l'un ou l'autre seul. Le texte n'est pas un aveu d'échec du graphique : les deux canaux se renforcent.</p>
+    <p><b>Graphic Economy</b> — le nombre de symboles graphiquement distincts doit rester dans les limites de la discrimination humaine. Au-delà, la notation cesse d'être lisible d'un coup d'œil.</p>
+    <p><b>Perceptual Discriminability</b> — deux symboles doivent être séparés par une <i>distance visuelle</i> suffisante, mesurable sur les variables visuelles employées.</p>
+    <p><b>Semantic Transparency</b> — la forme du symbole doit suggérer son sens à qui ne l'a jamais vu.</p>
+    <span class="ref">Daniel L. Moody, <b>« The “Physics” of Notations: Toward a Scientific Basis for Constructing Visual Notations in Software Engineering »</b>, IEEE Transactions on Software Engineering 35(6), 2009, p. 756–779.</span>
+  </div>
+
+  <div class="tirer">
+    Deux décisions déjà prises trouvent ici leur justification théorique, et ce n'est pas une coïncidence rétrospective : <b>Dual Coding</b> valide le bloc-marque — signe <em>et</em> nom, pas l'un ou l'autre. <b>Graphic Economy</b> valide les six couleurs de couche plutôt que trente-deux. La littérature dit la même chose que ce qu'on avait déduit du terrain.
+  </div>
+
+  <div class="faible">
+    <b>Perceptual Discriminability</b> est le principe que notre palette enfreint : en deutéranopie, <code>web</code> et <code>api</code> ont une distance visuelle nulle. L'ADR 0001 l'assume au motif que le nom porte l'information — c'est <em>précisément</em> l'argument Dual Coding. Mais il faut le dire ainsi : nous compensons une faiblesse par un autre principe, nous ne la corrigeons pas.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Ce que l'empirique a mesuré</h2>
+  <p class="sub">Purchase et al. — la mise en page pèse plus que la notation</p>
+
+  <p>Là où Moody théorise, Purchase mesure. Sa série d'expériences sur des diagrammes de classes UML fait varier cinq propriétés de mise en page et mesure la performance réelle de compréhension : exactitude des réponses, temps, effort visuel.</p>
+
+  <p>Le résultat est net et il n'a pas bougé depuis vingt-cinq ans. <strong>Minimiser les croisements d'arêtes est de très loin l'aesthetic la plus importante</strong> — « by far the most important », devant la symétrie, la résolution angulaire et l'orthogonalité. Des travaux plus récents sur des graphes à sommets pondérés retrouvent le même classement.</p>
+
+  <div class="tirer">
+    Sur un schéma d'architecture, <b>redessiner la disposition pour supprimer trois croisements fait plus pour la lisibilité que tout le travail d'iconographie réuni.</b> Nos bloc-marques ne rachèteront jamais un graphe mal posé.
+  </div>
+
+  <h3>La notation secondaire</h3>
+  <p>Petre, dans un article devenu classique, montre autre chose : ce qui distingue l'expert du novice dans la lecture d'un schéma n'est pas la connaissance de la notation, mais la maîtrise de la <em>notation secondaire</em> — l'alignement, les blancs, le regroupement spatial, tout ce qui n'est défini par aucune sémantique formelle et que l'auteur produit souvent sans y penser.</p>
+
+  <div class="cite">
+    <p>Les novices échouent non parce qu'ils ignorent le sens des symboles, mais parce qu'ils n'ont pas les stratégies de lecture et de navigation que l'expert applique à la disposition. La performance dépend fortement de la mise en page.</p>
+    <span class="ref">Marian Petre, <b>« Why Looking Isn't Always Seeing: Readership Skills and Graphical Programming »</b>, Communications of the ACM 38(6), 1995.</span>
+  </div>
+
+  <p>Conséquence pratique et contre-intuitive : <strong>aligner les boîtes qui vont ensemble, et séparer par du blanc celles qui n'ont rien à voir, est un acte sémantique.</strong> Le lecteur le décodera, que vous l'ayez voulu ou non. Un alignement accidentel ment.</p>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Pourquoi le nom doit toucher le signe</h2>
+  <p class="sub">Effet de partage attentionnel, contiguïté spatiale</p>
+
+  <p>C'est le résultat le plus solidement établi de la section, parce qu'il repose sur une méta-analyse et non sur une étude isolée.</p>
+
+  <div class="cite">
+    <p>Le <b>principe de contiguïté spatiale</b> énonce qu'on apprend mieux lorsque les mots et les images qui se rapportent l'un à l'autre sont proches spatialement. Son revers, l'<b>effet de partage attentionnel</b>, mesure la dégradation causée par la nécessité d'intégrer mentalement des sources d'information séparées.</p>
+    <p>Une méta-analyse à effets aléatoires portant sur 58 comparaisons indépendantes (n = 2 426) établit une taille d'effet globale de <b>g = 0,63</b> (p &lt; 0,001) — un effet moyen à fort, en sciences de l'éducation.</p>
+    <span class="ref">Schroeder &amp; Cenkci, <b>« Spatial Contiguity and Spatial Split-Attention Effects in Multimedia Learning Environments: a Meta-Analysis »</b>, Educational Psychology Review, 2018. Voir aussi Ayres &amp; Sweller, <i>The Split-Attention Principle</i>, Cambridge Handbook of Multimedia Learning.</span>
+  </div>
+
+  <p>Une nuance importante : l'effet est conditionné par la <strong>complexité du matériau</strong>. Sur un contenu simple, la proximité change peu. Sur un contenu à forte interactivité entre éléments — ce qu'est exactement un schéma d'architecture — l'effet est fort.</p>
+
+  <div class="tirer">
+    Une légende en marge qui associe une couleur à une couche <b>impose</b> un partage attentionnel : le lecteur doit faire l'aller-retour et mémoriser. Le nom écrit dans la pastille le supprime. C'est la justification empirique du choix « étiquette » contre « symbole seul », et elle est plus forte que l'argument esthétique.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Le consensus pratique</h2>
+  <p class="sub">C4, arc42, Views &amp; Beyond — ce sur quoi tout le monde s'accorde</p>
+
+  <p>Le modèle C4 de Simon Brown est aujourd'hui le cadre le plus employé pour les schémas d'architecture logicielle. Son apport principal n'est pas graphique : c'est l'<strong>abstraction-first</strong>, l'idée qu'on choisit d'abord le niveau d'abstraction — contexte, conteneur, composant, code — et qu'un schéma n'en mélange jamais deux.</p>
+
+  <p>Fait notable, et souvent mal compris : <strong>C4 est délibérément indépendant de la notation.</strong> Il ne prescrit ni forme, ni couleur, ni style de flèche. Il pose une seule exigence de forme, et elle est absolue :</p>
+
+  <div class="cite">
+    <p>Tout schéma doit porter une <b>clé / légende</b> expliquant la notation employée — formes, couleurs, styles de trait, types de flèche, terminaisons.</p>
+    <span class="ref">Simon Brown, <b>modèle C4</b>, <a href="https://c4model.com/diagrams/notation">c4model.com/diagrams/notation</a>. Le modèle est né entre 2006 et 2011 ; livre : <i>The C4 Model: Visualizing Software Architecture</i>.</span>
+  </div>
+
+  <p>Le reste du consensus, qu'on retrouve à l'identique chez arc42 et dans <i>Documenting Software Architectures</i> du SEI :</p>
+
+  <ul>
+    <li>Un <strong>titre</strong> sur chaque schéma, qui dit le type et la portée.</li>
+    <li>Chaque élément porte un <strong>nom</strong>, un <strong>type</strong>, une <strong>technologie</strong> et une <strong>phrase</strong> de description.</li>
+    <li>Chaque flèche est <strong>orientée</strong> et <strong>nommée</strong> — « lit les commandes dans », pas « utilise ».</li>
+    <li><strong>Aucun acronyme non explicité.</strong></li>
+    <li>Le schéma doit se comprendre <strong>seul</strong>, sans son auteur à côté.</li>
+  </ul>
+
+  <div class="tirer">
+    Notre jeu sert le point « technologie » : c'est exactement ce qu'un bloc-marque encode. Mais il ne dispense <b>d'aucune</b> des autres règles — et surtout pas de la légende, puisque nos six couleurs de couche sont une convention que le lecteur ne peut pas deviner.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>La conséquence pour draw.io</h2>
+  <p class="sub">Qui doit dessiner le nom : le SVG, ou draw.io ?</p>
+
+  <p>La question paraît technique. Elle est en fait tranchée par la section 03, et la réponse est l'inverse de l'intuition.</p>
+
+  <p>Nous avons produit des bloc-marques <strong>au texte vectorisé</strong> — autonomes, identiques partout, sans police à installer. C'est la bonne réponse pour une planche, un README, une diapositive, un fichier Figma : des contextes sans couche de composition.</p>
+
+  <p><strong>Dans draw.io, c'est la mauvaise réponse.</strong> Parce que draw.io <em>sait</em> composer, et qu'un texte vectorisé y perd quatre propriétés :</p>
+
+  <figure>
+    <svg viewBox="0 0 640 250" role="img" aria-label="Comparaison entre un nom vectorisé dans le SVG et un nom rendu par draw.io">
+      <defs>
+        <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <text x="0" y="16" fill="var(--muted)" style="font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.1em">A · NOM CUIT DANS LE SVG</text>
+      <rect x="0" y="34" width="290" height="76" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+      <rect x="18" y="56" width="120" height="32" rx="16" fill="#dfe9fa"/>
+      <svg x="27" y="62" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B5FD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/>
+      </svg>
+      <text x="54" y="77" fill="#1B5FD9" style="font:600 13px 'IBM Plex Sans',sans-serif">HTTPS</text>
+      <text x="152" y="66" fill="var(--muted)" style="font:400 11px 'IBM Plex Sans',sans-serif">une image,</text>
+      <text x="152" y="81" fill="var(--muted)" style="font:400 11px 'IBM Plex Sans',sans-serif">le texte est du dessin</text>
+      <text x="0" y="16" transform="translate(350,0)" fill="var(--accent)" style="font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.1em">B · NOM RENDU PAR DRAW.IO</text>
+      <rect x="350" y="34" width="290" height="76" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-opacity=".35"/>
+      <rect x="368" y="52" width="40" height="40" rx="11" fill="#dfe9fa"/>
+      <svg x="378" y="62" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B5FD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/>
+      </svg>
+      <text x="418" y="70" fill="var(--ink)" style="font:600 13px 'IBM Plex Sans',sans-serif">HTTPS</text>
+      <text x="418" y="86" fill="var(--muted)" style="font:400 10.5px 'IBM Plex Mono',monospace">:8443</text>
+      <text x="0" y="150" fill="var(--ink-2)" style="font:600 12px 'IBM Plex Sans',sans-serif">Ce que B gagne</text>
+      <g style="font:400 12px 'IBM Plex Sans',sans-serif" fill="var(--ink-2)">
+        <text x="0" y="172">Ctrl+F trouve le texte</text>
+        <text x="0" y="192">on peut préciser : « HTTPS :8443 », « REST /v2 »</text>
+        <text x="0" y="212">le texte reste du texte à l'export SVG et HTML</text>
+        <text x="0" y="232">la police suit celle du schéma</text>
+      </g>
+      <g stroke="var(--accent)" stroke-width="1.4" fill="none" marker-end="url(#fl)" opacity=".55">
+        <path d="M300,72 H336"/>
+      </g>
+      <text x="350" y="150" fill="var(--ink-2)" style="font:600 12px 'IBM Plex Sans',sans-serif">Ce que ça implique pour la bibliothèque</text>
+      <g style="font:400 12px 'IBM Plex Sans',sans-serif" fill="var(--ink-2)">
+        <text x="350" y="172">on livre le SIGNE seul (symboles/)</text>
+        <text x="350" y="192">draw.io pose le libellé comme étiquette de forme</text>
+        <text x="350" y="212">la couleur de couche passe en fontColor du style</text>
+        <text x="350" y="232">les lockups cuits restent pour docs et diapos</text>
+      </g>
+    </svg>
+    <figcaption>La contiguïté spatiale est respectée dans les deux cas — le nom touche le signe. Mais en B, le nom reste du texte vivant.</figcaption>
+  </figure>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th scope="col">Propriété</th><th scope="col">Nom cuit</th><th scope="col">Nom draw.io</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Recherche Ctrl+F</th><td><span class="ko">non</span></td><td><span class="ok">oui</span></td></tr>
+        <tr><th scope="row">Modifiable sur place</th><td><span class="ko">non</span></td><td><span class="ok">oui</span> — « HTTPS :8443 »</td></tr>
+        <tr><th scope="row">Texte réel à l'export</th><td><span class="ko">non</span> — des courbes</td><td><span class="ok">oui</span> — lisible par lecteur d'écran</td></tr>
+        <tr><th scope="row">Suit la police du schéma</th><td><span class="ko">non</span></td><td><span class="ok">oui</span></td></tr>
+        <tr><th scope="row">Rendu identique partout</th><td><span class="ok">oui</span></td><td>dépend des polices disponibles</td></tr>
+        <tr><th scope="row">Utilisable hors outil</th><td><span class="ok">oui</span></td><td><span class="ko">non</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>D'où la construction proposée : une bibliothèque <code>.xml</code> draw.io — un nœud <code>&lt;mxlibrary&gt;</code> contenant un tableau JSON — dont chaque entrée porte le <strong>symbole seul</strong> en <code>data:image/svg+xml;base64</code>, plus un <code>title</code> qui devient le libellé, et un <code>style</code> qui fixe la couleur de couche en <code>fontColor</code>. Deux bibliothèques séparées, protocoles et produits, pour que le sélecteur reste navigable.</p>
+
+  <div class="tirer">
+    Les deux jeux ne se concurrencent pas, ils servent deux contextes. <b>draw.io compose</b> → on lui donne le signe et il écrit le nom. <b>Une diapositive ne compose pas</b> → on lui donne le bloc-marque cuit. Le dépôt produit déjà les deux.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Le protocole de relecture</h2>
+  <p class="sub">Dans l'ordre de l'impact mesuré, pas dans l'ordre du confort</p>
+
+  <div class="check">
+    <ol>
+      <li><b>Compter les croisements de flèches, et les supprimer.</b><span>Le levier le plus fort, et celui qu'on saute toujours. Déplacer une boîte coûte dix secondes.</span></li>
+      <li><b>Vérifier que chaque alignement est intentionnel.</b><span>Deux boîtes alignées disent « nous allons ensemble ». Si c'est faux, désalignez.</span></li>
+      <li><b>Un seul niveau d'abstraction par schéma.</b><span>Un conteneur et une classe sur la même image, et le lecteur ne sait plus où il est.</span></li>
+      <li><b>Nommer chaque flèche, et l'orienter.</b><span>« lit les commandes dans » porte une information ; « utilise » n'en porte aucune.</span></li>
+      <li><b>Une légende, toujours.</b><span>Nos six couleurs de couche sont une convention arbitraire. Sans légende, elles ne veulent rien dire.</span></li>
+      <li><b>Développer tous les acronymes.</b><span>Y compris ceux « que tout le monde connaît » dans votre équipe.</span></li>
+      <li><b>Le faire lire par quelqu'un d'extérieur, sans commentaire.</b><span>Le seul test qui vaille. Ce qu'il demande, c'est ce qui manque.</span></li>
+    </ol>
+  </div>
+</section>
+
+<div class="sources">
+  <h2>Sources</h2>
+  <ul>
+    <li><span class="t">Daniel L. Moody — « The “Physics” of Notations »</span>
+      <span class="m">IEEE Transactions on Software Engineering 35(6), 2009, p. 756–779. Le cadre de référence : neuf principes pour concevoir une notation visuelle. <a href="https://www.semanticscholar.org/paper/The-%E2%80%9CPhysics%E2%80%9D-of-Notations:-Toward-a-Scientific-for-Moody/bcd2c5379a34068040750a751e4fd2710d90c15c">Semantic Scholar</a> · <a href="https://dl.acm.org/doi/abs/10.1145/1810295.1810442">ACM</a></span></li>
+    <li><span class="t">Purchase, McGill et al. — Graph drawing aesthetics et compréhension des diagrammes UML</span>
+      <span class="m">Les croisements d'arêtes dominent toutes les autres propriétés de mise en page. <a href="https://www.semanticscholar.org/paper/527ca0518fca9efdbea27c8a3289a4c8d67e22f6">Semantic Scholar</a> · <a href="https://link.springer.com/article/10.1023/A:1016344215610">Empirical Software Engineering</a> · <a href="https://eprints.gla.ac.uk/227646/1/227646.pdf">état de l'art des évaluations utilisateur</a></span></li>
+    <li><span class="t">Marian Petre — « Why Looking Isn't Always Seeing »</span>
+      <span class="m">Communications of the ACM 38(6), 1995. La notation secondaire : la disposition porte du sens que l'expert lit et que le novice manque. <a href="http://www.cs.toronto.edu/~chechik/courses18/csc2125/paper12.pdf">PDF</a> · <a href="https://dl.acm.org/doi/abs/10.1145/203241.203251">ACM</a></span></li>
+    <li><span class="t">Schroeder &amp; Cenkci — Contiguïté spatiale et partage attentionnel, méta-analyse</span>
+      <span class="m">Educational Psychology Review, 2018. 58 comparaisons, n = 2 426, g = 0,63. <a href="https://link.springer.com/article/10.1007/s10648-018-9435-9">Springer</a> · <a href="https://www.cambridge.org/core/books/abs/cambridge-handbook-of-multimedia-learning/splitattention-principle-in-multimedia-learning/497A2FCB9737E3009B3CF0E4D97F7B99">Cambridge Handbook</a></span></li>
+    <li><span class="t">Simon Brown — modèle C4</span>
+      <span class="m">Abstraction-first, indépendance de notation, exigence de légende. <a href="https://c4model.com/">c4model.com</a> · <a href="https://c4model.com/diagrams/notation">notation</a> · <a href="https://www.infoq.com/articles/C4-architecture-model/">présentation InfoQ</a></span></li>
+    <li><span class="t">Format des bibliothèques draw.io</span>
+      <span class="m">Nœud <code>&lt;mxlibrary&gt;</code>, tableau JSON, entrées <code>data</code> / <code>w</code> / <code>h</code> / <code>title</code> / <code>style</code> / <code>aspect</code>. <a href="https://www.drawio.com/doc/faq/format-custom-shape-library">Documentation</a> · <a href="https://github.com/jgraph/drawio-libs">jgraph/drawio-libs</a></span></li>
+    <li><span class="t">Pour aller plus loin</span>
+      <span class="m">Larkin &amp; Simon, <i>Why a Diagram is (Sometimes) Worth Ten Thousand Words</i> (Cognitive Science, 1987) · Bertin, <i>Sémiologie graphique</i> (1967) sur les variables visuelles · Cleveland &amp; McGill (1984) sur le classement perceptuel des encodages · Ware, <i>Information Visualization: Perception for Design</i> · Green &amp; Petre, <i>Cognitive Dimensions of Notations</i> (1996)</span></li>
+  </ul>
+</div>
+
+</div>
