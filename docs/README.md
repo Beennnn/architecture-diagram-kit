@@ -7,9 +7,12 @@
   modèle C4. Et pourquoi cette littérature tranche la question de l'intégration
   dans draw.io. ([version mise en page](etat-de-l-art-schemas.html))
 - **[Faire un schéma qui se lit](formes-couleurs-fleches.html)** — guide
-  pratique : quelle forme pour quel usage, les six règles de couleur, les
+  pratique : quelle forme pour quel usage, les sept règles de couleur, les
   flèches, l'espacement, et le test des niveaux de gris.
-- **[Relire un schéma — la checklist](checklist-relecture-schema.md)** — sept
+- **[Nos choix face aux conventions établies](audit-conventions.md)** — audit
+  contre C4, C4-PlantUML, draw.io et AWS : ce qui est confirmé, ce que nous
+  avons dû corriger, et l'écart qui reste.
+- **[Relire un schéma — la checklist](checklist-relecture-schema.md)** — neuf
   points, dans l'ordre de l'impact mesuré.
 - **[Exemple complet](exemple-voltis.svg)** — un schéma d'architecture assemblé
   avec les badges du dépôt, généré par `scripts/exemple.mjs`.

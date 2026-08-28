@@ -56,9 +56,14 @@ imbriquée dans une autre :
 | zone imbriquée | `#E7EBEE` | 1,201 : 1 |
 | nœud | `#DFE5E9` | 1,271 : 1 |
 
-L'emboîtement se lit désormais par la valeur seule : zone claire, zone
-imbriquée plus sombre, nœud plus sombre encore, boîtes blanches au fond. Sans
-suivre une seule bordure.
+L'emboîtement devient lisible **sans suivre une bordure** : zone claire, zone
+imbriquée plus sombre, nœud plus sombre encore, boîtes blanches au fond.
+
+La valeur *redouble* cette information, elle ne la porte pas : une boîte contenue
+est dans son conteneur, gris ou pas. La distinction compte, car C4 pose la règle
+inverse comme critère de survie d'un schéma — « assurez-vous qu'il garde son sens
+si vous retirez toute couleur, toute forme et toute taille ». Voir
+[l'audit des conventions](../audit-conventions.md).
 
 **2. Un schéma porte au plus un sujet accentué,** marqué par un liseré et un
 titre en `ACCENT` — un magenta `#A3196F` — porté par un liseré de 3,2 px, plus
