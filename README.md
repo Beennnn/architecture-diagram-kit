@@ -153,8 +153,13 @@ Node ≥ 18 et npm. Versions épinglées dans `regenerer.sh`.
   Petre (la notation secondaire), la méta-analyse sur la contiguïté spatiale
   (g = 0,63), le modèle C4. Et pourquoi cette littérature tranche la question de
   l'intégration dans draw.io.
+- **[Faire un schéma qui se lit](docs/formes-couleurs-fleches.html)** — guide
+  pratique : quelle forme pour quel usage, les six règles de couleur, les
+  flèches, l'espacement, le test des niveaux de gris.
 - **[Relire un schéma — la checklist](docs/checklist-relecture-schema.md)** —
   sept points, dans l'ordre de l'impact mesuré.
+- **[Exemple complet](docs/exemple-voltis.svg)** — un schéma d'architecture
+  assemblé avec les badges du dépôt.
 
 ### Décisions
 

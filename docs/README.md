@@ -6,8 +6,13 @@
   l'art : Moody, Purchase, Petre, la méta-analyse sur la contiguïté spatiale, le
   modèle C4. Et pourquoi cette littérature tranche la question de l'intégration
   dans draw.io. ([version mise en page](etat-de-l-art-schemas.html))
+- **[Faire un schéma qui se lit](formes-couleurs-fleches.html)** — guide
+  pratique : quelle forme pour quel usage, les six règles de couleur, les
+  flèches, l'espacement, et le test des niveaux de gris.
 - **[Relire un schéma — la checklist](checklist-relecture-schema.md)** — sept
   points, dans l'ordre de l'impact mesuré.
+- **[Exemple complet](exemple-voltis.svg)** — un schéma d'architecture assemblé
+  avec les badges du dépôt, généré par `scripts/exemple.mjs`.
 
 ## Utiliser le jeu
 
