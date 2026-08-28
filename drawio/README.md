@@ -1,12 +1,23 @@
 # Bibliothèques draw.io
 
-Deux bibliothèques de formes, générées depuis `symboles/` :
+Quatre bibliothèques, générées par `scripts/drawio.mjs` :
 
 | Fichier | Contenu |
 |---|---|
-| `protocoles.xml` | 32 formes — HTTP, SSH, MQTT, SMTP… |
-| `roles.xml` | 25 formes — répartiteur, cache, bastion, passerelle d'API… |
-| `produits.xml` | 25 formes — Java, Kafka, PostgreSQL, Kubernetes, Redis, nginx… |
+| `protocoles.xml` | 32 signes — HTTP, SSH, MQTT, SMTP… |
+| `roles.xml` | 50 signes — répartiteur, cache, bastion, passerelle d'API… |
+| `produits.xml` | 40 signes — Java, Kafka, PostgreSQL, Kubernetes, Redis, nginx… |
+| `grammaire.xml` | les 9 formes, la zone imbriquée, le sujet accentué, la flèche annotée |
+
+Les trois premières livrent des **signes**, la quatrième livre la **grammaire** :
+les fonds de l'[ADR 0007](../docs/adr/0007-echelle-de-fonds-et-accent.md), les
+liserés, l'accent et le style de flèche à étiquette réservée. Sans elle, partir
+de nos badges obligeait à réappliquer tout cela à la main.
+
+Les couleurs de `grammaire.xml` sont dérivées de `FONDS` dans
+`scripts/schema.mjs`, pas recopiées : la génération échoue si un fond de la
+grammaire n'apparaît pas dans la bibliothèque, pour qu'elle ne puisse pas livrer
+une version périmée de l'échelle.
 
 ## Installer
 

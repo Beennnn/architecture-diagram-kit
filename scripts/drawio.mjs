@@ -10,6 +10,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { encreLisible, contraste } from './couleurs.mjs';
+import { FONDS, FOND_IMBRIQUE, ACCENT, ACCENT_EP, TRAIT, LIGNE } from './schema.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const rows = JSON.parse(fs.readFileSync(path.join(ROOT, '.cache/rows.json'), 'utf8'));
@@ -102,7 +103,74 @@ function bibliotheque(fichier, lignes) {
   return { n: entrees.length, ko: (contenu.length / 1024).toFixed(0) };
 }
 
+// ─── La grammaire elle-même ───────────────────────────────────────────────
+// Les trois bibliothèques ci-dessus ne livrent que des signes : celui qui part
+// de nos badges devait réappliquer à la main les formes, les fonds et l'accent.
+// Cette quatrième bibliothèque porte la grammaire, pour que l'ADR 0003 et
+// l'ADR 0007 arrivent dans draw.io au lieu de rester dans le dépôt.
+//
+// Correspondances non évidentes : arcSize est un DIAMÈTRE quand
+// absoluteArcSize=1, d'où 2 × rx ; le cylindre de draw.io s'appelle cylinder3 et
+// son `size` est le demi-axe vertical de l'ellipse, soit notre ry de 13.
+const GRAMMAIRE = [
+  ['Service', 160, 80, `rounded=0;fillColor=${FONDS.service};strokeColor=${TRAIT};strokeWidth=1.6;`],
+  ['Application', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=20;fillColor=${FONDS.application};strokeColor=${TRAIT};strokeWidth=1.6;`],
+  ['Flux', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=80;fillColor=${FONDS.flux};strokeColor=${TRAIT};strokeWidth=1.6;`],
+  ['Stockage', 160, 100, `shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=13;fillColor=${FONDS.stockage};strokeColor=${TRAIT};strokeWidth=1.6;`],
+  ['Acteur', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=20;fillColor=${FONDS.acteur};strokeColor=${TRAIT};strokeWidth=1.6;`],
+  ['Matériel', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=6;fillColor=${FONDS.materiel};strokeColor=${TRAIT};strokeWidth=1.6;`],
+  ['Nœud de déploiement', 240, 140, `rounded=1;absoluteArcSize=1;arcSize=4;fillColor=${FONDS.noeud};strokeColor=${TRAIT};strokeWidth=2.4;verticalAlign=top;align=left;spacingLeft=10;spacingTop=6;`],
+  ['Externe', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=16;fillColor=${FONDS.externe};strokeColor=${LIGNE};strokeWidth=1.6;dashed=1;dashPattern=5 4;`],
+  ['Zone', 320, 200, `rounded=1;absoluteArcSize=1;arcSize=24;fillColor=${FONDS.frontiere};strokeColor=${LIGNE};strokeWidth=1.3;dashed=1;dashPattern=8 6;verticalAlign=top;align=right;spacingRight=12;spacingTop=6;`],
+  ['Zone imbriquée', 280, 160, `rounded=1;absoluteArcSize=1;arcSize=24;fillColor=${FOND_IMBRIQUE.frontiere};strokeColor=${LIGNE};strokeWidth=1.3;dashed=1;dashPattern=8 6;verticalAlign=top;align=right;spacingRight=12;spacingTop=6;`],
+  ['Sujet du schéma', 160, 80, `rounded=0;fillColor=${FONDS.service};strokeColor=${ACCENT};strokeWidth=${ACCENT_EP};fontColor=${ACCENT};fontStyle=1;`],
+];
+const STYLE_COMMUN = 'whiteSpace=wrap;html=1;fontSize=13;fontColor=#16181A;';
+
+function entreeForme([titre, w, h, style]) {
+  const complet = STYLE_COMMUN + style;
+  const xml = `<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>`
+    + `<mxCell id="2" value="${echapXml(titre)}" style="${echapXml(complet)}" vertex="1" parent="1">`
+    + `<mxGeometry x="0" y="0" width="${w}" height="${h}" as="geometry"/></mxCell>`
+    + `</root></mxGraphModel>`;
+  const compresse = compresser(xml);
+  if (decompresser(compresse) !== xml) throw new Error(`aller-retour cassé : ${titre}`);
+  return { xml: compresse, w, h, title: titre };
+}
+
+// L'annotation de flèche : le trait s'interrompt derrière son étiquette, ce que
+// draw.io fait nativement par labelBackgroundColor. Voir docs/rendus-fleches.svg.
+function entreeFleche() {
+  const style = 'edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;'
+    + `strokeColor=${LIGNE};strokeWidth=1.5;fontSize=11;fontColor=#5B6873;labelBackgroundColor=#FFFFFF;`;
+  const xml = `<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>`
+    + `<mxCell id="2" value="${echapXml('intention')}" style="${echapXml(style)}" edge="1" parent="1">`
+    + `<mxGeometry relative="1" as="geometry">`
+    + `<mxPoint x="0" y="40" as="sourcePoint"/><mxPoint x="160" y="40" as="targetPoint"/>`
+    + `</mxGeometry></mxCell></root></mxGraphModel>`;
+  const compresse = compresser(xml);
+  if (decompresser(compresse) !== xml) throw new Error('aller-retour cassé : flèche');
+  return { xml: compresse, w: 160, h: 80, title: 'Flèche annotée' };
+}
+
+function bibliothequeGrammaire() {
+  const entrees = GRAMMAIRE.map(entreeForme).concat([entreeFleche()]);
+  // La bibliothèque doit porter les neuf fonds de la grammaire, sinon elle
+  // livre une version périmée de l'ADR 0007 à ceux qui partent de draw.io.
+  const styles = GRAMMAIRE.map((g) => g[3]).join(' ');
+  for (const [forme, fond] of Object.entries(FONDS)) {
+    if (!styles.includes(`fillColor=${fond};`)) {
+      throw new Error(`grammaire.xml : le fond de « ${forme} » (${fond}) n'y figure pas.`);
+    }
+  }
+  const json = JSON.stringify(entrees);
+  if (/[<&]/.test(json)) throw new Error('caractère interdit dans le JSON de grammaire.xml');
+  fs.writeFileSync(path.join(ROOT, 'drawio', 'grammaire.xml'), `<mxlibrary>${json}</mxlibrary>\n`);
+  return entrees.length;
+}
+
 for (const [type, fichier] of [['protocole', 'protocoles.xml'], ['produit', 'produits.xml'], ['role', 'roles.xml']]) {
   const { n, ko } = bibliotheque(fichier, rows.filter((r) => r.type === type));
   console.log(`  drawio/${fichier.padEnd(15)} · ${String(n).padStart(2)} formes · ${ko} Ko`);
 }
+console.log(`  drawio/grammaire.xml   · ${bibliothequeGrammaire()} formes · la grammaire, fonds et accent compris`);
