@@ -54,6 +54,7 @@ echo "→ Dépendance de vectorisation du texte"
 
 echo "→ Extraction des glyphes bruts (sources/)"
 node scripts/build.mjs
+node scripts/verifier-doc.mjs
 
 echo "→ Assemblage des lockups (lockups/, symboles/)"
 node scripts/lockups.mjs

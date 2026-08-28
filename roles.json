@@ -350,6 +350,28 @@
       "famille": "Livraison",
       "forme": "service",
       "tabler": "notebook"
+    },
+    {
+      "slug": "fournisseur-cloud",
+      "label": "Fournisseur cloud",
+      "famille": "Plateforme",
+      "forme": "frontiere",
+      "tabler": "cloud",
+      "note": "AWS et Azure ont été retirés de Simple Icons pour raisons de marque : ce rôle les désigne sans les nommer, et le libellé de la boîte dit lequel."
+    },
+    {
+      "slug": "fonction-serverless",
+      "label": "Fonction sans serveur",
+      "famille": "Calcul",
+      "forme": "service",
+      "tabler": "cloud-computing"
+    },
+    {
+      "slug": "magasin-vecteurs",
+      "label": "Magasin de vecteurs",
+      "famille": "Données",
+      "forme": "stockage",
+      "tabler": "vector"
     }
   ]
 }

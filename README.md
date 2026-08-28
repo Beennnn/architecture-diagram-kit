@@ -157,17 +157,17 @@ l'[ADR 0001](docs/adr/0001-six-couleurs-de-couche.md).
 
 ```
 protocoles.json           source de vérité : 32 protocoles
-produits.json             source de vérité : 25 produits
-roles.json                source de vérité : 25 rôles
+produits.json             source de vérité : 78 produits
+roles.json                source de vérité : 53 rôles
 formes.json               la grammaire de formes
 scripts/couches.json      les 6 couches colorées
 docs/                     état de l'art, checklist, décisions (ADR)
 regenerer.sh              reconstruit tout depuis npm
 
-lockups/horizontal/       82 SVG · disposition par défaut
-lockups/empile/           82 SVG · nœud de schéma
-lockups/mono/             82 SVG · encre unique
-symboles/                 82 SVG · signe seul
+lockups/horizontal/       163 SVG · disposition par défaut
+lockups/empile/           163 SVG · nœud de schéma
+lockups/mono/             163 SVG · encre unique
+symboles/                 163 SVG · signe seul
 
 drawio/protocoles.xml     bibliothèque de formes draw.io · 32
 drawio/produits.xml       bibliothèque de formes draw.io · 25

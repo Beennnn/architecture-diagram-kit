@@ -287,6 +287,274 @@
       "categorie": "Livraison",
       "simpleIcons": "spdx",
       "forme": "stockage"
+    },
+    {
+      "slug": "python",
+      "label": "Python",
+      "categorie": "Langage & build",
+      "simpleIcons": "python",
+      "forme": "service"
+    },
+    {
+      "slug": "go",
+      "label": "Go",
+      "categorie": "Langage & build",
+      "simpleIcons": "go",
+      "forme": "service"
+    },
+    {
+      "slug": "rust",
+      "label": "Rust",
+      "categorie": "Langage & build",
+      "simpleIcons": "rust",
+      "forme": "service"
+    },
+    {
+      "slug": "typescript",
+      "label": "TypeScript",
+      "categorie": "Langage & build",
+      "simpleIcons": "typescript",
+      "forme": "service"
+    },
+    {
+      "slug": "nodejs",
+      "label": "Node.js",
+      "categorie": "Langage & build",
+      "simpleIcons": "nodedotjs",
+      "forme": "service"
+    },
+    {
+      "slug": "dotnet",
+      "label": ".NET",
+      "categorie": "Langage & build",
+      "simpleIcons": "dotnet",
+      "forme": "service"
+    },
+    {
+      "slug": "kotlin",
+      "label": "Kotlin",
+      "categorie": "Langage & build",
+      "simpleIcons": "kotlin",
+      "forme": "service"
+    },
+    {
+      "slug": "react",
+      "label": "React",
+      "categorie": "Web",
+      "simpleIcons": "react",
+      "forme": "application"
+    },
+    {
+      "slug": "vue",
+      "label": "Vue.js",
+      "categorie": "Web",
+      "simpleIcons": "vuedotjs",
+      "forme": "application"
+    },
+    {
+      "slug": "angular",
+      "label": "Angular",
+      "categorie": "Web",
+      "simpleIcons": "angular",
+      "forme": "application"
+    },
+    {
+      "slug": "vite",
+      "label": "Vite",
+      "categorie": "Web",
+      "simpleIcons": "vite",
+      "forme": "service"
+    },
+    {
+      "slug": "tailwind",
+      "label": "Tailwind CSS",
+      "categorie": "Web",
+      "simpleIcons": "tailwindcss",
+      "forme": "service"
+    },
+    {
+      "slug": "android",
+      "label": "Android",
+      "categorie": "Client",
+      "simpleIcons": "android",
+      "forme": "application"
+    },
+    {
+      "slug": "flutter",
+      "label": "Flutter",
+      "categorie": "Client",
+      "simpleIcons": "flutter",
+      "forme": "application"
+    },
+    {
+      "slug": "swift",
+      "label": "Swift",
+      "categorie": "Client",
+      "simpleIcons": "swift",
+      "forme": "service"
+    },
+    {
+      "slug": "mysql",
+      "label": "MySQL",
+      "categorie": "Données",
+      "simpleIcons": "mysql",
+      "forme": "stockage"
+    },
+    {
+      "slug": "mongodb",
+      "label": "MongoDB",
+      "categorie": "Données",
+      "simpleIcons": "mongodb",
+      "forme": "stockage"
+    },
+    {
+      "slug": "sqlite",
+      "label": "SQLite",
+      "categorie": "Données",
+      "simpleIcons": "sqlite",
+      "forme": "stockage"
+    },
+    {
+      "slug": "clickhouse",
+      "label": "ClickHouse",
+      "categorie": "Données",
+      "simpleIcons": "clickhouse",
+      "forme": "stockage"
+    },
+    {
+      "slug": "neo4j",
+      "label": "Neo4j",
+      "categorie": "Données",
+      "simpleIcons": "neo4j",
+      "forme": "stockage"
+    },
+    {
+      "slug": "minio",
+      "label": "MinIO",
+      "categorie": "Données",
+      "simpleIcons": "minio",
+      "note": "Stockage objet compatible S3, installable sur site : le pendant local de S3, utile quand le schéma ne décrit pas un cloud public.",
+      "forme": "stockage"
+    },
+    {
+      "slug": "spark",
+      "label": "Apache Spark",
+      "categorie": "Calcul",
+      "simpleIcons": "apachespark",
+      "forme": "service"
+    },
+    {
+      "slug": "airflow",
+      "label": "Apache Airflow",
+      "categorie": "Calcul",
+      "simpleIcons": "apacheairflow",
+      "forme": "service"
+    },
+    {
+      "slug": "duckdb",
+      "label": "DuckDB",
+      "categorie": "Données",
+      "simpleIcons": "duckdb",
+      "forme": "stockage"
+    },
+    {
+      "slug": "jupyter",
+      "label": "Jupyter",
+      "categorie": "Calcul",
+      "simpleIcons": "jupyter",
+      "forme": "application"
+    },
+    {
+      "slug": "pytorch",
+      "label": "PyTorch",
+      "categorie": "Calcul",
+      "simpleIcons": "pytorch",
+      "forme": "service"
+    },
+    {
+      "slug": "huggingface",
+      "label": "Hugging Face",
+      "categorie": "Calcul",
+      "simpleIcons": "huggingface",
+      "forme": "service"
+    },
+    {
+      "slug": "ollama",
+      "label": "Ollama",
+      "categorie": "Calcul",
+      "simpleIcons": "ollama",
+      "forme": "service"
+    },
+    {
+      "slug": "gcp",
+      "label": "Google Cloud",
+      "categorie": "Plateforme",
+      "simpleIcons": "googlecloud",
+      "note": "Seul fournisseur cloud majeur dont la marque figure dans Simple Icons : AWS et Azure en ont été retirés pour raisons de marque. Pour eux, employez le rôle générique « fournisseur cloud ».",
+      "forme": "frontiere"
+    },
+    {
+      "slug": "opentelemetry",
+      "label": "OpenTelemetry",
+      "categorie": "Observabilité",
+      "simpleIcons": "opentelemetry",
+      "forme": "service"
+    },
+    {
+      "slug": "jaeger",
+      "label": "Jaeger",
+      "categorie": "Observabilité",
+      "simpleIcons": "jaeger",
+      "forme": "service"
+    },
+    {
+      "slug": "github-actions",
+      "label": "GitHub Actions",
+      "categorie": "Livraison",
+      "simpleIcons": "githubactions",
+      "forme": "service"
+    },
+    {
+      "slug": "argocd",
+      "label": "Argo CD",
+      "categorie": "Livraison",
+      "simpleIcons": "argo",
+      "forme": "service"
+    },
+    {
+      "slug": "ansible",
+      "label": "Ansible",
+      "categorie": "Livraison",
+      "simpleIcons": "ansible",
+      "forme": "service"
+    },
+    {
+      "slug": "pytest",
+      "label": "pytest",
+      "categorie": "Test",
+      "simpleIcons": "pytest",
+      "forme": "service"
+    },
+    {
+      "slug": "cypress",
+      "label": "Cypress",
+      "categorie": "Test",
+      "simpleIcons": "cypress",
+      "forme": "service"
+    },
+    {
+      "slug": "nats",
+      "label": "NATS",
+      "categorie": "Messaging",
+      "simpleIcons": "natsdotio",
+      "forme": "flux"
+    },
+    {
+      "slug": "pulsar",
+      "label": "Apache Pulsar",
+      "categorie": "Messaging",
+      "simpleIcons": "apachepulsar",
+      "forme": "flux"
     }
   ]
 }

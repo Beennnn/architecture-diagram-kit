@@ -5,7 +5,7 @@ copier-coller entre scènes emporte les images.
 
 | Fichier | Contenu |
 |---|---|
-| `badges.excalidraw` | les 122 signes, avec leur nom |
+| `badges.excalidraw` | les 163 signes, avec leur nom |
 | `grammaire.excalidraw` | les neuf formes, la zone imbriquée, le sujet accentué |
 
 ## Ce que la grammaire perd ici
