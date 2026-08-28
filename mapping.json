@@ -116,6 +116,7 @@
     "tabler": "hierarchy-2",
     "lucide": "share-2",
     "simpleIcons": "graphql",
+    "marqueOfficielle": true,
     "hex": "#E10098",
     "marque": "GraphQL",
     "source": "https://graphql.org/brand"
@@ -171,6 +172,7 @@
     "tabler": "broadcast",
     "lucide": "radio-tower",
     "simpleIcons": "mqtt",
+    "marqueOfficielle": true,
     "hex": "#660066",
     "marque": "MQTT",
     "source": "https://mqtt.org"
@@ -193,6 +195,7 @@
     "tabler": "messages",
     "lucide": "messages-square",
     "simpleIcons": "xmpp",
+    "marqueOfficielle": true,
     "hex": "#002B5C",
     "marque": "XMPP",
     "source": "https://github.com/xsf/xmpp.org/blob/82856a2cec0a99b197c6985191635544e6b3ed69/static/images/logos/xmpp-logo.svg"
@@ -325,6 +328,7 @@
     "tabler": "rss",
     "lucide": "rss",
     "simpleIcons": "rss",
+    "marqueOfficielle": true,
     "hex": "#FFA500",
     "marque": "RSS",
     "source": "https://en.wikipedia.org/wiki/Feed_icon"
@@ -336,6 +340,7 @@
     "tabler": "arrows-shuffle",
     "lucide": "shuffle",
     "simpleIcons": "bittorrent",
+    "marqueOfficielle": true,
     "hex": "#050505",
     "marque": "BitTorrent",
     "source": "https://www.bittorrent.com/products"
@@ -347,6 +352,7 @@
     "tabler": "topology-star",
     "lucide": "waypoints",
     "simpleIcons": "ipfs",
+    "marqueOfficielle": true,
     "hex": "#65C2CB",
     "marque": "IPFS",
     "source": "https://github.com/ipfs-inactive/logo/tree/73169b495332415b174ac2f37ec27c4b2ee8da83"

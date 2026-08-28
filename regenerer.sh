@@ -19,6 +19,7 @@ OFFLINE=0
 TABLER_VERSION="${TABLER_VERSION:-3.46.0}"
 LUCIDE_VERSION="${LUCIDE_VERSION:-1.34.0}"
 SIMPLE_VERSION="${SIMPLE_VERSION:-16.28.0}"
+PLEX_VERSION="${PLEX_VERSION:-5.3.0}"   # IBM Plex Sans, pour vectoriser les libellés
 
 command -v node >/dev/null || { echo "node est requis (>= 18)"; exit 1; }
 command -v npm  >/dev/null || { echo "npm est requis"; exit 1; }
@@ -46,12 +47,21 @@ echo "→ Récupération des paquets"
 fetch "@tabler/icons"  "$TABLER_VERSION" "tabler"
 fetch "lucide-static"  "$LUCIDE_VERSION" "lucide"
 fetch "simple-icons"   "$SIMPLE_VERSION" "simple-icons"
+fetch "@fontsource/ibm-plex-sans" "$PLEX_VERSION" "plex"
 
-echo "→ Extraction des SVG (icons/)"
+echo "→ Dépendance de vectorisation du texte"
+[[ -d node_modules/opentype.js ]] || npm install --silent --no-audit --no-fund
+
+echo "→ Extraction des glyphes bruts (sources/)"
 node scripts/build.mjs
 
-echo "→ Génération de la planche de specimen (specimen/index.html)"
+echo "→ Assemblage des lockups (lockups/, symboles/)"
+node scripts/lockups.mjs
+
+echo "→ Planches de specimen (specimen/)"
+node scripts/specimen-lockups.mjs
 node scripts/specimen.mjs
+node scripts/styles.mjs
 
 echo
 echo "Terminé. Le cache npm est dans $CACHE/ (ignoré par git) —"

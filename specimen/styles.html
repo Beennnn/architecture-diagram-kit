@@ -98,11 +98,11 @@ body[data-style="mono"]      .chip-txt{fill:var(--ink)}
 .fiche{display:none;margin-top:14px;border-left:3px solid var(--accent);background:var(--surface);border:1px solid var(--line);border-left-width:3px;border-radius:var(--r);padding:14px 18px}
 .fiche h3{font-size:.95rem;font-weight:600;margin-bottom:4px}
 .fiche p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:78ch}
+body[data-style="etiquette"] .fiche[data-for="etiquette"]{display:block}
 body[data-style="douce"] .fiche[data-for="douce"]{display:block}
-body[data-style="pleine"] .fiche[data-for="pleine"]{display:block}
 body[data-style="contour"] .fiche[data-for="contour"]{display:block}
 body[data-style="nu"] .fiche[data-for="nu"]{display:block}
-body[data-style="etiquette"] .fiche[data-for="etiquette"]{display:block}
+body[data-style="pleine"] .fiche[data-for="pleine"]{display:block}
 body[data-style="mono"] .fiche[data-for="mono"]{display:block}
 
 .scale{display:grid;gap:14px;background:var(--canvas);border:1px solid var(--line);border-radius:var(--r);padding:20px;overflow-x:auto}
@@ -146,11 +146,11 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
 <div class="toolbar">
   <div class="wrap">
     <span class="lbl">Traitement</span>
-    <button type="button" data-style="douce" aria-pressed="true">Pastille teintée</button>
-      <button type="button" data-style="pleine" aria-pressed="false">Pastille pleine</button>
+    <button type="button" data-style="etiquette" aria-pressed="true">Étiquette</button>
+      <button type="button" data-style="douce" aria-pressed="false">Pastille teintée</button>
       <button type="button" data-style="contour" aria-pressed="false">Pastille contour</button>
       <button type="button" data-style="nu" aria-pressed="false">Trait nu</button>
-      <button type="button" data-style="etiquette" aria-pressed="false">Étiquette</button>
+      <button type="button" data-style="pleine" aria-pressed="false">Pastille pleine</button>
       <button type="button" data-style="mono" aria-pressed="false">Monochrome</button>
   </div>
 </div>
@@ -316,11 +316,11 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
       </g>
     </g>
   </svg></div>
-    <div class="fiche" data-for="douce"><h3>Pastille teintée</h3><p>Fond à 14 % de la teinte, glyphe coloré. Se pose sur un trait sans le couper, reste lisible à 16 px.</p></div>
-      <div class="fiche" data-for="pleine"><h3>Pastille pleine</h3><p>Aplat de couleur, glyphe blanc détouré. Le plus visible de loin, le plus lourd en densité.</p></div>
-      <div class="fiche" data-for="contour"><h3>Pastille contour</h3><p>Fond canvas, filet 1,5 px coloré. Discret, proche des conventions AWS / Azure.</p></div>
+    <div class="fiche" data-for="etiquette"><h3>Étiquette</h3><p>RETENU. Icône + nom du protocole sur fond teinté. Formel, sans ambiguïté possible. Exige au moins 130 px entre deux boîtes.</p></div>
+      <div class="fiche" data-for="douce"><h3>Pastille teintée</h3><p>Repli quand le schéma est trop serré pour une étiquette : même fond, même couleur, sans le nom.</p></div>
+      <div class="fiche" data-for="contour"><h3>Pastille contour</h3><p>Fond canvas, filet 1,5 px coloré. Discret, mais le filet lâche à 16 px.</p></div>
       <div class="fiche" data-for="nu"><h3>Trait nu</h3><p>Le glyphe seul, avec un halo à la couleur du fond. Le plus léger, le plus fragile sur fond chargé.</p></div>
-      <div class="fiche" data-for="etiquette"><h3>Étiquette</h3><p>Icône + nom du protocole. Lève toute ambiguïté (FTP vs SFTP), mais encombre les schémas denses.</p></div>
+      <div class="fiche" data-for="pleine"><h3>Pastille pleine</h3><p>Écarté : aplat saturé, trop fort en densité — c’est le rendu qui écrase le reste du schéma.</p></div>
       <div class="fiche" data-for="mono"><h3>Monochrome</h3><p>Filet noir, aucune couleur. Pour l’impression N&amp;B et les schémas déjà colorés par ailleurs.</p></div>
   </section>
 
@@ -1372,16 +1372,18 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
   </section>
 
   <div class="reco">
-    <h2>Ma recommandation</h2>
-    <p><strong>Pastille teintée</strong> comme traitement par défaut, <strong>étiquette</strong> en variante pour les schémas où le protocole doit être nommé.</p>
-    <p>La pastille teintée est la seule qui tient les trois contraintes à la fois : elle masque le trait sous elle (donc la flèche ne traverse pas le glyphe), elle garde un glyphe à pleine couleur donc lisible à 16 px, et elle reste assez discrète pour ne pas voler la vedette aux boîtes du schéma. La pastille pleine gagne en visibilité mais six aplats saturés sur un schéma dense deviennent vite criards ; le trait nu décroche dès que le fond n'est pas uni ; le contour perd son filet à 16 px.</p>
+    <h2>La convention retenue</h2>
+    <p><strong>Étiquette</strong> — icône + nom du protocole sur fond teinté — comme traitement par défaut. <strong>Pastille teintée</strong> en repli, quand l'écart entre deux boîtes descend sous 130 px.</p>
+    <p>L'étiquette est le rendu le plus formel : elle nomme le protocole, ce qui lève l'ambiguïté qu'aucun glyphe ne peut lever seul (FTP contre SFTP, IMAP contre POP3), et elle reste sobre parce que le fond n'est qu'une teinte à 14 %. La pastille pleine a été écartée : l'aplat saturé écrase le reste du schéma. Le trait nu décroche dès que le fond n'est pas uni, et le contour perd son filet à 16 px.</p>
     <p>Le point qui compte autant que le traitement : <strong>la couleur porte la couche, pas le protocole.</strong> Six teintes pour 32 protocoles — un lecteur retient « bleu = web, orange = messages », jamais 32 couleurs. C'est ce qui rend la convention transmissible à quelqu'un qui n'a pas le catalogue sous les yeux.</p>
     <div class="scroller">
       <table>
         <thead><tr><th scope="col">Paramètre</th><th scope="col">Valeur retenue</th><th scope="col">Pourquoi</th></tr></thead>
         <tbody>
           <tr><th scope="row">Famille d'icônes</th><td>Tabler, tracé 2 px</td><td>Couverture réseau la plus complète (17 icônes sans équivalent Lucide)</td></tr>
-          <tr><th scope="row">Pastille</th><td>Carré arrondi, rayon = 27 % du côté</td><td>Assez rond pour ne pas concurrencer les boîtes, assez carré pour s'aligner</td></tr>
+          <tr><th scope="row">Traitement</th><td>Étiquette (icône + nom), fond à 14 %</td><td>Le rendu le plus formel ; nomme ce qu'aucun glyphe ne peut désambiguïser seul</td></tr>
+          <tr><th scope="row">Repli</th><td>Pastille compacte, rayon = 27 % du côté</td><td>Quand le schéma est trop serré pour une étiquette</td></tr>
+          <tr><th scope="row">Taille nominale</th><td>48 px de haut</td><td>Lisible sans effort ; le fichier reste vectoriel et se réduit sans perte</td></tr>
           <tr><th scope="row">Ratio glyphe / pastille</th><td>62 %</td><td>En-dessous, le glyphe flotte ; au-dessus, il touche le bord</td></tr>
           <tr><th scope="row">Taille minimale</th><td>20 px sur flèche, 16 px en dernier recours</td><td>En dessous, les glyphes les plus chargés se ferment</td></tr>
           <tr><th scope="row">Densité du glyphe</th><td>&lt; 100 commandes de tracé</td><td>Deux icônes ont été remplacées sur ce critère : HTTP <code>world-www</code> → <code>world</code>, HTTPS <code>lock-square-rounded</code> → <code>lock</code></td></tr>
@@ -1396,7 +1398,7 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
 
 <script>
 (function(){
-  var body=document.body, defaut='douce';
+  var body=document.body, defaut='etiquette';
   try{ defaut=localStorage.getItem('proto-style')||defaut; }catch(e){}
   function set(k){
     body.dataset.style=k;

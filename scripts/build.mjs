@@ -33,9 +33,9 @@ const readIcon = (dir, name, origine) => {
   return fs.readFileSync(p, 'utf8').trim();
 };
 
-const OUT = path.join(ROOT, 'icons');
+const OUT = path.join(ROOT, 'sources');  // glyphes bruts, tels que publiés en amont
 fs.rmSync(OUT, { recursive: true, force: true });
-for (const d of ['tabler', 'lucide', 'logos-officiels']) fs.mkdirSync(path.join(OUT, d), { recursive: true });
+for (const d of ['tabler', 'lucide', 'marques']) fs.mkdirSync(path.join(OUT, d), { recursive: true });
 
 const rows = protocoles.map((p) => {
   const tSvg = readIcon(SRC.tabler, p.tabler, 'Tabler');
@@ -50,7 +50,7 @@ const rows = protocoles.map((p) => {
     hex = meta.hex || null;
     marque = meta.title || p.simpleIcons;
     source = meta.source || null;
-    fs.writeFileSync(path.join(OUT, 'logos-officiels', `${p.slug}.svg`), `${sSvg}\n`);
+    fs.writeFileSync(path.join(OUT, 'marques', `${p.slug}.svg`), `${sSvg}\n`);
   }
   return { ...p, hex, marque, source, tSvg, lSvg, sSvg };
 });
@@ -73,4 +73,5 @@ fs.mkdirSync(path.join(ROOT, '.cache'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, '.cache/rows.json'), JSON.stringify(rows));
 
 const avecLogo = rows.filter((r) => r.simpleIcons).length;
-console.log(`  ${rows.length} protocoles · ${rows.length * 2 + avecLogo} fichiers SVG · ${avecLogo} logos de marque`);
+const officiels = rows.filter((r) => r.marqueOfficielle).length;
+console.log(`  ${rows.length} protocoles · ${rows.length * 2 + avecLogo} fichiers bruts · ${avecLogo} logos de marque (dont ${officiels} désignent le protocole lui-même)`);
