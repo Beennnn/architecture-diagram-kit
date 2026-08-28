@@ -7,7 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche, encreAccent, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -23,7 +23,7 @@ const N = [
   { x: 280,  y: 150, w: 200, h: 72, t: 'API publique',      s: 'contrat OpenAPI', ico: 'openapi' },
   { x: 280,  y: 310, w: 200, h: 72, t: 'Ingestion',         s: 'Spring Boot',     ico: 'springboot' },
   { x: 280,  y: 470, w: 200, h: 72, t: 'Bastion',           s: 'accès restreint', ico: 'bastion' },
-  { x: 530,  y: 310, w: 200, h: 72, t: 'Bus de mesures',    s: '3 partitions',    ico: 'kafka',       forme: 'flux' },
+  { x: 530,  y: 310, w: 200, h: 72, t: 'Bus de mesures',    s: '3 partitions',    ico: 'kafka',       forme: 'flux', vedette: true },
   { x: 760,  y: 150, w: 200, h: 72, t: 'Sessions',          s: 'Spring Boot',     ico: 'springboot' },
   { x: 530,  y: 470, w: 200, h: 72, t: 'Facturation',       s: 'Spring Boot',     ico: 'springboot' },
   { x: 1030, y: 150, w: 200, h: 72, t: 'Sessions',          s: 'PostgreSQL 16',   ico: 'postgresql',  forme: 'stockage' },
@@ -55,18 +55,19 @@ const L = [
 const W = 1290, H = 780;
 
 const noeuds = N.map((n) => {
+  const vd = n.vedette ? encreAccent(n.ico) : null;
   const cy = n.y + n.h / 2;
   const dec = n.forme === 'stockage' ? 6 : 0;
   const tx = n.ico ? n.x + 58 : n.x + n.w / 2;
   const anchor = n.ico ? 'start' : 'middle';
-  return `<g>${boite({ ...n, w: n.w, h: n.h })}`
+  return `<g>${boite({ ...n, vedette: vd })}`
     + (n.ico ? symbole(n.ico, n.x + 14, cy - 17 + dec) : '')
-    + `<text x="${tx}" y="${cy - 3 + dec}" text-anchor="${anchor}" font-size="14" font-weight="600" fill="${ENCRE}">${esc(n.t)}</text>`
+    + `<text x="${tx}" y="${cy - 3 + dec}" text-anchor="${anchor}" font-size="14" font-weight="600" fill="${vd || ENCRE}">${esc(n.t)}</text>`
     + `<text x="${tx}" y="${cy + 15 + dec}" text-anchor="${anchor}" font-size="11" fill="${DOUX}">${esc(n.s)}</text></g>`;
 }).join('\n    ');
 
 const zones = Z.map((z) => `<g>`
-  + `<rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="14" fill="#F7F9FA" stroke="${LIGNE}" stroke-width="1.4" stroke-dasharray="8 6"/>`
+  + boite({ x: z.x, y: z.y, w: z.w, h: z.h, forme: 'frontiere' })
   + (z.ico ? symbole(z.ico, z.x + 14, z.y + 12, 22) : '')
   + `<text x="${z.x + (z.ico ? 44 : 16)}" y="${z.y + 29}" font-size="12.5" font-weight="600" fill="${DOUX}">${esc(z.t)}</text></g>`).join('\n    ');
 

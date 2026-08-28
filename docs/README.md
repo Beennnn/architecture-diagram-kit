@@ -41,3 +41,5 @@ Format [Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-archit
   de déploiement
 - **[0006](adr/0006-marqueurs-de-qualite.md)** — Les qualités sont des marqueurs,
   pas des badges
+- **[0007](adr/0007-echelle-de-fonds-et-accent.md)** — Écarter l'échelle des
+  fonds, et accentuer un sujet par schéma

@@ -47,7 +47,7 @@
       "geometrie": "rectangle arrondi sur fond gris clair",
       "svg": {
         "rx": 10,
-        "fond": "#F8F9FA",
+        "fond": "#E8ECEF",
         "trait": 1.6
       }
     },
@@ -57,7 +57,7 @@
       "geometrie": "rectangle à coins vifs, fond gris clair",
       "svg": {
         "rx": 3,
-        "fond": "#F8F9FA",
+        "fond": "#EDF0F2",
         "trait": 1.6
       }
     },
@@ -67,7 +67,7 @@
       "geometrie": "rectangle arrondi, trait pointillé, fond gris",
       "svg": {
         "rx": 8,
-        "fond": "#EDEFF1",
+        "fond": "#F3F5F6",
         "trait": 1.6,
         "pointilles": "5 4"
       }
@@ -78,7 +78,7 @@
       "geometrie": "cadre en pointillés, sans remplissage franc",
       "svg": {
         "rx": 14,
-        "fond": "#F7F9FA",
+        "fond": "#F2F5F6",
         "trait": 1.4,
         "pointilles": "8 6"
       },
@@ -90,7 +90,7 @@
       "geometrie": "rectangle à coins vifs, liseré épais, fond gris très clair",
       "svg": {
         "rx": 2,
-        "fond": "#F4F6F7",
+        "fond": "#DFE5E9",
         "trait": 2.4
       }
     }

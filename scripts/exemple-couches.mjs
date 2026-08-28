@@ -3,7 +3,7 @@
 // forme de schéma très différente de celle de exemple.mjs.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, encreAccent, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -33,7 +33,7 @@ const N = [
 
   { x: 80,  y: 470, w: NW, h: 90, t: 'Catalogue',    s: 'Spring Boot', r: '6 × 1 vCPU · 2 Gio', ico: 'springboot', forme: 'service' },
   { x: 300, y: 470, w: NW, h: 90, t: 'Panier',       s: 'Quarkus',     r: '4 × 0,5 vCPU · 1 Gio', ico: 'quarkus',  forme: 'service' },
-  { x: 520, y: 470, w: NW, h: 90, t: 'Commandes',    s: 'Spring Boot', r: '3 × 1 vCPU · 2 Gio', ico: 'springboot', forme: 'service' },
+  { x: 520, y: 470, w: NW, h: 90, t: 'Commandes',    s: 'Spring Boot', r: '3 × 1 vCPU · 2 Gio', ico: 'springboot', forme: 'service', vedette: true },
   { x: 740, y: 470, w: NW, h: 90, t: 'Paiement',     s: 'Spring Boot', r: '2 × 0,5 vCPU · 1 Gio', ico: 'springboot', forme: 'service' },
   { x: 960, y: 470, w: NW, h: 90, t: 'Notifications', s: 'Quarkus',    r: '2 × 0,5 vCPU · 1 Gio', ico: 'quarkus',   forme: 'service' },
 
@@ -67,16 +67,17 @@ const L = [
 ];
 
 const bandes = BANDES.map((z) => `<g>`
-  + `<rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="14" fill="#F7F9FA" stroke="${LIGNE}" stroke-width="1.4" stroke-dasharray="8 6"/>`
+  + boite({ x: z.x, y: z.y, w: z.w, h: z.h, forme: 'frontiere' })
   + `<text x="${z.x + z.w - 18}" y="${z.y + 26}" text-anchor="end" font-size="13" font-weight="600" fill="${DOUX}">${esc(z.t)}</text>`
   + `<text x="${z.x + z.w - 18}" y="${z.y + 44}" text-anchor="end" font-size="11" fill="${LIGNE}">${esc(z.s)}</text></g>`).join('\n    ');
 
 const noeuds = N.map((n) => {
+  const vd = n.vedette ? encreAccent(n.ico) : null;
   const cy = n.y + n.h / 2, dec = n.forme === 'stockage' ? 6 : 0;
   const tx = n.x + 56, base = n.r ? cy - 12 + dec : cy - 3 + dec;
-  return `<g>${boite(n)}`
+  return `<g>${boite({ ...n, vedette: vd })}`
     + symbole(n.ico, n.x + 13, cy - 17 + dec, 32)
-    + `<text x="${tx}" y="${base}" font-size="13.5" font-weight="600" fill="${ENCRE}">${esc(n.t)}</text>`
+    + `<text x="${tx}" y="${base}" font-size="13.5" font-weight="600" fill="${vd || ENCRE}">${esc(n.t)}</text>`
     + `<text x="${tx}" y="${base + 17}" font-size="11" fill="${DOUX}">${esc(n.s)}</text>`
     + (n.r ? `<text x="${tx}" y="${base + 33}" font-size="10" font-weight="600" fill="#0B6E7F" font-family="'IBM Plex Mono',monospace">${esc(n.r)}</text>` : '')
     + `</g>`;

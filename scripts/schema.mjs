@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { encreLisible } from './couleurs.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const ENCRE = '#16181A', DOUX = '#5B6873', TRAIT = '#3E444A', LIGNE = '#8896A2';
@@ -27,21 +28,51 @@ export function badge(slug, cx, cy, e = 0.82) {
 }
 
 // Géométrie des formes : voir formes.json et docs/adr/0003-grammaire-de-formes.md
-export const boite = ({ x, y, w, h, forme }) => {
+//
+// Les fonds suivent l'échelle de l'ADR 0007 : la VALEUR du fond code la forme et
+// l'emboîtement. Les quatre gris précédents tenaient dans 1,05 à 1,08:1 avec le
+// blanc — un écart que ni un vidéoprojecteur ni une impression ne restituent.
+// Ils prétendaient séparer sans séparer. Ceux-ci vont de 1,09 à 1,27:1.
+export const FONDS = {
+  service: '#FFFFFF', application: '#FFFFFF', flux: '#FFFFFF', stockage: '#FFFFFF',
+  acteur: '#E8ECEF', materiel: '#EDF0F2', noeud: '#DFE5E9', frontiere: '#F2F5F6',
+  externe: '#F3F5F6',
+};
+
+// `vedette` est l'encre de couche du sujet accentué. Un schéma en porte au plus
+// un : c'est l'étape 6 de docs/formes-couleurs-fleches.html, restée lettre morte
+// jusqu'à l'ADR 0007. Sans elle, la boîte garde le liseré neutre.
+// Une zone imbriquée dans une autre descend d'un cran : sans cela l'emboîtement
+// des zones ne se lit plus, la valeur étant devenue notre variable de structure.
+export const FOND_IMBRIQUE = { frontiere: '#E7EBEE' };
+
+// L'encre d'accent d'un nœud est celle de SA couche : l'accent désigne le sujet,
+// il n'introduit pas une septième couleur. Un sujet d'infrastructure hérite donc
+// de l'ardoise d'infra — c'est voulu, et c'est aussi la limite du procédé.
+const _COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
+const _MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
+const _FAM = {}; for (const [k, c] of Object.entries(_COUCHES)) for (const f of c.familles) _FAM[f] = k;
+const _PAR_SLUG = Object.fromEntries(_MAP.map((e) => [e.slug, e]));
+export function encreAccent(slug) {
+  const e = _PAR_SLUG[slug];
+  const couche = e && _FAM[e.famille];
+  if (!couche) throw new Error(`Accent demandé sur « ${slug} », dont la couche est inconnue.`);
+  return encreLisible(_COUCHES[couche].clair, '#FFFFFF', 4.5);
+}
+
+export const boite = ({ x, y, w, h, forme, vedette, imbrique }) => {
+  const fond = (imbrique && FOND_IMBRIQUE[forme]) || FONDS[forme] || '#FFFFFF';
+  const trait = vedette || (forme === 'externe' || forme === 'frontiere' ? LIGNE : TRAIT);
+  const ep = vedette ? 2.6 : forme === 'noeud' ? 2.4 : forme === 'frontiere' ? 1.3 : 1.6;
   if (forme === 'stockage') {
     // sous 60 px, les deux ellipses du cylindre recouvrent le libellé
     if (h < 60) throw new Error(`Cylindre trop bas (${h} px) : un « stockage » exige au moins 60 px de haut.`);
-    return `<path d="M${x} ${y + 14} v${h - 28} a${w / 2} 13 0 0 0 ${w} 0 v-${h - 28}" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`
-         + `<ellipse cx="${x + w / 2}" cy="${y + 14}" rx="${w / 2}" ry="13" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`;
+    return `<path d="M${x} ${y + 14} v${h - 28} a${w / 2} 13 0 0 0 ${w} 0 v-${h - 28}" fill="${fond}" stroke="${trait}" stroke-width="${ep}"/>`
+         + `<ellipse cx="${x + w / 2}" cy="${y + 14}" rx="${w / 2}" ry="13" fill="${fond}" stroke="${trait}" stroke-width="${ep}"/>`;
   }
-  if (forme === 'flux')        return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h / 2}" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`;
-  if (forme === 'externe')     return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="#EDEFF1" stroke="${LIGNE}" stroke-width="1.6" stroke-dasharray="5 4"/>`;
-  if (forme === 'acteur')      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#F8F9FA" stroke="${TRAIT}" stroke-width="1.6"/>`;
-  if (forme === 'application') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`;
-  if (forme === 'materiel')    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#F8F9FA" stroke="${TRAIT}" stroke-width="1.6"/>`;
-  // le nœud de déploiement héberge : liseré épais, fond retrait, il contient d'autres boîtes
-  if (forme === 'noeud')       return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="#F4F6F7" stroke="${TRAIT}" stroke-width="2.4"/>`;
-  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`;
+  const rx = { flux: h / 2, externe: 8, acteur: 10, application: 10, materiel: 3, noeud: 2, frontiere: 12 }[forme] ?? 0;
+  const tirets = forme === 'externe' ? ' stroke-dasharray="5 4"' : forme === 'frontiere' ? ' stroke-dasharray="8 6"' : '';
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fond}" stroke="${trait}" stroke-width="${ep}"${tirets}/>`;
 };
 
 export const fleche = () => `<marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">`
@@ -62,18 +93,21 @@ export const marqueur = (x, y, texte, ton = '#0B6E7F') => {
 // six couleurs de couche sont des conventions maison, que le lecteur ne peut
 // pas deviner. Les jeux AWS ou Azure s'en passent parce que leur iconographie
 // est publique — la nôtre ne l'est pas.
-const MINI = {
-  service:     (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" fill="#FFF" stroke="${TRAIT}" stroke-width="1.3"/>`,
-  application: (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" rx="5" fill="#FFF" stroke="${TRAIT}" stroke-width="1.3"/>`,
-  flux:        (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" rx="8" fill="#FFF" stroke="${TRAIT}" stroke-width="1.3"/>`,
-  acteur:      (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" rx="5" fill="#F8F9FA" stroke="${TRAIT}" stroke-width="1.3"/>`,
-  materiel:    (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" rx="2" fill="#F8F9FA" stroke="${TRAIT}" stroke-width="1.3"/>`,
-  noeud:       (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" rx="1" fill="#F4F6F7" stroke="${TRAIT}" stroke-width="2"/>`,
-  externe:     (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" rx="4" fill="#EDEFF1" stroke="${LIGNE}" stroke-width="1.3" stroke-dasharray="3 2"/>`,
-  frontiere:   (x, y) => `<rect x="${x}" y="${y}" width="26" height="16" rx="4" fill="#F7F9FA" stroke="${LIGNE}" stroke-width="1.2" stroke-dasharray="4 3"/>`,
-  stockage:    (x, y) => `<path d="M${x} ${y + 4} v8 a13 4 0 0 0 26 0 v-8" fill="#FFF" stroke="${TRAIT}" stroke-width="1.3"/>`
-                       + `<ellipse cx="${x + 13}" cy="${y + 4}" rx="13" ry="4" fill="#FFF" stroke="${TRAIT}" stroke-width="1.3"/>`,
+// Les vignettes reprennent FONDS : une légende qui montrerait d'autres fonds
+// que le schéma serait un mensonge, et c'est la règle R5 qui l'interdit.
+const MINI = (f) => (x, y) => {
+  const fond = FONDS[f] ?? '#FFFFFF';
+  const trait = f === 'externe' || f === 'frontiere' ? LIGNE : TRAIT;
+  const ep = f === 'noeud' ? 2 : f === 'frontiere' ? 1.2 : 1.3;
+  if (f === 'stockage') {
+    return `<path d="M${x} ${y + 4} v8 a13 4 0 0 0 26 0 v-8" fill="${fond}" stroke="${trait}" stroke-width="${ep}"/>`
+         + `<ellipse cx="${x + 13}" cy="${y + 4}" rx="13" ry="4" fill="${fond}" stroke="${trait}" stroke-width="${ep}"/>`;
+  }
+  const rx = { flux: 8, externe: 4, acteur: 5, application: 5, materiel: 2, noeud: 1, frontiere: 4 }[f] ?? 0;
+  const tirets = f === 'externe' ? ' stroke-dasharray="3 2"' : f === 'frontiere' ? ' stroke-dasharray="4 3"' : '';
+  return `<rect x="${x}" y="${y}" width="26" height="16" rx="${rx}" fill="${fond}" stroke="${trait}" stroke-width="${ep}"${tirets}/>`;
 };
+
 const NOM_FORME = { service: 'service', application: 'application', stockage: 'stockage', flux: 'flux',
   acteur: 'acteur', materiel: 'matériel', externe: 'externe', frontiere: 'zone', noeud: 'nœud' };
 
@@ -81,8 +115,8 @@ export function legende(x, y, formes, couches) {
   let cx = x + 64;
   const items = [];
   for (const f of formes) {
-    if (!MINI[f]) continue;
-    items.push(MINI[f](cx, y - 12) + `<text x="${cx + 32}" y="${y}" font-size="10.5" fill="${DOUX}">${esc(NOM_FORME[f] || f)}</text>`);
+    if (!(f in FONDS)) continue;
+    items.push(MINI(f)(cx, y - 12) + `<text x="${cx + 32}" y="${y}" font-size="10.5" fill="${DOUX}">${esc(NOM_FORME[f] || f)}</text>`);
     cx += 32 + (NOM_FORME[f] || f).length * 5.6 + 22;
   }
   let dx = x + 64;
