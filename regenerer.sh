@@ -61,6 +61,7 @@ node scripts/lockups.mjs
 echo "→ Bibliothèques draw.io (drawio/)"
 node scripts/drawio.mjs
 node scripts/excalidraw.mjs
+node scripts/excalidraw-grammaire.mjs
 node scripts/exemple.mjs
 node scripts/exemple-couches.mjs
 node scripts/exemples-systeme.mjs

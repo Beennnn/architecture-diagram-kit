@@ -1,8 +1,32 @@
 # Excalidraw
 
-`badges.excalidraw` — une **scène** contenant les 82 badges, à ouvrir puis à
-copier-coller vers vos propres schémas. Le copier-coller entre scènes emporte
-les images.
+Deux scènes, à ouvrir puis copier-coller vers vos propres schémas. Le
+copier-coller entre scènes emporte les images.
+
+| Fichier | Contenu |
+|---|---|
+| `badges.excalidraw` | les 122 signes, avec leur nom |
+| `grammaire.excalidraw` | les neuf formes, la zone imbriquée, le sujet accentué |
+
+## Ce que la grammaire perd ici
+
+`grammaire.excalidraw` porte les fonds de l'[ADR 0007](../docs/adr/0007-echelle-de-fonds-et-accent.md)
+exactement — et ce sont eux qui portent la forme et l'emboîtement. Le reste se
+dégrade, ce que la planche écrit sur elle-même plutôt que de le taire :
+
+- `strokeWidth` ne prend que **1, 2 ou 4** : nos 1,3 · 1,6 · 2,4 · 3,2 px s'y
+  ramènent à 1 · 1 · 2 · 4 ;
+- l'interface ne propose que deux arrondis, sans exposer de rayon : `rx` 3, 8,
+  10 et 12 deviennent le même angle, donc « matériel » et « application » se
+  confondent ;
+- il n'existe pas de cylindre : le stockage est un rectangle et une ellipse
+  groupés, que rien n'empêche de dissocier ;
+- le tireté n'est pas paramétrable : « externe » et « zone » ne se distinguent
+  plus que par leur fond.
+
+C'est la raison d'être de l'[ADR 0004](../docs/adr/0004-excalidraw-voie-secondaire.md) :
+esquissez ici, produisez dans draw.io, dont la bibliothèque `grammaire.xml`
+porte la grammaire sans perte.
 
 ## Pourquoi une scène et non une bibliothèque
 
