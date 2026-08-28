@@ -174,6 +174,30 @@ const RENDUS = {
       + txt(gx + t + 8, cy + 5, n.inst, { taille: 13, gras: 700 })
       + txt(n.x + n.w / 2, n.y + n.h - 14, n.nom, { centre: true, taille: 10, gras: 500, encre: DOUX });
   },
+
+  // G — la combinaison : l'échelle de gris de E, la hiérarchie de texte de F,
+  //     l'accent unique de C. Le symbole reste tel quel, avec sa pastille : c'est
+  //     lui qui porte la couleur de marque, et les gens reconnaissent les logos.
+  G: (n) => {
+    const FOND = { application: '#FFFFFF', service: '#FFFFFF', flux: '#FFFFFF', stockage: '#FFFFFF',
+      acteur: '#E8ECEF', materiel: '#EDF0F2', noeud: '#DFE5E9', frontiere: '#F2F5F6', externe: '#F3F5F6' };
+    const vedette = n.slug === 'springboot';
+    const enc = ENCRE_C(n.couche);
+    const coq = coque(n.forme, n.x, n.y, n.w, n.h, {
+      fond: FOND[n.forme] || '#FFFFFF',
+      trait: vedette ? enc : (n.forme === 'externe' || n.forme === 'frontiere' ? LIGNE : TRAIT),
+      ep: vedette ? 2.6 : n.forme === 'noeud' ? 2.4 : n.forme === 'frontiere' ? 1.3 : 1.6,
+      tirets: n.forme === 'externe' ? '5 4' : n.forme === 'frontiere' ? '8 6' : null,
+    });
+    if (n.conteneur) return coq + symbole(n.slug, n.x + 10, n.y + 8, 24)
+      + txt(n.x + 40, n.y + 21, n.inst, { taille: 12, gras: 700 })
+      + txt(n.x + 40, n.y + 36, n.nom, { taille: 10, gras: 500, encre: DOUX });
+    const t = 32;
+    const yTitre = Math.max(n.y + n.h - 30, hautUtile(n) + t + 13);
+    return coq + symbole(n.slug, n.x + n.w / 2 - t / 2, hautUtile(n), t)
+      + txt(n.x + n.w / 2, yTitre, n.inst, { centre: true, gras: 700, encre: vedette ? enc : ENCRE })
+      + txt(n.x + n.w / 2, yTitre + 17, n.nom, { centre: true, taille: 10, gras: 500, encre: DOUX });
+  },
 };
 
 // --- les recommandations, écrites dans la planche --------------------------
@@ -184,6 +208,7 @@ const VERDICTS = {
   insuffisant: ['#B36208', '#FBF0E2', 'INSUFFISANT SEUL'],
   recommande:  ['#0B7A6E', '#D8ECE9', 'RECOMMANDÉ'],
   adr:         ['#7038D8', '#EFE8FB', 'EXIGE UN ADR'],
+  propose:     ['#0B6E7F', '#DDEDF1', 'MA PROPOSITION'],
 };
 const CARTES = [
   { cle: 'A', titre: 'Symbole seul, 34 px', sous: 'l’existant, + le nom d’instance',
@@ -204,6 +229,13 @@ const CARTES = [
   { cle: 'F', titre: 'Le bloc-marque devient la boîte', sous: 'instance en titre, produit en sous-titre',
     verdict: 'adr', levier: 'levier 3',
     notes: ['Inverse la hiérarchie : l’instance devient le titre,', 'le produit passe en sous-titre.', 'Seul rendu qui répond vraiment à « nommer le', 'bucket ». Mais la couleur porte seule.'] },
+  { cle: 'G', titre: 'La combinaison', sous: 'fonds de E, hiérarchie de F, accent de C',
+    verdict: 'propose', levier: 'levier 2',
+    notes: ['Le fond code la forme, l’instance fait le titre, le',
+            'produit le sous-titre, un seul sujet est accentué.',
+            'Le symbole garde sa pastille : lui seul porte la',
+            'couleur de marque, et les logos se reconnaissent.',
+            'Survit au niveau de gris, et sans ADR.'] },
 ];
 
 // --- assemblage ------------------------------------------------------------
@@ -260,14 +292,14 @@ for (const n of FRAG) {
 const H = Y0 + CARTES.length * (CH + CG) + 70;
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"`
   + ` font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img"`
-  + ` aria-label="Six rendus candidats pour les nœuds de schéma, avec recommandation">`
+  + ` aria-label="Sept rendus candidats pour les nœuds de schéma, avec recommandation">`
   + `<rect width="${W}" height="${H}" fill="#FFFFFF"/><defs>${fleche()}</defs>`
-  + `<text x="24" y="46" font-size="23" font-weight="700" fill="${ENCRE}">Six rendus candidats pour un nœud de schéma</text>`
+  + `<text x="24" y="46" font-size="23" font-weight="700" fill="${ENCRE}">Sept rendus candidats pour un nœud de schéma</text>`
   + `<text x="24" y="70" font-size="12.5" fill="${DOUX}">Même fragment à chaque ligne — les neuf formes de l’ADR 0003, dont deux conteneurs — pour que la comparaison porte sur le rendu et rien d’autre.</text>`
   + `<text x="24" y="90" font-size="12.5" fill="${DOUX}">Chaque nœud porte deux noms : le produit, que le bloc-marque sait écrire, et l’instance, que lui seul ne saura jamais écrire. Le verdict de chaque ligne est mon avis, pas une décision.</text>`
   + out
   + `<line x1="24" y1="${H - 56}" x2="${W - 24}" y2="${H - 56}" stroke="#E3E7EA"/>`
-  + `<text x="24" y="${H - 34}" font-size="12" fill="${DOUX}">Recommandation : <tspan font-weight="700" fill="${ENCRE}">C tout de suite</tspan> (gratuit, indépendant), puis <tspan font-weight="700" fill="${ENCRE}">E</tspan> comme cible. D seul ne suffit pas, B est à écarter, F ne se décide pas sans ADR.</text>`
+  + `<text x="24" y="${H - 34}" font-size="12" fill="${DOUX}">Recommandation : <tspan font-weight="700" fill="${ENCRE}">G</tspan>, qui combine les trois leviers compatibles — et <tspan font-weight="700" fill="${ENCRE}">C</tspan> seule si l’on ne veut toucher à rien. B est à écarter, D ne suffit pas seul, F ne se décide pas sans ADR.</text>`
   + `<text x="24" y="${H - 16}" font-size="10.5" fill="${LIGNE}">Rien de tout ceci n’est appliqué : seule la ligne A correspond à l’état du dépôt. Planche générée par scripts/specimen-rendus.mjs.</text>`
   + `</svg>`;
 
