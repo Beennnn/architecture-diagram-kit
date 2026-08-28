@@ -6,6 +6,7 @@
     "tabler": "world",
     "lucide": "globe",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -17,6 +18,7 @@
     "tabler": "lock",
     "lucide": "globe-lock",
     "simpleIcons": "openssl",
+    "type": "protocole",
     "hex": "#721412",
     "marque": "OpenSSL",
     "source": "https://www.openssl.org"
@@ -28,6 +30,7 @@
     "tabler": "terminal-2",
     "lucide": "square-terminal",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -39,6 +42,7 @@
     "tabler": "prompt",
     "lucide": "terminal",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -50,6 +54,7 @@
     "tabler": "file-upload",
     "lucide": "file-up",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -61,6 +66,7 @@
     "tabler": "folder-share",
     "lucide": "folder-sync",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -72,6 +78,7 @@
     "tabler": "folder-cog",
     "lucide": "folder-cog",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -83,6 +90,7 @@
     "tabler": "device-desktop-share",
     "lucide": "hard-drive",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -94,6 +102,7 @@
     "tabler": "server-2",
     "lucide": "server",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -105,6 +114,7 @@
     "tabler": "api",
     "lucide": "braces",
     "simpleIcons": "openapiinitiative",
+    "type": "protocole",
     "hex": "#6BA539",
     "marque": "OpenAPI Initiative",
     "source": "https://www.openapis.org/faq/style-guide"
@@ -117,6 +127,7 @@
     "lucide": "share-2",
     "simpleIcons": "graphql",
     "marqueOfficielle": true,
+    "type": "protocole",
     "hex": "#E10098",
     "marque": "GraphQL",
     "source": "https://graphql.org/brand"
@@ -128,6 +139,7 @@
     "tabler": "arrows-right-left",
     "lucide": "arrow-left-right",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -139,6 +151,7 @@
     "tabler": "file-code",
     "lucide": "file-code",
     "simpleIcons": "xml",
+    "type": "protocole",
     "hex": "#005FAD",
     "marque": "XML",
     "source": "https://www.w3.org/Icons/XML"
@@ -150,6 +163,7 @@
     "tabler": "plug-connected",
     "lucide": "plug-zap",
     "simpleIcons": "socketdotio",
+    "type": "protocole",
     "hex": "#010101",
     "marque": "Socket.io",
     "source": "https://socket.io"
@@ -161,6 +175,7 @@
     "tabler": "webhook",
     "lucide": "webhook",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -173,6 +188,7 @@
     "lucide": "radio-tower",
     "simpleIcons": "mqtt",
     "marqueOfficielle": true,
+    "type": "protocole",
     "hex": "#660066",
     "marque": "MQTT",
     "source": "https://mqtt.org"
@@ -184,6 +200,7 @@
     "tabler": "stack-2",
     "lucide": "layers",
     "simpleIcons": "rabbitmq",
+    "type": "protocole",
     "hex": "#FF6600",
     "marque": "RabbitMQ",
     "source": "https://www.rabbitmq.com"
@@ -196,6 +213,7 @@
     "lucide": "messages-square",
     "simpleIcons": "xmpp",
     "marqueOfficielle": true,
+    "type": "protocole",
     "hex": "#002B5C",
     "marque": "XMPP",
     "source": "https://github.com/xsf/xmpp.org/blob/82856a2cec0a99b197c6985191635544e6b3ed69/static/images/logos/xmpp-logo.svg"
@@ -207,6 +225,7 @@
     "tabler": "mail-fast",
     "lucide": "mail",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -218,6 +237,7 @@
     "tabler": "mail-opened",
     "lucide": "mail-open",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -229,6 +249,7 @@
     "tabler": "mailbox",
     "lucide": "inbox",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -240,6 +261,7 @@
     "tabler": "world-search",
     "lucide": "signpost",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -251,6 +273,7 @@
     "tabler": "router",
     "lucide": "router",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -262,6 +285,7 @@
     "tabler": "list-tree",
     "lucide": "list-tree",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -273,6 +297,7 @@
     "tabler": "gauge",
     "lucide": "gauge",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -284,6 +309,7 @@
     "tabler": "clock-play",
     "lucide": "timer",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -295,6 +321,7 @@
     "tabler": "device-cctv",
     "lucide": "video",
     "simpleIcons": null,
+    "type": "protocole",
     "hex": null,
     "marque": null,
     "source": null
@@ -306,6 +333,7 @@
     "tabler": "shield-lock",
     "lucide": "shield-check",
     "simpleIcons": "wireguard",
+    "type": "protocole",
     "hex": "#88171A",
     "marque": "WireGuard",
     "source": "https://www.wireguard.com"
@@ -317,6 +345,7 @@
     "tabler": "key",
     "lucide": "key-round",
     "simpleIcons": "jsonwebtokens",
+    "type": "protocole",
     "hex": "#000000",
     "marque": "JSON Web Tokens",
     "source": "https://jwt.io"
@@ -329,6 +358,7 @@
     "lucide": "rss",
     "simpleIcons": "rss",
     "marqueOfficielle": true,
+    "type": "protocole",
     "hex": "#FFA500",
     "marque": "RSS",
     "source": "https://en.wikipedia.org/wiki/Feed_icon"
@@ -341,6 +371,7 @@
     "lucide": "shuffle",
     "simpleIcons": "bittorrent",
     "marqueOfficielle": true,
+    "type": "protocole",
     "hex": "#050505",
     "marque": "BitTorrent",
     "source": "https://www.bittorrent.com/products"
@@ -353,8 +384,121 @@
     "lucide": "waypoints",
     "simpleIcons": "ipfs",
     "marqueOfficielle": true,
+    "type": "protocole",
     "hex": "#65C2CB",
     "marque": "IPFS",
     "source": "https://github.com/ipfs-inactive/logo/tree/73169b495332415b174ac2f37ec27c4b2ee8da83"
+  },
+  {
+    "slug": "java",
+    "label": "Java",
+    "categorie": "Langage & build",
+    "simpleIcons": "openjdk",
+    "note": "Le logo Java est une marque Oracle, non redistribuable. On emploie celui d'OpenJDK — l'implémentation de référence — que les développeurs Java reconnaissent.",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "Langage & build",
+    "hex": "#000000",
+    "marque": "OpenJDK",
+    "source": "https://hg.openjdk.java.net/duke/duke/file/ca00f100dafc/vector/Agent.svg"
+  },
+  {
+    "slug": "maven",
+    "label": "Maven",
+    "categorie": "Langage & build",
+    "simpleIcons": "apachemaven",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "Langage & build",
+    "hex": "#C71A36",
+    "marque": "Apache Maven",
+    "source": "https://apache.org/logos"
+  },
+  {
+    "slug": "junit",
+    "label": "JUnit",
+    "categorie": "Test",
+    "simpleIcons": "junit5",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "Test",
+    "hex": "#25A162",
+    "marque": "JUnit5",
+    "source": "https://github.com/junit-team/junit5/blob/86465f4f491219ad0c0cf9c64eddca7b0edeb86f/assets/img/junit5-logo.svg"
+  },
+  {
+    "slug": "springboot",
+    "label": "Spring Boot",
+    "categorie": "Framework",
+    "simpleIcons": "springboot",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "Framework",
+    "hex": "#6DB33F",
+    "marque": "Spring Boot",
+    "source": "https://spring.io/projects"
+  },
+  {
+    "slug": "postgresql",
+    "label": "PostgreSQL",
+    "categorie": "Données",
+    "simpleIcons": "postgresql",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "Données",
+    "hex": "#4169E1",
+    "marque": "PostgreSQL",
+    "source": "https://wiki.postgresql.org/wiki/Logo"
+  },
+  {
+    "slug": "s3",
+    "label": "S3",
+    "categorie": "Données",
+    "simpleIcons": null,
+    "tabler": "bucket",
+    "couleur": "#0B7A6E",
+    "note": "AWS ne redistribue pas ses marques sous licence libre. Le picto « bucket » reprend le vocabulaire même de S3, que ses utilisateurs reconnaissent.",
+    "type": "produit",
+    "marqueOfficielle": false,
+    "famille": "Données",
+    "hex": "#0B7A6E",
+    "marque": null,
+    "source": null
+  },
+  {
+    "slug": "kafka",
+    "label": "Kafka",
+    "categorie": "Messaging",
+    "simpleIcons": "apachekafka",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "Messaging",
+    "hex": "#231F20",
+    "marque": "Apache Kafka",
+    "source": "https://apache.org/logos"
+  },
+  {
+    "slug": "openapi",
+    "label": "OpenAPI",
+    "categorie": "API",
+    "simpleIcons": "openapiinitiative",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "API",
+    "hex": "#6BA539",
+    "marque": "OpenAPI Initiative",
+    "source": "https://www.openapis.org/faq/style-guide"
+  },
+  {
+    "slug": "kubernetes",
+    "label": "Kubernetes",
+    "categorie": "Plateforme",
+    "simpleIcons": "kubernetes",
+    "type": "produit",
+    "marqueOfficielle": true,
+    "famille": "Plateforme",
+    "hex": "#326CE5",
+    "marque": "Kubernetes",
+    "source": "https://github.com/kubernetes/kubernetes/tree/cac53883f4714452f3084a22e4be20d042a9df33/logo"
   }
 ]

@@ -116,8 +116,11 @@ const court = (r) => r.court || r.label.split(' /')[0].split(' (')[0];
 
 // Couleur de base : la marque quand elle désigne le protocole, la couche sinon.
 function base(r) {
-  if (r.marqueOfficielle && r.hex) return '#' + r.hex;
-  return couches[famVersCouche[r.famille]].clair;
+  if (r.couleur) return r.couleur;                                   // repli explicite
+  if (r.marqueOfficielle && r.hex) return r.hex.startsWith('#') ? r.hex : '#' + r.hex;
+  const c = couches[famVersCouche[r.famille]];
+  if (!c) throw new Error(`Aucune couleur pour « ${r.slug} » (famille « ${r.famille} »). Complétez scripts/couches.json.`);
+  return c.clair;
 }
 
 const entete = (w, h, nom) =>
@@ -194,6 +197,7 @@ for (const r of rows) {
   }
   largeMax = Math.max(largeMax, +horizontal(r).match(/width="(\d+)"/)[1]);
 }
-console.log(`  ${rows.length} protocoles × ${SORTIES.length} dispositions = ${rows.length * SORTIES.length} fichiers`);
-console.log(`  ${marques} portent le logo officiel de leur marque, ${rows.length - marques} un picto générique`);
+const nbProto = rows.filter((r) => r.type === 'protocole').length;
+console.log(`  ${nbProto} protocoles + ${rows.length - nbProto} produits × ${SORTIES.length} dispositions = ${rows.length * SORTIES.length} fichiers`);
+console.log(`  ${marques} portent un logo de marque, ${rows.length - marques} un picto générique`);
 console.log(`  lockup horizontal le plus large : ${largeMax} px`);

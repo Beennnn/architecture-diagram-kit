@@ -15,26 +15,38 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const lire = (d, slug) => fs.readFileSync(path.join(ROOT, d, `${slug}.svg`), 'utf8')
   .replace(/<\?xml[^>]*\?>/, '').replace(/<title>[\s\S]*?<\/title>/, '').trim();
 
-const marques = rows.filter((r) => r.marqueOfficielle);
-const pictos = rows.filter((r) => !r.marqueOfficielle);
-const echantillon = ['http', 'graphql', 'mqtt', 'ssh', 'smtp', 'dns', 'rss', 'ipfs'];
+const protocoles = rows.filter((r) => r.type === 'protocole');
+const produits = rows.filter((r) => r.type === 'produit');
+const marques = protocoles.filter((r) => r.marqueOfficielle);
+const pictos = protocoles.filter((r) => !r.marqueOfficielle);
+const echantillon = ['http', 'graphql', 'kafka', 'springboot', 'postgresql', 'kubernetes', 'ssh', 'java'];
 
 const serie = (d, slugs, cls = '') => `<div class="serie ${cls}">${slugs.map((s) => `<span class="v">${lire(d, s)}</span>`).join('')}</div>`;
 
 const parCouche = Object.entries(couches).map(([k, c]) => {
-  const dedans = rows.filter((r) => famVersCouche[r.famille] === k);
+  const dedans = protocoles.filter((r) => famVersCouche[r.famille] === k);
   return `<section class="couche">
       <h3><span class="pastille" style="background:${c.clair}"></span>${esc(c.label)}<em>${dedans.length}</em></h3>
       ${serie('lockups/horizontal', dedans.map((r) => r.slug))}
     </section>`;
 }).join('\n    ');
 
+const parCategorie = [...new Set(produits.map((r) => r.categorie))].map((cat) => {
+  const dedans = produits.filter((r) => r.categorie === cat);
+  return `<section class="couche">
+      <h3><span class="pastille" style="background:${dedans[0].hex}"></span>${esc(cat)}<em>${dedans.length}</em></h3>
+      ${serie('lockups/horizontal', dedans.map((r) => r.slug))}
+    </section>`;
+}).join('\n    ');
+
+const replis = produits.filter((r) => !r.marqueOfficielle || r.note);
+
 const tableau = rows.map((r) => `<tr>
           <th scope="row">${esc(r.label)}</th>
           <td><code>${esc(r.slug)}</code></td>
           <td>${r.marqueOfficielle ? '<span class="tag t1">logo de marque</span>' : '<span class="tag t2">picto</span>'}</td>
           <td><code>${esc(r.marqueOfficielle ? r.simpleIcons : r.tabler)}</code></td>
-          <td>${esc(couches[famVersCouche[r.famille]].label)}</td>
+          <td>${esc(r.type === 'produit' ? r.categorie : couches[famVersCouche[r.famille]].label)}</td>
         </tr>`).join('\n        ');
 
 const html = `<title>Bloc-marques des protocoles</title>
@@ -120,7 +132,7 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
 
 <header class="top">
   <div class="wrap">
-    <p class="eyebrow">32 protocoles · 2 niveaux · 4 dispositions · 128 SVG</p>
+    <p class="eyebrow">${protocoles.length} protocoles · ${produits.length} produits · 4 dispositions · ${rows.length * 4} SVG</p>
     <h1>Bloc-marques des protocoles</h1>
     <p class="lede">Un <strong>bloc-marque</strong> (lockup) verrouille un signe et un nom dans une disposition constante. Ici le signe est le <strong>logo officiel</strong> quand la marque désigne le protocole lui-même, un <strong>picto générique</strong> sinon. Chaque fichier est autonome : couleurs en dur, texte vectorisé, aucune police à installer.</p>
   </div>
@@ -156,6 +168,18 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
 
   <section class="bloc">
     <div class="shead">
+      <h2>Produits et technologies</h2>
+      <p>Ici la règle s'inverse : un produit <strong>a</strong> une marque, et les gens la reconnaissent sans légende. On emploie donc le logo officiel dès qu'il est redistribuable, dans sa couleur — c'est ce qui rend le schéma lisible d'un coup d'œil.</p>
+    </div>
+    ${parCategorie}
+    ${replis.length ? `<div class="niv" style="margin-top:18px">
+      <h3>Les deux cas où le logo n'est pas disponible</h3>
+      ${replis.map((r) => `<p><strong>${esc(r.label)}</strong> — ${esc(r.note || '')}</p>`).join('\n      ')}
+    </div>` : ''}
+  </section>
+
+  <section class="bloc">
+    <div class="shead">
       <h2>Disposition empilée <code>lockups/empile/</code></h2>
       <p>Pour représenter un nœud du schéma, à la place d'une boîte. 84 px de haut.</p>
     </div>
@@ -182,7 +206,7 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
     <div class="shead"><h2>Table de référence</h2><p>Le nom de fichier est le slug, identique dans les quatre dispositions.</p></div>
     <div class="scroller">
       <table>
-        <thead><tr><th scope="col">Protocole</th><th scope="col">Fichier</th><th scope="col">Niveau</th><th scope="col">Source du signe</th><th scope="col">Couche</th></tr></thead>
+        <thead><tr><th scope="col">Nom</th><th scope="col">Fichier</th><th scope="col">Niveau</th><th scope="col">Source du signe</th><th scope="col">Couche</th></tr></thead>
         <tbody>
         ${tableau}
         </tbody>

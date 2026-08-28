@@ -20,6 +20,7 @@ for (const [name, dir] of Object.entries(SRC)) {
 }
 
 const { protocoles } = JSON.parse(fs.readFileSync(path.join(ROOT, 'protocoles.json'), 'utf8'));
+const { produits } = JSON.parse(fs.readFileSync(path.join(ROOT, 'produits.json'), 'utf8'));
 
 // Simple Icons indexe par titre ; on retrouve le slug comme le fait leur SDK.
 const siRaw = JSON.parse(fs.readFileSync(SI_DATA, 'utf8'));
@@ -38,6 +39,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
 for (const d of ['tabler', 'lucide', 'marques']) fs.mkdirSync(path.join(OUT, d), { recursive: true });
 
 const rows = protocoles.map((p) => {
+  p = { ...p, type: 'protocole' };
   const tSvg = readIcon(SRC.tabler, p.tabler, 'Tabler');
   const lSvg = readIcon(SRC.lucide, p.lucide, 'Lucide');
   fs.writeFileSync(path.join(OUT, 'tabler', `${p.slug}.svg`), `${tSvg}\n`);
@@ -55,23 +57,44 @@ const rows = protocoles.map((p) => {
   return { ...p, hex, marque, source, tSvg, lSvg, sSvg };
 });
 
+// Les produits n'ont qu'un signe : leur logo officiel, ou un picto en repli
+// quand la marque n'est pas redistribuable (S3, Java).
+const rowsProduits = produits.map((p) => {
+  let sSvg = null, hex = p.couleur ? p.couleur.replace('#', '') : null, marque = null, source = null;
+  if (p.simpleIcons) {
+    sSvg = readIcon(SRC.simple, p.simpleIcons, 'Simple Icons');
+    const meta = siBySlug[p.simpleIcons] || {};
+    hex = meta.hex || hex;
+    marque = meta.title || p.simpleIcons;
+    source = meta.source || null;
+    fs.writeFileSync(path.join(OUT, 'marques', `${p.slug}.svg`), `${sSvg}\n`);
+  }
+  const tSvg = p.tabler ? readIcon(SRC.tabler, p.tabler, 'Tabler') : null;
+  if (!sSvg && !tSvg) throw new Error(`Le produit « ${p.slug} » n'a ni logo ni picto de repli.`);
+  if (tSvg) fs.writeFileSync(path.join(OUT, 'tabler', `${p.slug}.svg`), `${tSvg}\n`);
+  return { ...p, type: 'produit', marqueOfficielle: Boolean(sSvg), famille: p.categorie, hex, marque, source, tSvg, lSvg: null, sSvg };
+});
+
+const tout = [...rows, ...rowsProduits];
+
 const csvCell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
 fs.writeFileSync(
   path.join(ROOT, 'mapping.csv'),
-  ['protocole,famille,tabler_mit,lucide_isc,logo_officiel_cc0,marque,couleur_marque']
-    .concat(rows.map((r) => [r.label, r.famille, r.tabler, r.lucide, r.simpleIcons || '', r.marque || '', r.hex ? `#${r.hex}` : ''].map(csvCell).join(',')))
+  ['nom,type,famille,tabler_mit,lucide_isc,logo_officiel_cc0,marque,couleur']
+    .concat(tout.map((r) => [r.label, r.type, r.famille, r.tabler || '', r.lucide || '', r.simpleIcons || '', r.marque || '', r.hex ? (r.hex.startsWith('#') ? r.hex : `#${r.hex}`) : ''].map(csvCell).join(',')))
     .join('\n') + '\n'
 );
 
 fs.writeFileSync(
   path.join(ROOT, 'mapping.json'),
-  JSON.stringify(rows.map(({ tSvg, lSvg, sSvg, ...r }) => ({ ...r, hex: r.hex ? `#${r.hex}` : null })), null, 2) + '\n'
+  JSON.stringify(tout.map(({ tSvg, lSvg, sSvg, ...r }) => ({ ...r, hex: r.hex ? (r.hex.startsWith('#') ? r.hex : `#${r.hex}`) : null })), null, 2) + '\n'
 );
 
 // Réutilisé par specimen.mjs, hors du dépôt.
 fs.mkdirSync(path.join(ROOT, '.cache'), { recursive: true });
-fs.writeFileSync(path.join(ROOT, '.cache/rows.json'), JSON.stringify(rows));
+fs.writeFileSync(path.join(ROOT, '.cache/rows.json'), JSON.stringify(tout));
 
 const avecLogo = rows.filter((r) => r.simpleIcons).length;
 const officiels = rows.filter((r) => r.marqueOfficielle).length;
-console.log(`  ${rows.length} protocoles · ${rows.length * 2 + avecLogo} fichiers bruts · ${avecLogo} logos de marque (dont ${officiels} désignent le protocole lui-même)`);
+console.log(`  ${rows.length} protocoles · ${avecLogo} logos au catalogue, dont ${officiels} désignent le protocole lui-même`);
+console.log(`  ${rowsProduits.length} produits · ${rowsProduits.filter((r) => r.marqueOfficielle).length} portent leur logo officiel, ${rowsProduits.filter((r) => !r.marqueOfficielle).length} en repli picto`);
