@@ -94,13 +94,59 @@ for (const t of titres) {
   });
 }
 
+// ─── conformité ───────────────────────────────────────────────────────────
+// Cette voie est secondaire (ADR 0004) : sans utilisateur quotidien, elle
+// casserait en silence à la première évolution du format. Ces assertions
+// transforment ce risque en échec de build.
+const VERSION_VERIFIEE = '0.18.1';   // @excalidraw/excalidraw sur lequel le format a été lu
+
+function verifier(sc) {
+  const err = (m) => { throw new Error(`scène Excalidraw non conforme : ${m}`); };
+  if (sc.type !== 'excalidraw' || sc.version !== 2) err('type ou version inattendus');
+  if (!sc.files || typeof sc.files !== 'object') err('« files » absent — c’est ce que ne porte pas une bibliothèque');
+
+  const ids = new Set();
+  const BASE = ['id', 'x', 'y', 'width', 'height', 'angle', 'strokeColor', 'backgroundColor',
+    'fillStyle', 'strokeWidth', 'strokeStyle', 'roundness', 'roughness', 'opacity', 'seed',
+    'version', 'versionNonce', 'index', 'isDeleted', 'groupIds', 'frameId', 'boundElements',
+    'updated', 'link', 'locked'];
+
+  for (const e of sc.elements) {
+    for (const c of BASE) if (!(c in e)) err(`champ « ${c} » manquant sur ${e.id}`);
+    if (ids.has(e.id)) err(`identifiant en double : ${e.id}`);
+    ids.add(e.id);
+    if (!Number.isFinite(e.x) || !Number.isFinite(e.y)) err(`coordonnée non finie sur ${e.id}`);
+    if (e.type === 'image') {
+      if (!sc.files[e.fileId]) err(`l’image ${e.id} référence un fileId absent de « files »`);
+      if (e.status !== 'saved') err(`l’image ${e.id} n’est pas marquée « saved »`);
+    }
+    if (e.type === 'text' && e.text !== e.originalText) err(`text et originalText divergent sur ${e.id}`);
+  }
+
+  for (const [k, f] of Object.entries(sc.files)) {
+    if (f.id !== k) err(`clé et id divergent pour le fichier ${k}`);
+    const pref = 'data:image/svg+xml;base64,';
+    if (!f.dataURL.startsWith(pref)) err(`dataURL malformée pour ${k}`);
+    const svg = Buffer.from(f.dataURL.slice(pref.length), 'base64').toString('utf8');
+    if (!svg.startsWith('<svg') || !svg.trimEnd().endsWith('</svg>')) err(`le fichier ${k} ne redécode pas en SVG`);
+    if (sha1(svg) !== k) err(`le fichier ${k} n’est pas nommé par le condensé de son contenu`);
+  }
+
+  // chaque badge est un groupe de deux éléments : le signe et son nom
+  const parGroupe = {};
+  for (const e of sc.elements) for (const g of e.groupIds) (parGroupe[g] ||= []).push(e.type);
+  const mauvais = Object.entries(parGroupe).filter(([, t]) => t.length !== 2 || !t.includes('image') || !t.includes('text'));
+  if (mauvais.length) err(`${mauvais.length} groupe(s) ne sont pas une paire image + texte`);
+}
+
 const scene = {
   type: 'excalidraw', version: 2, source: 'https://github.com/Beennnn/logo-libres',
   elements,
   appState: { gridSize: 20, gridStep: 5, gridModeEnabled: false, viewBackgroundColor: '#ffffff' },
   files,
 };
+verifier(scene);
 fs.mkdirSync(path.join(ROOT, 'excalidraw'), { recursive: true });
 const sortie = JSON.stringify(scene, null, 2) + '\n';
 fs.writeFileSync(path.join(ROOT, 'excalidraw/badges.excalidraw'), sortie);
-console.log(`  excalidraw/badges.excalidraw · ${elements.length} éléments · ${Object.keys(files).length} images · ${(sortie.length / 1024).toFixed(0)} Ko`);
+console.log(`  excalidraw/badges.excalidraw · ${elements.length} éléments · ${Object.keys(files).length} images · ${(sortie.length / 1024).toFixed(0)} Ko · conforme au format ${VERSION_VERIFIEE}`);

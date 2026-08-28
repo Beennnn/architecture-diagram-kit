@@ -104,6 +104,17 @@ Le libellé reste ainsi cherchable (`Ctrl+F`), modifiable sur place
 [`drawio/README.md`](drawio/README.md) · raisonnement :
 [l'état de l'art](docs/etat-de-l-art-schemas.md#5-la-conséquence-pour-drawio).
 
+### Excalidraw — voie secondaire
+
+`excalidraw/badges.excalidraw` est une **scène** à ouvrir puis copier-coller :
+le format de bibliothèque d'Excalidraw ne transporte pas d'images.
+
+Gardez les `.excalidraw` **dans le dépôt git** plutôt que dans le cloud
+d'Excalidraw : le format est du JSON simple, l'éditeur gratuit et le greffon
+VS Code les ouvrent en place, et la limite d'une seule scène du plan gratuit ne
+se déclenche jamais. Pourquoi cette voie existe et ce qu'elle coûte :
+[ADR 0004](docs/adr/0004-excalidraw-voie-secondaire.md).
+
 ## Comment la couleur est calculée
 
 Le fond n'est pas une part fixe de la teinte. Une part fixe donne des pastilles
@@ -184,6 +195,7 @@ Node ≥ 18 et npm. Versions épinglées dans `regenerer.sh`.
 - [0001 — Six couleurs de couche, imposées](docs/adr/0001-six-couleurs-de-couche.md)
 - [0002 — Réutiliser le logo officiel dès qu'il existe](docs/adr/0002-reutiliser-les-logos-existants.md)
 - [0003 — Une grammaire de formes, normative et fermée](docs/adr/0003-grammaire-de-formes.md)
+- [0004 — Garder la voie Excalidraw, en second](docs/adr/0004-excalidraw-voie-secondaire.md)
 
 ## Ajouter un protocole
 

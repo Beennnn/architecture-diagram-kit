@@ -31,3 +31,5 @@ Format [Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-archit
   officiel dès qu'il existe et qu'il est redistribuable
 - **[0003](adr/0003-grammaire-de-formes.md)** — Une grammaire de formes,
   normative et fermée
+- **[0004](adr/0004-excalidraw-voie-secondaire.md)** — Garder la voie Excalidraw,
+  en second
