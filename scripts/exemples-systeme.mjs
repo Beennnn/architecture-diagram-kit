@@ -3,7 +3,7 @@
 // un seul schéma viole la règle « un seul niveau d'abstraction par schéma ».
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, encreAccent, fleche, marqueur, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, ACCENT, fleche, marqueur, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -21,7 +21,7 @@ const zone = (z) => boite({ x: z.x, y: z.y, w: z.w, h: z.h, forme: 'frontiere', 
 
 // Un nœud : titre + sous-titre, badge à gauche, deux tailles selon la hauteur
 const noeud = (n) => {
-  const vd = n.vedette ? encreAccent(n.ico) : null;
+  const vd = n.vedette ? ACCENT : null;
   // Un nœud haut héberge d'autres boîtes : son libellé va en haut, sinon les
   // enfants le recouvrent. Constat de l'exercice, consigné dans l'ADR 0005.
   if (n.forme === 'noeud' && n.h > 100) {
@@ -49,7 +49,7 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   const couchesUtilisees = [...new Set(noeuds.map((n) => PAR_SLUG[n.ico]).filter((e) => e && !e.marqueOfficielle)
     .map((e) => FAM[e.famille]).filter(Boolean))]
     .map((k) => [COUCHES[k].label, COUCHES[k].clair]);
-  const leg = legende(40, h - 46, formesUtilisees, couchesUtilisees);
+  const leg = legende(40, h - 46, formesUtilisees, couchesUtilisees, noeuds.some((n) => n.vedette));
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="${esc(titre)}">
   <title>${esc(titre)}</title>
   <defs>${fleche()}</defs>

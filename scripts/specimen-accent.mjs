@@ -8,30 +8,37 @@
 // distinguer de ses jumeaux — même forme, même couche.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, boite, encreAccent, FONDS } from './schema.mjs';
-import { melange, contraste } from './couleurs.mjs';
+import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, boite, FONDS } from './schema.mjs';
+import { melange, contraste, encreLisible } from './couleurs.mjs';
+
+// Les options 1 et 4 font dépendre l'accent de la couche du sujet. La grammaire
+// ne sait plus le faire depuis que l'accent est devenu une couleur fonctionnelle
+// (ADR 0007) : on le recalcule ici, puisque ce sont des variantes écartées.
+const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
+const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
+const FAM = {}; for (const [k, c] of Object.entries(COUCHES)) for (const f of c.familles) FAM[f] = k;
+const PAR_SLUG = Object.fromEntries(MAP.map((e) => [e.slug, e]));
+const encreCouche = (slug) => encreLisible(COUCHES[FAM[PAR_SLUG[slug].famille]].clair, '#FFFFFF', 4.5);
 
 const W = 1330, MONO = "'IBM Plex Mono',monospace";
 // Une couleur d'emphase hors palette doit ne ressembler à aucune des six.
 // Bleu, violet, sarcelle, orange, rouge et ardoise étant pris, il reste le
 // magenta. C'est précisément ce qu'on lui reproche : une septième chose à apprendre.
 const HORS_PALETTE = '#A3196F';
+const RETENUE = '2';
 const fondSoutenu = (forme) => melange(FONDS[forme] || '#FFFFFF', ENCRE, 0.07);
 
 // Les quatre façons d'accentuer, à contenu et géométrie rigoureusement égaux.
 const OPTIONS = [
   { cle: '1', nom: 'Encre de couche', sous: 'l’ADR 0007 tel qu’appliqué',
-    accent: (n) => ({ trait: encreAccent(n.ico), ep: 2.6, encre: encreAccent(n.ico) }),
+    accent: (n) => ({ trait: encreCouche(n.ico), ep: 2.6, encre: encreCouche(n.ico) }),
     notes: ['Ce qui est en place. Désigne le sujet et rappelle sa',
             'couche d’un geste, sans couleur supplémentaire.',
             'Mais un sujet d’infrastructure hérite de l’ardoise :',
             'à droite, le nœud accentué ne se détache pas.'] },
   { cle: '2', nom: 'Couleur hors palette', sous: 'un magenta réservé à l’emphase',
-    accent: () => ({ trait: HORS_PALETTE, ep: 2.6, encre: HORS_PALETTE }),
-    notes: ['Marche partout, quelle que soit la couche du sujet.',
-            'Mais ajoute une septième couleur à un jeu qui en',
-            'compte six, et ne veut rien dire par elle-même :',
-            'le lecteur doit l’apprendre. Contredit l’ADR 0001.'] },
+    accent: () => ({ trait: HORS_PALETTE, ep: 3.2, encre: HORS_PALETTE }),
+    notes: ['Retenue. Marche partout, quelle que soit la couche.', 'Prix : une septième couleur, qui ne dit rien par', 'elle-même — la légende doit la nommer.', 'Le liseré de 3,2 px n’est pas décoratif : en dichro-', 'matie, ce magenta est à ΔE00 1,5 de « fichiers ».'] },
   { cle: '3', nom: 'Le poids seul', sous: 'liseré plus épais, fond plus soutenu',
     accent: (n) => ({ trait: ENCRE, ep: 3, encre: ENCRE, fond: fondSoutenu(n.forme) }),
     notes: ['Aucune couleur nouvelle, et ça marche dans toutes',
@@ -39,7 +46,7 @@ const OPTIONS = [
             'Mais l’accent perd la teinte quand le sujet en a',
             'une : à gauche, le bus n’est plus orange.'] },
   { cle: '4', nom: 'Teinte et poids', sous: 'la synthèse — pas proposée plus tôt',
-    accent: (n) => ({ trait: encreAccent(n.ico), ep: 3, encre: encreAccent(n.ico), fond: fondSoutenu(n.forme) }),
+    accent: (n) => ({ trait: encreCouche(n.ico), ep: 3, encre: encreCouche(n.ico), fond: fondSoutenu(n.forme) }),
     notes: ['Garde la teinte quand le sujet en a une, se replie',
             'sur le poids sinon. Les deux cas passent.',
             'Coût : l’accent devient deux variables, pas une,',
@@ -99,6 +106,10 @@ OPTIONS.forEach((o, k) => {
     + `<text x="48" y="${y + 30}" font-size="18" font-weight="700" fill="${ENCRE}">${o.cle}</text>`
     + `<text x="68" y="${y + 30}" font-size="14.5" font-weight="700" fill="${ENCRE}">${esc(o.nom)}</text>`
     + `<text x="68" y="${y + 47}" font-size="11" fill="${DOUX}">${esc(o.sous)}</text>`
+    + (o.cle === RETENUE
+      ? `<rect x="${W - 148}" y="${y + 16}" width="76" height="19" rx="9.5" fill="#F3E3EC" stroke="${HORS_PALETTE}" stroke-width="1.1"/>`
+        + `<text x="${W - 110}" y="${y + 29.5}" text-anchor="middle" font-size="9.5" font-weight="700" font-family="${MONO}" fill="${HORS_PALETTE}">RETENUE</text>`
+      : '')
     + o.notes.map((n, j) => `<text x="48" y="${y + 74 + j * 14}" font-size="10" fill="${DOUX}">${esc(n)}</text>`).join('')
     + cellule(COLORE, X_C, y + 40, o, false)
     + cellule(INFRA, X_I, y + 30, o, true);
@@ -117,7 +128,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   + `<text x="${X_I}" y="${Y0 - 14}" font-size="10" font-weight="700" letter-spacing="0.6" font-family="${MONO}" fill="${LIGNE}">SUJET D’INFRASTRUCTURE, PARMI SES JUMEAUX</text>`
   + out
   + `<line x1="24" y1="${H - 54}" x2="${W - 24}" y2="${H - 54}" stroke="#E3E7EA"/>`
-  + `<text x="24" y="${H - 32}" font-size="12" fill="${DOUX}">Ma préférence : <tspan font-weight="700" fill="${ENCRE}">4</tspan>, qui passe les deux cas sans couleur nouvelle. <tspan font-weight="700" fill="${ENCRE}">3</tspan> si l’on veut que l’accent ne signifie qu’une chose. <tspan font-weight="700" fill="${ENCRE}">2</tspan> contredit l’ADR 0001.</text>`
+  + `<text x="24" y="${H - 32}" font-size="12" fill="${DOUX}">Retenue : <tspan font-weight="700" fill="${ENCRE}">2</tspan>, pour sa souplesse — elle ne dépend pas de la couche du sujet. Le liseré épais lui a été ajouté après mesure : seul, le magenta se confond avec la sarcelle en dichromatie.</text>`
   + `<text x="24" y="${H - 14}" font-size="10.5" fill="${LIGNE}">Seule la ligne 1 est en place dans le dépôt. Planche générée par scripts/specimen-accent.mjs.</text>`
   + `</svg>`;
 

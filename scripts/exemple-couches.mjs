@@ -3,7 +3,7 @@
 // forme de schéma très différente de celle de exemple.mjs.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, encreAccent, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, ACCENT, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -72,7 +72,7 @@ const bandes = BANDES.map((z) => `<g>`
   + `<text x="${z.x + z.w - 18}" y="${z.y + 44}" text-anchor="end" font-size="11" fill="${LIGNE}">${esc(z.s)}</text></g>`).join('\n    ');
 
 const noeuds = N.map((n) => {
-  const vd = n.vedette ? encreAccent(n.ico) : null;
+  const vd = n.vedette ? ACCENT : null;
   const cy = n.y + n.h / 2, dec = n.forme === 'stockage' ? 6 : 0;
   const tx = n.x + 56, base = n.r ? cy - 12 + dec : cy - 3 + dec;
   return `<g>${boite({ ...n, vedette: vd })}`
@@ -105,7 +105,8 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   ${legende(40, H - 90,
     [...new Set(N.map((n) => n.forme || 'service'))].concat(BANDES.length ? ['frontiere'] : []),
     [...new Set(N.map((n) => PAR_SLUG[n.ico]).filter((e) => e && !e.marqueOfficielle)
-      .map((e) => FAM[e.famille]).filter(Boolean))].map((k) => [COUCHES[k].label, COUCHES[k].clair]))}
+      .map((e) => FAM[e.famille]).filter(Boolean))].map((k) => [COUCHES[k].label, COUCHES[k].clair]),
+    N.some((n) => n.vedette))}
 </svg>
 `;
 fs.writeFileSync(path.join(ROOT, 'docs/exemple-couches.svg'), svg);

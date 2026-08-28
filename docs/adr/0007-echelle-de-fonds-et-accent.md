@@ -60,8 +60,23 @@ L'emboîtement se lit désormais par la valeur seule : zone claire, zone
 imbriquée plus sombre, nœud plus sombre encore, boîtes blanches au fond. Sans
 suivre une seule bordure.
 
-**2. Un schéma porte au plus un sujet accentué,** dont le liseré et le titre
-prennent l'encre de sa couche. C'est le paramètre `vedette` de `boite()`.
+**2. Un schéma porte au plus un sujet accentué,** marqué par un liseré et un
+titre en `ACCENT` — un magenta `#A3196F` — porté par un liseré de 3,2 px, plus
+épais que n'importe quel liseré normal (le nœud, à 2,4 px, compris). C'est le
+paramètre `vedette` de `boite()`.
+
+`ACCENT` est une **couleur fonctionnelle, pas une septième couche**. Elle ne dit
+que « c'est le sujet de ce schéma », jamais « ceci appartient à tel domaine ».
+Elle est donc absente de `couches.json`, et la légende la déclare à part, sous
+l'intitulé « sujet du schéma », dès qu'un schéma s'en sert — sinon le lecteur la
+cherche parmi les couches.
+
+Le liseré épais n'est pas décoratif, il est **constitutif**. Mesuré en simulation
+de Viénot-Brettel-Mollon (1999), ce magenta tombe à **ΔE00 = 1,5 en deutéranopie
+et 2,0 en protanopie de la sarcelle `fichiers`** : la même couleur pour environ
+8 % des hommes, qui liraient donc l'accent comme une couche — précisément ce
+qu'il ne doit pas être. L'épaisseur est la seconde variable qu'exige notre propre
+test des niveaux de gris : quand la couleur porte seule, il manque une variable.
 
 **3. `boite()` implémente les neuf formes,** `frontiere` comprise. Elle n'en
 connaissait que huit : les zones avaient leur propre géométrie locale dans
@@ -81,9 +96,16 @@ sans que rien ne le signale. La source des fonds est désormais unique
   l'instance — un bucket s'appelle `voltis-factures`, pas `S3`. Mettre
   l'instance en titre reléguait « S3 » en sous-titre, loin de son symbole. Or
   la reconnaissance des logos est une exigence posée dès l'origine.
-- **Une septième couleur dédiée à l'accent.** L'accent prend l'encre de la
-  couche du sujet : il désigne, il n'introduit pas une couleur de plus
-  ([ADR 0001](0001-six-couleurs-de-couche.md)).
+- **L'encre de la couche comme accent** — la première version de cet ADR. Elle
+  avait l'élégance de n'ajouter aucune couleur, mais la relecture des six vues
+  l'a réfutée : quatre d'entre elles ont un sujet d'infrastructure, dont l'encre
+  est une ardoise presque neutre. L'accent y était invisible, et notamment
+  incapable de distinguer un nœud de ses jumeaux — même forme, même couche.
+- **Le poids seul**, sans couleur. Fonctionne dans toutes les couches et
+  n'ajoute rien à la palette, mais jugé trop discret à l'usage.
+- **Teinte de couche et poids combinés.** Passe les deux cas, mais fait dépendre
+  la visibilité de l'accent de la couche du sujet : sur une vue mono-couche il
+  retombe sur le poids seul, avec le même défaut.
 
 ## Conséquences
 
@@ -91,11 +113,15 @@ sans que rien ne le signale. La source des fonds est désormais unique
 - Le test des niveaux de gris reste valide, et cesse d'être une tautologie :
   la structure survivait jusqu'ici parce que tout était neutre ; elle survit
   désormais parce que la valeur porte réellement l'information.
-- **Limite assumée :** un sujet d'infrastructure hérite de l'ardoise d'infra,
-  qui est presque neutre. Sur une vue mono-couche — le socle matériel, la
-  chaîne de livraison — l'accent se lit comme un liseré plus épais plutôt que
-  comme une couleur. Le procédé y perd l'essentiel de son effet. Nous
-  l'acceptons plutôt que d'introduire une couleur hors palette.
+- **Le jeu compte désormais sept couleurs, dont six seulement sont des
+  couches.** C'est le prix payé : `ACCENT` ne signifie rien par lui-même, il
+  s'apprend. La légende le compense en le nommant, et son emploi est plafonné à
+  une boîte par schéma — au-delà, il cesse de désigner quoi que ce soit.
+- L'accent fonctionne quelle que soit la couche du sujet, y compris sur une vue
+  entièrement d'infrastructure, et distingue un nœud de ses jumeaux.
+- Une troisième planche garde la trace de cet arbitrage :
+  `docs/rendus-accent.svg`, qui juge chaque option sur les deux cas qui les
+  départagent.
 - Deux planches d'arbitrage gardent la trace du raisonnement :
   `docs/rendus-candidats.svg` (sept rendus sur les neuf formes) et
   `docs/rendus-fonds.svg` (la variable isolée, avec le test du flou).

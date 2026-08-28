@@ -3,7 +3,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { encreLisible } from './couleurs.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const ENCRE = '#16181A', DOUX = '#5B6873', TRAIT = '#3E444A', LIGNE = '#8896A2';
@@ -46,24 +45,28 @@ export const FONDS = {
 // des zones ne se lit plus, la valeur étant devenue notre variable de structure.
 export const FOND_IMBRIQUE = { frontiere: '#E7EBEE' };
 
-// L'encre d'accent d'un nœud est celle de SA couche : l'accent désigne le sujet,
-// il n'introduit pas une septième couleur. Un sujet d'infrastructure hérite donc
-// de l'ardoise d'infra — c'est voulu, et c'est aussi la limite du procédé.
-const _COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
-const _MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
-const _FAM = {}; for (const [k, c] of Object.entries(_COUCHES)) for (const f of c.familles) _FAM[f] = k;
-const _PAR_SLUG = Object.fromEntries(_MAP.map((e) => [e.slug, e]));
-export function encreAccent(slug) {
-  const e = _PAR_SLUG[slug];
-  const couche = e && _FAM[e.famille];
-  if (!couche) throw new Error(`Accent demandé sur « ${slug} », dont la couche est inconnue.`);
-  return encreLisible(_COUCHES[couche].clair, '#FFFFFF', 4.5);
-}
+// L'ACCENT est une couleur fonctionnelle, pas une septième couche : il ne dit
+// que « c'est le sujet de ce schéma », jamais « ceci appartient à tel domaine ».
+// Il est donc interdit dans couches.json, et la légende doit le déclarer à part
+// dès qu'un schéma s'en sert — sinon le lecteur le cherche parmi les couches.
+//
+// Magenta par élimination : bleu, violet, sarcelle, orange, rouge et ardoise
+// sont pris par les six couches de l'ADR 0001. Voir l'ADR 0007.
+//
+// MAIS il ne porte pas seul. Mesuré en simulation de Viénot-Brettel-Mollon :
+// en deutéranopie comme en protanopie, ce magenta tombe à ΔE00 = 1,5 de la
+// sarcelle « fichiers » — soit la même couleur pour environ 8 % des hommes.
+// L'accent serait alors lu comme une couche, exactement ce qu'il ne doit pas
+// être. Le liseré épais est donc constitutif de l'accent, pas décoratif : c'est
+// la seconde variable qu'exige notre propre test des niveaux de gris.
+export const ACCENT = '#A3196F';
+// Plus épais que n'importe quel liseré normal, le nœud (2,4) compris.
+export const ACCENT_EP = 3.2;
 
 export const boite = ({ x, y, w, h, forme, vedette, imbrique }) => {
   const fond = (imbrique && FOND_IMBRIQUE[forme]) || FONDS[forme] || '#FFFFFF';
-  const trait = vedette || (forme === 'externe' || forme === 'frontiere' ? LIGNE : TRAIT);
-  const ep = vedette ? 2.6 : forme === 'noeud' ? 2.4 : forme === 'frontiere' ? 1.3 : 1.6;
+  const trait = vedette ? ACCENT : (forme === 'externe' || forme === 'frontiere' ? LIGNE : TRAIT);
+  const ep = vedette ? ACCENT_EP : forme === 'noeud' ? 2.4 : forme === 'frontiere' ? 1.3 : 1.6;
   if (forme === 'stockage') {
     // sous 60 px, les deux ellipses du cylindre recouvrent le libellé
     if (h < 60) throw new Error(`Cylindre trop bas (${h} px) : un « stockage » exige au moins 60 px de haut.`);
@@ -111,7 +114,7 @@ const MINI = (f) => (x, y) => {
 const NOM_FORME = { service: 'service', application: 'application', stockage: 'stockage', flux: 'flux',
   acteur: 'acteur', materiel: 'matériel', externe: 'externe', frontiere: 'zone', noeud: 'nœud' };
 
-export function legende(x, y, formes, couches) {
+export function legende(x, y, formes, couches, accent = false) {
   let cx = x + 64;
   const items = [];
   for (const f of formes) {
@@ -130,5 +133,9 @@ export function legende(x, y, formes, couches) {
     + `<text x="${x}" y="${y}" font-size="10" font-weight="600" font-family="'IBM Plex Mono',monospace" fill="${LIGNE}">FORMES</text>`
     + items.join('')
     + (couches.length ? `<text x="${x}" y="${y + 24}" font-size="10" font-weight="600" font-family="'IBM Plex Mono',monospace" fill="${LIGNE}">COULEURS</text>` + rangee2 : '')
+    + (accent
+      ? `<rect x="${dx}" y="${y + 14}" width="12" height="12" rx="3" fill="${ACCENT}"/>`
+        + `<text x="${dx + 18}" y="${y + 24}" font-size="10.5" font-weight="600" fill="${DOUX}">sujet du schéma</text>`
+      : '')
     + `</g>`;
 }
