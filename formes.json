@@ -5,50 +5,94 @@
       "label": "Service",
       "nature": "un composant qui exécute du code",
       "geometrie": "rectangle à angles vifs",
-      "svg": { "rx": 0, "fond": "#FFFFFF", "trait": 1.6 }
+      "svg": {
+        "rx": 0,
+        "fond": "#FFFFFF",
+        "trait": 1.6
+      }
     },
     "application": {
       "label": "Application",
       "nature": "une chose avec laquelle on interagit directement",
       "geometrie": "rectangle arrondi",
-      "svg": { "rx": 10, "fond": "#FFFFFF", "trait": 1.6 }
+      "svg": {
+        "rx": 10,
+        "fond": "#FFFFFF",
+        "trait": 1.6
+      }
     },
     "stockage": {
       "label": "Stockage",
       "nature": "une donnée qui survit au redémarrage",
       "geometrie": "cylindre",
-      "svg": { "cylindre": true, "fond": "#FFFFFF", "trait": 1.6 }
+      "svg": {
+        "cylindre": true,
+        "fond": "#FFFFFF",
+        "trait": 1.6
+      }
     },
     "flux": {
       "label": "Flux",
       "nature": "une file, un sujet, un bus — de la donnée qui passe",
       "geometrie": "capsule",
-      "svg": { "rx": "moitié", "fond": "#FFFFFF", "trait": 1.6 }
+      "svg": {
+        "rx": "moitié",
+        "fond": "#FFFFFF",
+        "trait": 1.6
+      }
     },
     "acteur": {
       "label": "Acteur",
       "nature": "un humain, ou le poste par lequel il agit",
       "geometrie": "rectangle arrondi sur fond gris clair",
-      "svg": { "rx": 10, "fond": "#F8F9FA", "trait": 1.6 }
+      "svg": {
+        "rx": 10,
+        "fond": "#F8F9FA",
+        "trait": 1.6
+      }
     },
     "materiel": {
       "label": "Matériel",
       "nature": "un appareil physique hors du système d'information",
       "geometrie": "rectangle à coins vifs, fond gris clair",
-      "svg": { "rx": 3, "fond": "#F8F9FA", "trait": 1.6 }
+      "svg": {
+        "rx": 3,
+        "fond": "#F8F9FA",
+        "trait": 1.6
+      }
     },
     "externe": {
       "label": "Externe",
       "nature": "un système hors de notre contrôle",
       "geometrie": "rectangle arrondi, trait pointillé, fond gris",
-      "svg": { "rx": 8, "fond": "#EDEFF1", "trait": 1.6, "pointilles": "5 4" }
+      "svg": {
+        "rx": 8,
+        "fond": "#EDEFF1",
+        "trait": 1.6,
+        "pointilles": "5 4"
+      }
     },
     "frontiere": {
       "label": "Frontière",
       "nature": "une zone : réseau, confiance, déploiement, contexte",
       "geometrie": "cadre en pointillés, sans remplissage franc",
-      "svg": { "rx": 14, "fond": "#F7F9FA", "trait": 1.4, "pointilles": "8 6" },
+      "svg": {
+        "rx": 14,
+        "fond": "#F7F9FA",
+        "trait": 1.4,
+        "pointilles": "8 6"
+      },
       "remarque": "conteneur, pas nœud : ne se raccorde à aucune flèche"
+    },
+    "noeud": {
+      "label": "Nœud de déploiement",
+      "nature": "une machine qui héberge : serveur physique, machine virtuelle, nœud de cluster",
+      "geometrie": "rectangle à coins vifs, liseré épais, fond gris très clair",
+      "svg": {
+        "rx": 2,
+        "fond": "#F4F6F7",
+        "trait": 2.4
+      }
     }
   },
   "ecartees": {

@@ -37,6 +37,8 @@ export const boite = ({ x, y, w, h, forme }) => {
   if (forme === 'acteur')      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#F8F9FA" stroke="${TRAIT}" stroke-width="1.6"/>`;
   if (forme === 'application') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`;
   if (forme === 'materiel')    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#F8F9FA" stroke="${TRAIT}" stroke-width="1.6"/>`;
+  // le nœud de déploiement héberge : liseré épais, fond retrait, il contient d'autres boîtes
+  if (forme === 'noeud')       return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="#F4F6F7" stroke="${TRAIT}" stroke-width="2.4"/>`;
   return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#FFFFFF" stroke="${TRAIT}" stroke-width="1.6"/>`;
 };
 

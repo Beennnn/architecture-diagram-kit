@@ -16,7 +16,8 @@
       "sombre": "#B08CFF",
       "familles": [
         "API",
-        "Framework"
+        "Framework",
+        "Code"
       ]
     },
     "fichiers": {
@@ -62,7 +63,9 @@
         "Test",
         "Plateforme",
         "Livraison",
-        "Observabilité"
+        "Observabilité",
+        "Matériel",
+        "Système"
       ]
     }
   }

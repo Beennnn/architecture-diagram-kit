@@ -182,6 +182,76 @@
       "simpleIcons": "wireguard",
       "forme": "service",
       "note": "Écarté comme signe de protocole par l'ADR 0002 — RabbitMQ n'est pas AMQP, WireGuard n'est pas « VPN ». En tant que produit, le logo redevient parfaitement légitime."
+    },
+    {
+      "slug": "linux",
+      "label": "Linux",
+      "categorie": "Système",
+      "simpleIcons": "linux",
+      "forme": "noeud"
+    },
+    {
+      "slug": "ubuntu",
+      "label": "Ubuntu",
+      "categorie": "Système",
+      "simpleIcons": "ubuntu",
+      "forme": "noeud"
+    },
+    {
+      "slug": "vmware",
+      "label": "VMware",
+      "categorie": "Système",
+      "simpleIcons": "vmware",
+      "forme": "service"
+    },
+    {
+      "slug": "proxmox",
+      "label": "Proxmox",
+      "categorie": "Système",
+      "simpleIcons": "proxmox",
+      "forme": "service"
+    },
+    {
+      "slug": "pfsense",
+      "label": "pfSense",
+      "categorie": "Réseau",
+      "simpleIcons": "pfsense",
+      "forme": "service"
+    },
+    {
+      "slug": "istio",
+      "label": "Istio",
+      "categorie": "Plateforme",
+      "simpleIcons": "istio",
+      "forme": "service"
+    },
+    {
+      "slug": "vault",
+      "label": "Vault",
+      "categorie": "Sécurité",
+      "simpleIcons": "vault",
+      "forme": "stockage"
+    },
+    {
+      "slug": "springsecurity",
+      "label": "Spring Security",
+      "categorie": "Framework",
+      "simpleIcons": "springsecurity",
+      "forme": "service"
+    },
+    {
+      "slug": "flyway",
+      "label": "Flyway",
+      "categorie": "Données",
+      "simpleIcons": "flyway",
+      "forme": "service"
+    },
+    {
+      "slug": "hibernate",
+      "label": "Hibernate",
+      "categorie": "Framework",
+      "simpleIcons": "hibernate",
+      "forme": "service"
     }
   ]
 }

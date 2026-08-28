@@ -84,7 +84,7 @@
       "slug": "nfs",
       "label": "NFS",
       "famille": "Fichiers",
-      "tabler": "server-2",
+      "tabler": "share-3",
       "lucide": "server",
       "simpleIcons": null
     },
@@ -199,7 +199,7 @@
       "slug": "dhcp",
       "label": "DHCP",
       "famille": "Réseau",
-      "tabler": "router",
+      "tabler": "ticket",
       "lucide": "router",
       "simpleIcons": null
     },

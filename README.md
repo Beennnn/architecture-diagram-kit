@@ -196,6 +196,7 @@ Node ≥ 18 et npm. Versions épinglées dans `regenerer.sh`.
 - [0002 — Réutiliser le logo officiel dès qu'il existe](docs/adr/0002-reutiliser-les-logos-existants.md)
 - [0003 — Une grammaire de formes, normative et fermée](docs/adr/0003-grammaire-de-formes.md)
 - [0004 — Garder la voie Excalidraw, en second](docs/adr/0004-excalidraw-voie-secondaire.md)
+- [0005 — Neuvième forme : le nœud de déploiement](docs/adr/0005-forme-noeud-et-precisions.md)
 
 ## Ajouter un protocole
 

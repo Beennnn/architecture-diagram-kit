@@ -177,6 +177,7 @@ for (const r of rows) {
   largeMax = Math.max(largeMax, +horizontal(r).match(/width="(\d+)"/)[1]);
 }
 const nbProto = rows.filter((r) => r.type === 'protocole').length;
-console.log(`  ${nbProto} protocoles + ${rows.length - nbProto} produits × ${SORTIES.length} dispositions = ${rows.length * SORTIES.length} fichiers`);
+const nbProd = rows.filter((r) => r.type === 'produit').length;
+console.log(`  ${nbProto} protocoles + ${nbProd} produits + ${rows.length - nbProto - nbProd} rôles × ${SORTIES.length} dispositions = ${rows.length * SORTIES.length} fichiers`);
 console.log(`  ${marques} portent un logo de marque, ${rows.length - marques} un picto générique`);
 console.log(`  lockup horizontal le plus large : ${largeMax} px`);

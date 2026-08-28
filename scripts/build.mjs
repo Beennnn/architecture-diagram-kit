@@ -24,6 +24,22 @@ const { produits } = JSON.parse(fs.readFileSync(path.join(ROOT, 'produits.json')
 const { roles } = JSON.parse(fs.readFileSync(path.join(ROOT, 'roles.json'), 'utf8'));
 const { formes } = JSON.parse(fs.readFileSync(path.join(ROOT, 'formes.json'), 'utf8'));
 
+// Un picto ne peut servir qu'à une seule entrée. Deux concepts derrière un même
+// symbole, c'est la « surcharge » que la clarté sémiotique interdit — règle R2
+// de l'ADR 0003 : le lecteur ne peut plus savoir ce que le signe désigne.
+{
+  const par = {};
+  for (const e of [...protocoles, ...produits, ...roles]) {
+    const signe = e.marqueOfficielle && e.simpleIcons ? `si:${e.simpleIcons}` : e.tabler ? `tb:${e.tabler}` : null;
+    if (signe) (par[signe] ||= []).push(e.slug);
+  }
+  const partages = Object.entries(par).filter(([, v]) => v.length > 1);
+  if (partages.length) {
+    throw new Error(`Picto partagé par plusieurs entrées (surcharge de symbole) :\n  `
+      + partages.map(([k, v]) => `${k} → ${v.join(', ')}`).join('\n  '));
+  }
+}
+
 // La grammaire de formes est normative : une forme inconnue arrête le build.
 for (const e of [...produits, ...roles]) {
   if (e.forme && !formes[e.forme]) throw new Error(`Forme inconnue pour « ${e.slug} » : « ${e.forme} ». Voir formes.json.`);

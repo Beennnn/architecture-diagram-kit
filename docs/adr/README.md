@@ -8,5 +8,6 @@ on en ajoute une nouvelle qui remplace l'ancienne.
 |---|---|---|
 | [0001](0001-six-couleurs-de-couche.md) | Six couleurs de couche, imposées, plutôt qu'une couleur par protocole | Acceptée |
 | [0002](0002-reutiliser-les-logos-existants.md) | Réutiliser le logo officiel dès qu'il existe et qu'il est redistribuable | Acceptée |
-| [0003](0003-grammaire-de-formes.md) | Une grammaire de formes, normative et fermée | Acceptée |
+| [0003](0003-grammaire-de-formes.md) | Une grammaire de formes, normative et fermée | Acceptée · amendée par 0005 |
 | [0004](0004-excalidraw-voie-secondaire.md) | Garder la voie Excalidraw, en second | Acceptée |
+| [0005](0005-forme-noeud-et-precisions.md) | Neuvième forme : le nœud de déploiement | Acceptée |

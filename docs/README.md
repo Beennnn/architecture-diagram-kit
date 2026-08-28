@@ -15,6 +15,9 @@
   avec les badges du dépôt, généré par `scripts/exemple.mjs`.
 - **[Exemple en couches](exemple-couches.svg)** — une place de marché en trois
   couches, avec le dimensionnement de chaque brique.
+- **Trois vues d'un même système**, à trois niveaux d'abstraction :
+  [socle matériel](exemple-infra.svg) · [plateforme Kubernetes](exemple-k8s.svg) ·
+  [intérieur d'un service](exemple-composant.svg).
 
 ## Utiliser le jeu
 
@@ -33,3 +36,5 @@ Format [Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-archit
   normative et fermée
 - **[0004](adr/0004-excalidraw-voie-secondaire.md)** — Garder la voie Excalidraw,
   en second
+- **[0005](adr/0005-forme-noeud-et-precisions.md)** — Neuvième forme : le nœud
+  de déploiement

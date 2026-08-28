@@ -63,6 +63,7 @@ node scripts/drawio.mjs
 node scripts/excalidraw.mjs
 node scripts/exemple.mjs
 node scripts/exemple-couches.mjs
+node scripts/exemples-systeme.mjs
 
 echo "→ Planches de specimen (specimen/)"
 node scripts/specimen-lockups.mjs
