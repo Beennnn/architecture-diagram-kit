@@ -7,7 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche, ACCENT, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche, ACCENT, annotation, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -40,16 +40,16 @@ const Z = [
 // ─── liens ────────────────────────────────────────────────────────────────
 // b = bloc-marque de protocole ; l = libellé texte
 const L = [
-  { d: 'M190,186 H272',                    b: ['https', 231, 162] },
-  { d: 'M480,186 H752',                    b: ['grpc',  616, 162] },
+  { d: 'M190,186 H272',                    b: ['https', 231, 186] },
+  { d: 'M480,186 H752',                    b: ['grpc',  616, 186] },
   { d: 'M960,186 H1022',                   l: ['SQL',   981, 170] },
-  { d: 'M190,346 H272',                    b: ['mqtt',  231, 322] },
+  { d: 'M190,346 H272',                    b: ['mqtt',  231, 346] },
   { d: 'M480,346 H522',                    l: ['publie', 501, 330] },
   { d: 'M730,346 H860 V230',               l: ['consomme', 800, 336] },
   { d: 'M630,382 V462',                    l: ['consomme', 630, 428] },
   { d: 'M730,506 H1022',                   l: ['dépose les factures', 876, 496] },
   { d: 'M630,542 V596 H882 V612',          b: ['smtp',  756, 596] },
-  { d: 'M190,506 H272',                    b: ['ssh',   231, 482] },
+  { d: 'M190,506 H272',                    b: ['ssh',   231, 506] },
 ];
 
 const W = 1290, H = 780;
@@ -98,7 +98,8 @@ const zones = Z.map((z) => `<g>`
   + `<text x="${z.x + (z.ico ? 44 : 16)}" y="${z.y + 29}" font-size="12.5" font-weight="600" fill="${DOUX}">${esc(z.t)}</text></g>`).join('\n    ');
 
 const aretes = L.map((e) => `<path d="${e.d}" fill="none" stroke="${LIGNE}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fl)"/>`).join('\n    ');
-const marques = L.filter((e) => e.b).map((e) => badge(e.b[0], e.b[1], e.b[2])).join('\n    ');
+const marques = L.filter((e) => e.b)
+  .map((e) => annotation(e.b[0], e.b[1], e.b[2], Z)).join('\n    ');
 const libelles = L.filter((e) => e.l).map((e) => `<text x="${e.l[1]}" y="${e.l[2]}" text-anchor="middle" font-size="11" fill="${DOUX}">${esc(e.l[0])}</text>`).join('\n    ');
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="Architecture d'exécution de la plateforme de recharge Voltis">

@@ -3,7 +3,7 @@
 // un seul schéma viole la règle « un seul niveau d'abstraction par schéma ».
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, ACCENT, fleche, marqueur, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, ACCENT, annotation, fleche, marqueur, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -99,7 +99,7 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   ${liens.map(lien).join('\n  ')}
   ${noeuds.map(noeud).join('\n  ')}
   ${notes.map((n) => T(n[0], n[1], n[2], { a: n[3], f: n[4] || 10.5 })).join('\n  ')}
-  ${marques.map((m) => badge(m[0], m[1], m[2], m[3] || 0.74)).join('\n  ')}
+  ${marques.map((m) => annotation(m[0], m[1], m[2], zones)).join('\n  ')}
   ${apres}
   ${leg}
 </svg>
@@ -148,7 +148,7 @@ rendre({
     { d: 'M712,460 V492' },
     { d: 'M1060,460 V492' },
   ],
-  marques: [['https', 222, 158, 0.7]],
+  marques: [['https', 222, 182]],
   notes: [[490, 176, 'trafic filtré', 'middle'], [700, 246, 'VLAN 20', 'middle'], [1048, 246, 'VLAN 20', 'middle'],
           [745, 480, 'iSCSI', 'middle'], [1093, 480, 'réplication', 'middle']],
 });
@@ -189,7 +189,7 @@ rendre({
     { d: 'M1020,300 H1072' }, { d: 'M1020,420 H1072' },
     { d: 'M210,458 V482' }, { d: 'M540,458 V482' },
   ],
-  marques: [['grpc', 610, 232, 0.66]],
+  marques: [['grpc', 610, 240]],
   notes: [[1046, 292, 'SQL', 'middle'], [1046, 412, 'objets', 'middle'],
           [246, 478, 'docker pull', 'middle'], [578, 478, 'monte', 'middle']],
 });
@@ -239,7 +239,7 @@ rendre({
     { d: 'M1072,293 H1110 V240 H1142' },
     { d: 'M1072,359 H1142' },
   ],
-  marques: [['rest', 108, 200, 0.62]],
+  marques: [['rest', 212, 227]],
   notes: [[212, 282, 'consomme', 'end'], [1106, 218, 'SQL', 'middle'], [1106, 350, 'PUT', 'middle'],
           [499, 218, 'appelle', 'middle'], [779, 218, 'persiste', 'middle']],
 });

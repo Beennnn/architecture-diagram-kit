@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { encreLisible } from './couleurs.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const ENCRE = '#16181A', DOUX = '#5B6873', TRAIT = '#3E444A', LIGNE = '#8896A2';
@@ -18,7 +19,50 @@ export function symbole(slug, x, y, t = 34) {
     .replace(/^<svg[^>]*?viewBox="([^"]*)"[^>]*>/, `<svg x="${x}" y="${y}" width="${t}" height="${t}" viewBox="$1">`);
 }
 
-// Un bloc-marque horizontal centré sur un point : sert d'annotation de flèche.
+// L'encre de couche d'une entrée. Sert aux annotations de flèche, qui gardent
+// l'information de couche que portait la pastille du bloc-marque.
+const _COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
+const _MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
+const _FAM = {}; for (const [k, c] of Object.entries(_COUCHES)) for (const f of c.familles) _FAM[f] = k;
+const _PAR_SLUG = Object.fromEntries(_MAP.map((e) => [e.slug, e]));
+export function encreCouche(slug) {
+  const e = _PAR_SLUG[slug];
+  const couche = e && _FAM[e.famille];
+  if (!couche) throw new Error(`Couche inconnue pour « ${slug} ».`);
+  return encreLisible(_COUCHES[couche].clair, '#FFFFFF', 4.5);
+}
+
+// La réserve d'une annotation est peinte par intersection avec les zones qu'elle
+// recouvre, et non d'une seule couleur échantillonnée au centre : une flèche
+// entre dans une zone au milieu de son étiquette, et une réserve unie laisserait
+// alors une tache claire à cheval sur le bord.
+function reserve(x, y, w, h, zones) {
+  let g = `<rect x="${x.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="${h}" fill="#FFFFFF"/>`;
+  for (const z of zones) {
+    const x1 = Math.max(x, z.x), x2 = Math.min(x + w, z.x + z.w);
+    const y1 = Math.max(y, z.y), y2 = Math.min(y + h, z.y + z.h);
+    if (x2 <= x1 || y2 <= y1) continue;
+    const fond = (z.imbrique && FOND_IMBRIQUE.frontiere) || FONDS.frontiere;
+    g += `<rect x="${x1.toFixed(1)}" y="${y1.toFixed(1)}" width="${(x2 - x1).toFixed(1)}" height="${(y2 - y1).toFixed(1)}" fill="${fond}"/>`;
+  }
+  return g;
+}
+
+// Une ANNOTATION de flèche : le symbole et le nom posés SUR le trait, qui
+// s'interrompt derrière eux. Le bloc-marque, lui, fait environ 150 px : sur une
+// flèche courte de 82 px il débordait sur les boîtes, d'où le décalage vertical
+// qui le faisait flotter. Voir docs/rendus-fleches.svg.
+export function annotation(slug, cx, cy, zones = []) {
+  const t = 17, texte = _PAR_SLUG[slug].label;
+  const largeur = t + 5 + texte.length * 6.6;
+  const x = cx - largeur / 2;
+  return reserve(x - 5, cy - 11, largeur + 10, 22, zones)
+    + symbole(slug, x, cy - t / 2, t).replace(/<rect width="48" height="48" rx="13" fill="[^"]*"\/>/, '')
+    + `<text x="${(x + t + 5).toFixed(1)}" y="${cy + 4}" font-size="11.5" font-weight="600" fill="${encreCouche(slug)}">${esc(texte)}</text>`;
+}
+
+// Un bloc-marque horizontal centré sur un point. Conservé pour la planche
+// d'arbitrage docs/rendus-fleches.svg, qui doit pouvoir montrer l'ancien rendu.
 export function badge(slug, cx, cy, e = 0.82) {
   const raw = lire(`lockups/horizontal/${slug}.svg`);
   const w = dim(raw, 'width') * e, h = dim(raw, 'height') * e;

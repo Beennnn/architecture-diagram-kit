@@ -3,7 +3,7 @@
 // forme de schéma très différente de celle de exemple.mjs.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, ACCENT, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, ACCENT, annotation, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -63,7 +63,7 @@ const L = [
   { d: 'M398,560 V697',                     l: ['lit / écrit', 442, 630] },
   { d: 'M638,560 V697',                     l: ['SQL', 660, 630] },
   { d: 'M858,560 V697',                     l: ['justificatifs', 908, 630] },
-  { d: 'M1156,515 H1222',                   b: ['smtp', 1189, 490] },
+  { d: 'M1156,515 H1222',                   b: ['smtp', 1189, 515] },
 ];
 
 const bandes = BANDES.map((z) => `<g>`
@@ -93,7 +93,8 @@ const noeuds = N.map((n) => {
 
 const aretes = L.map((e) => `<path d="${e.d}" fill="none" stroke="${LIGNE}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fl)"/>`).join('\n    ');
 const libelles = L.filter((e) => e.l && e.l[0]).map((e) => `<text x="${e.l[1]}" y="${e.l[2]}" text-anchor="middle" font-size="11" fill="${DOUX}">${esc(e.l[0])}</text>`).join('\n    ');
-const marques = L.filter((e) => e.b).map((e) => badge(e.b[0], e.b[1], e.b[2], 0.78)).join('\n    ');
+const marques = L.filter((e) => e.b)
+  .map((e) => annotation(e.b[0], e.b[1], e.b[2], BANDES)).join('\n    ');
 
 const TOTAL = '17 conteneurs · 12,5 vCPU / 27 Gio pour le calcul · 8 vCPU / 26 Gio + 580 Gio pour les données';
 
