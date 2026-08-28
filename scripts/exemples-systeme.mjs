@@ -3,7 +3,7 @@
 // un seul schéma viole la règle « un seul niveau d'abstraction par schéma ».
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, ACCENT, annotation, fleche, marqueur, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, ACCENT, annotation, libelle, fleche, marqueur, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -91,17 +91,25 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   // Une étiquette de flèche ne doit recouvrir aucune boîte. Contrôle mécanique :
   // à l'échelle du schéma, dix pixels de recouvrement ne se voient pas, et se
   // voient très bien à l'impression.
-  for (const m of marques) {
+  const cadres = marques.map((m) => {
     const proto = PAR_SLUG[m[0]].label;
     const lw = Math.max(17 + 5 + proto.length * 6.6, m[3] ? m[3].length * 5.3 : 0) + 10;
     const lh = m[3] ? 36 : 22;
-    const c = { x: m[1] - lw / 2, y: m[2] - lh / 2, w: lw, h: lh };
+    return { t: `${proto}${m[3] ? ' / ' + m[3] : ''}`, x: m[1] - lw / 2, y: m[2] - lh / 2, w: lw, h: lh };
+  }).concat(notes.map((n) => {
+    const lw = n[2].length * 5.3;
+    const x = n[3] === 'middle' ? n[0] - lw / 2 : n[3] === 'end' ? n[0] - lw : n[0];
+    return { t: n[2], x, y: n[1] - 11, w: lw, h: 14 };
+  }));
+  const heurts = [];
+  for (const c of cadres) {
     for (const n of noeuds) {
       if (c.x < n.x + n.w + 6 && c.x + c.w > n.x - 6 && c.y < n.y + n.h + 6 && c.y + c.h > n.y - 6) {
-        throw new Error(`${f} : l'étiquette « ${proto}${m[3] ? ' / ' + m[3] : ''} » recouvre « ${n.t} ».`);
+        heurts.push(`  « ${c.t} » recouvre « ${n.t} » (étiquette ${Math.round(c.x)}..${Math.round(c.x + c.w)} × ${Math.round(c.y)}..${Math.round(c.y + c.h)})`);
       }
     }
   }
+  if (heurts.length) throw new Error(`${f} : étiquettes en collision :\n${heurts.join('\n')}`);
   const leg = legende(40, h - 46, formesUtilisees, couchesUtilisees, noeuds.some((n) => n.vedette));
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="${esc(titre)}">
   <title>${esc(titre)}</title>
@@ -112,7 +120,7 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   ${zones.map(zone).join('\n  ')}
   ${liens.map(lien).join('\n  ')}
   ${noeuds.map(noeud).join('\n  ')}
-  ${notes.map((n) => T(n[0], n[1], n[2], { a: n[3], f: n[4] || 10.5 })).join('\n  ')}
+  ${notes.map((n) => libelle(n[2], n[0], n[1], zones, n[3] || 'start', n[4] || 10.5)).join('\n  ')}
   ${marques.map((m) => annotation(m[0], m[1], m[2], zones, m[3])).join('\n  ')}
   ${apres}
   ${leg}
@@ -163,8 +171,8 @@ rendre({
     { d: 'M1116,460 V492' },
   ],
   marques: [['https', 250, 182]],
-  notes: [[490, 176, 'trafic filtré', 'middle'], [700, 246, 'VLAN 20', 'middle'], [1048, 246, 'VLAN 20', 'middle'],
-          [745, 480, 'iSCSI', 'middle'], [1093, 480, 'réplication', 'middle']],
+  notes: [[558, 176, 'trafic filtré', 'middle'], [756, 246, 'VLAN 20', 'middle'], [1104, 246, 'VLAN 20', 'middle'],
+          [801, 480, 'iSCSI', 'middle'], [1149, 480, 'réplication', 'middle']],
 });
 
 /* ══════════════ 2 · plateforme Kubernetes ══════════════ */
@@ -254,8 +262,8 @@ rendre({
     { d: 'M1072,359 H1142' },
   ],
   marques: [['rest', 216, 227]],
-  notes: [[212, 282, 'consomme', 'end'], [1106, 218, 'SQL', 'middle'], [1106, 350, 'PUT', 'middle'],
-          [499, 218, 'appelle', 'middle'], [779, 218, 'persiste', 'middle']],
+  notes: [[246, 282, 'consomme', 'end'], [1106, 218, 'SQL', 'middle'], [1106, 350, 'PUT', 'middle'],
+          [499, 218, 'appelle', 'middle'], [784, 218, 'persiste', 'middle']],
 });
 
 /* ══════════════ 4 · chaîne de livraison ══════════════ */
@@ -307,4 +315,69 @@ rendre({
   marques: [],
   notes: [[1078, 202, 'artefact signé', 'middle']],
   apres: M.join(''),
+});
+
+// ─── Vue intégrale ────────────────────────────────────────────────────────
+// Elle a deux fonctions. Montrer les neuf formes, les zones imbriquées, l'accent,
+// les identifiants d'instance et les trois régimes d'étiquette de flèche sur une
+// seule page. Et servir de test de non-régression : c'est la seule vue qui
+// exerce toute la grammaire, donc la première où une règle cassée se voit.
+rendre({
+  f: 'exemple-integral.svg', w: 1500, h: 900,
+  titre: 'Relevé de recharge — de la borne au décompte facturé',
+  sous: 'Vue intégrale · elle exerce les neuf formes, l’imbrication de zones et les trois régimes d’étiquette',
+  zones: [
+    { x: 40, y: 110, w: 420, h: 460, t: 'Site industriel', s: 'réseau isolé' },
+    { x: 520, y: 110, w: 640, h: 690, t: 'Cluster de production', s: '3 nœuds', ico: 'kubernetes' },
+    { x: 544, y: 180, w: 592, h: 340, t: 'Espace de noms voltis', s: 'quotas appliqués', imbrique: true },
+  ],
+  noeuds: [
+    { x: 64, y: 170, w: 180, h: 92, t: 'Borne de recharge', s: 'AC 22 kW', id: 'bne-0421', ico: 'appareil', forme: 'materiel' },
+    { x: 264, y: 170, w: 172, h: 92, t: 'Technicien', s: 'astreinte', ico: 'equipe', forme: 'acteur' },
+    { x: 64, y: 320, w: 372, h: 228, t: 'Passerelle terrain', s: 'Debian 12', id: 'gw-site-03', ico: 'serveur', forme: 'noeud' },
+    { x: 88, y: 392, w: 196, h: 92, t: 'Agent de collecte', s: 'Spring Boot', id: 'collecte', ico: 'springboot', forme: 'application' },
+    { x: 300, y: 392, w: 120, h: 92, t: 'Tampon', s: 'local', id: 'spool', ico: 'cache', forme: 'service' },
+
+    { x: 568, y: 250, w: 200, h: 92, t: 'Facturation', s: 'Spring Boot', id: 'svc-factu', ico: 'springboot', forme: 'application' },
+    { x: 812, y: 250, w: 200, h: 92, t: 'Bus de mesures', s: '3 partitions', id: 'mesures.v1', ico: 'kafka', forme: 'flux', vedette: true },
+    { x: 568, y: 390, w: 200, h: 92, t: 'Passerelle d’API', s: 'contrat OpenAPI', id: 'gw-public', ico: 'passerelle-api', forme: 'service' },
+    { x: 812, y: 390, w: 200, h: 92, t: 'Ordonnanceur', s: 'décompte nocturne', id: 'cron-nuit', ico: 'tache-planifiee', forme: 'service' },
+
+    { x: 544, y: 560, w: 592, h: 210, t: 'Nœud de données', s: 'vm-data-1', id: 'node-data-1', ico: 'noeud-cluster', forme: 'noeud' },
+    { x: 576, y: 640, w: 230, h: 100, t: 'Relevés', s: 'PostgreSQL 16', id: 'voltis-releves', ico: 'postgresql', forme: 'stockage' },
+    { x: 850, y: 640, w: 230, h: 100, t: 'Décomptes', s: 'S3', id: 'voltis-factures', ico: 's3', forme: 'stockage' },
+
+    { x: 1220, y: 390, w: 200, h: 92, t: 'Fournisseur d’énergie', s: 'tarifs horaires', id: 'api.enedis', ico: 'webhook', forme: 'externe' },
+  ],
+  liens: [
+    { d: 'M154,262 V314' },
+    { d: 'M350,262 V314' },
+    { d: 'M436,436 H562' },
+    { d: 'M668,390 V348' },
+    { d: 'M768,296 H806' },
+    { d: 'M880,342 V554' },
+    { d: 'M944,482 V554' },
+    { d: 'M1012,436 H1214' },
+    { d: 'M691,342 V384' },
+  ],
+  // Trois régimes : intention et transport ; transport seul, quand la topologie
+  // dit l'intention ; intention seule, quand la boîte d'arrivée nomme le transport.
+  marques: [
+    ['mqtt', 154, 291, 'remonte ses relevés'],
+    ['ssh', 350, 291],
+    ['https', 502, 436, 'pousse les relevés'],
+    ['rest', 1150, 436, 'interroge les tarifs'],
+  ],
+  notes: [
+    [700, 380, 'appelle', 'middle'],
+    [787, 236, 'publie les relevés', 'middle'],
+    [960, 524, 'persiste les décomptes', 'start'],
+    [844, 524, 'écrit les relevés', 'end'],
+  ],
+  apres: [
+    marqueur(300, 150, 'hors ligne toléré'),
+    marqueur(1024, 236, 'idempotent'),
+    marqueur(576, 610, 'RLS par site', '#C0392F'),
+    marqueur(850, 610, 'immuable'),
+  ].join(''),
 });

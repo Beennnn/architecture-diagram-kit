@@ -14,6 +14,10 @@
   avons dû corriger, et l'écart qui reste.
 - **[Relire un schéma — la checklist](checklist-relecture-schema.md)** — neuf
   points, dans l'ordre de l'impact mesuré.
+- **[Vue intégrale](exemple-integral.svg)** — le schéma qui exerce les neuf
+  formes, l'imbrication de zones, l'accent, les identifiants d'instance et les
+  trois régimes d'étiquette de flèche. Il sert de démonstration et de test de
+  non-régression : c'est la première vue où une règle cassée se voit.
 - **[Exemple complet](exemple-voltis.svg)** — un schéma d'architecture assemblé
   avec les badges du dépôt, généré par `scripts/exemple.mjs`.
 - **[Exemple en couches](exemple-couches.svg)** — une place de marché en trois

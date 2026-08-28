@@ -52,10 +52,11 @@ function reserve(x, y, w, h, zones) {
 // par la boîte d'arrivée — une flèche qui entre dans « Kafka » n'a pas besoin
 // d'une étiquette Kafka. Il porte la même réserve que l'annotation, sinon une
 // bordure de zone lui passe au travers.
-export function libelle(texte, cx, cy, zones = []) {
-  const largeur = texte.length * 5.3;
-  return reserve(cx - largeur / 2 - 5, cy - 11, largeur + 10, 15, zones)
-    + `<text x="${cx}" y="${cy}" text-anchor="middle" font-size="11" fill="${DOUX}">${esc(texte)}</text>`;
+export function libelle(texte, cx, cy, zones = [], ancre = 'middle', taille = 11) {
+  const largeur = texte.length * taille * 0.48;
+  const x = ancre === 'middle' ? cx - largeur / 2 : ancre === 'end' ? cx - largeur : cx;
+  return reserve(x - 5, cy - taille, largeur + 10, taille + 4, zones)
+    + `<text x="${cx}" y="${cy}" text-anchor="${ancre}" font-size="${taille}" fill="${DOUX}">${esc(texte)}</text>`;
 }
 
 // Une ANNOTATION de flèche : le symbole et le nom posés SUR le trait, qui
