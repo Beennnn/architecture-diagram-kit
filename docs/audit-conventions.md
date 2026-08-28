@@ -66,10 +66,21 @@ SSH, SMTP) et quatre portent un verbe nu (« publie », « consomme », « dépo
 factures », « SQL »). Aucune ne porte les deux. Un lecteur voit bien que l'app
 mobile parle en HTTPS à l'API publique, mais pas ce qu'elle lui demande.
 
-C'est le principal écart de fond entre notre jeu et l'état de l'art. Il est
-d'autant plus notable que notre propre checklist le demandait déjà — règle 4,
-« nommer chaque flèche, et l'orienter : *utilise* ne porte aucune information ».
-Nous avons ajouté le protocole et laissé tomber le verbe.
+C'était le principal écart de fond entre notre jeu et l'état de l'art. Il est
+d'autant plus notable que notre propre checklist le demandait déjà — règle 4.
+Nous avions ajouté le protocole et laissé tomber le verbe.
+
+**Corrigé.** Les six vues portent désormais les deux, avec deux exceptions
+tirées de la formulation d'AWS — « étiqueter quand le protocole ou l'objet n'est
+pas évident » : le transport se tait quand la boîte d'arrivée le nomme déjà, et
+l'intention se tait quand la topologie la dit.
+
+La correction a coûté de la géométrie, ce qui est la vraie leçon : un verbe fait
+110 px et nos flèches en faisaient 82. Ce sont les intervalles qui ont dû
+s'élargir, pas les phrases se raccourcir jusqu'à ne plus rien dire. Un contrôle
+mécanique refuse maintenant de générer une vue dont une étiquette recouvre une
+boîte — il a d'ailleurs révélé un débordement antérieur, « HTTPS / TLS » sur
+« Internet » dans la vue du socle, que personne n'avait vu.
 
 ## Ce que nous assumons de faire autrement
 

@@ -7,7 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche, ACCENT, annotation, legende } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche, ACCENT, annotation, libelle, legende } from './schema.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
@@ -20,39 +20,69 @@ const N = [
   { x: 40,   y: 150, w: 150, h: 72, t: 'App mobile',        s: 'iOS · Android',   ico: 'app-mobile',  forme: 'acteur' },
   { x: 40,   y: 310, w: 150, h: 72, t: 'Bornes',            s: '2 400 unités',    ico: 'appareil',    forme: 'materiel' },
   { x: 40,   y: 470, w: 150, h: 72, t: 'Exploitation',      s: 'astreinte',       ico: 'equipe',      forme: 'acteur' },
-  { x: 280,  y: 150, w: 200, h: 72, t: 'API publique',      s: 'contrat OpenAPI', ico: 'openapi' },
-  { x: 280,  y: 310, w: 200, h: 72, t: 'Ingestion',         s: 'Spring Boot',     ico: 'springboot' },
-  { x: 280,  y: 470, w: 200, h: 72, t: 'Bastion',           s: 'accès restreint', ico: 'bastion', id: 'bastion-01' },
-  { x: 530,  y: 310, w: 200, h: 72, t: 'Bus de mesures',    s: '3 partitions',    ico: 'kafka', id: 'mesures.v1',       forme: 'flux', vedette: true },
-  { x: 760,  y: 150, w: 200, h: 72, t: 'Sessions',          s: 'Spring Boot',     ico: 'springboot' },
-  { x: 530,  y: 470, w: 200, h: 72, t: 'Facturation',       s: 'Spring Boot',     ico: 'springboot' },
-  { x: 1030, y: 150, w: 200, h: 72, t: 'Sessions',          s: 'PostgreSQL 16',   ico: 'postgresql', id: 'voltis-sessions',  forme: 'stockage' },
-  { x: 1030, y: 470, w: 200, h: 72, t: 'Factures PDF',      s: 'stockage objet',  ico: 's3', id: 'voltis-factures',          forme: 'stockage' },
-  { x: 790,  y: 620, w: 200, h: 64, t: 'Relais courriel',   s: 'externe',         ico: 'smtp',        forme: 'externe' },
+  { x: 340,  y: 150, w: 200, h: 72, t: 'API publique',      s: 'contrat OpenAPI', ico: 'openapi' },
+  { x: 340,  y: 310, w: 200, h: 72, t: 'Ingestion',         s: 'Spring Boot',     ico: 'springboot' },
+  { x: 340,  y: 470, w: 200, h: 72, t: 'Bastion',           s: 'accès restreint', ico: 'bastion', id: 'bastion-01' },
+  { x: 590,  y: 310, w: 200, h: 72, t: 'Bus de mesures',    s: '3 partitions',    ico: 'kafka', id: 'mesures.v1',       forme: 'flux', vedette: true },
+  { x: 820,  y: 150, w: 200, h: 72, t: 'Sessions',          s: 'Spring Boot',     ico: 'springboot' },
+  { x: 590,  y: 470, w: 200, h: 72, t: 'Facturation',       s: 'Spring Boot',     ico: 'springboot' },
+  { x: 1090, y: 150, w: 200, h: 72, t: 'Sessions',          s: 'PostgreSQL 16',   ico: 'postgresql', id: 'voltis-sessions',  forme: 'stockage' },
+  { x: 1090, y: 470, w: 200, h: 72, t: 'Factures PDF',      s: 'stockage objet',  ico: 's3', id: 'voltis-factures',          forme: 'stockage' },
+  { x: 850,  y: 620, w: 200, h: 64, t: 'Relais courriel',   s: 'externe',         ico: 'smtp',        forme: 'externe' },
 ];
 
 // ─── zones ────────────────────────────────────────────────────────────────
 const Z = [
-  { x: 240,  y: 96,  w: 760, h: 486, t: 'Cluster de production', ico: 'kubernetes' },
-  { x: 1000, y: 96,  w: 250, h: 486, t: 'Données managées',      ico: null },
+  { x: 300,  y: 96,  w: 760, h: 486, t: 'Cluster de production', ico: 'kubernetes' },
+  { x: 1060, y: 96,  w: 250, h: 486, t: 'Données managées',      ico: null },
 ];
 
 // ─── liens ────────────────────────────────────────────────────────────────
 // b = bloc-marque de protocole ; l = libellé texte
 const L = [
-  { d: 'M190,186 H272',                    b: ['https', 231, 186] },
-  { d: 'M480,186 H752',                    b: ['grpc',  616, 186] },
-  { d: 'M960,186 H1022',                   l: ['SQL',   981, 170] },
-  { d: 'M190,346 H272',                    b: ['mqtt',  231, 346] },
-  { d: 'M480,346 H522',                    l: ['publie', 501, 330] },
-  { d: 'M730,346 H860 V230',               l: ['consomme', 800, 336] },
-  { d: 'M630,382 V462',                    l: ['consomme', 630, 428] },
-  { d: 'M730,506 H1022',                   l: ['dépose les factures', 876, 496] },
-  { d: 'M630,542 V596 H882 V612',          b: ['smtp',  756, 596] },
-  { d: 'M190,506 H272',                    b: ['ssh',   231, 506] },
+  { d: 'M190,186 H332',                    b: ['https', 261, 186, 'consulte ses recharges'] },
+  { d: 'M540,186 H812',                    b: ['grpc',  676, 186, 'ouvre une session'] },
+  { d: 'M1020,186 H1082',                   l: ['lit et écrit les sessions', 1051, 140] },
+  { d: 'M190,346 H332',                    b: ['mqtt',  261, 346, 'remonte ses mesures'] },
+  { d: 'M540,346 H582',                    l: ['publie les mesures', 561, 300] },
+  { d: 'M790,346 H920 V230',               l: ['consomme les mesures', 860, 336] },
+  { d: 'M690,382 V462',                    l: ['consomme les mesures', 690, 428] },
+  { d: 'M790,506 H1082',                   l: ['dépose les factures', 936, 496] },
+  { d: 'M690,542 V596 H942 V612',          b: ['smtp',  816, 596, 'envoie les factures'] },
+  { d: 'M190,506 H332',                    b: ['ssh',   261, 506, 'administre'] },
 ];
 
-const W = 1290, H = 780;
+const W = 1350, H = 780;
+
+// Une étiquette de flèche ne doit recouvrir aucune boîte. Le contrôle est
+// mécanique parce que l'œil s'y trompe : une étiquette qui mord de dix pixels
+// sur un angle ne se voit pas à l'échelle du schéma, et se voit très bien à
+// l'impression. Les largeurs sont approchées à 5,3 px par caractère en Plex Sans
+// et 6,6 en gras — la marge d'erreur est absorbée par les 6 px de garde.
+const GARDE = 6;
+function cadreAnnotation(e) {
+  const [slug, cx, cy, verbe] = e.b;
+  const proto = PAR_SLUG[slug].label;
+  const w = Math.max(17 + 5 + proto.length * 6.6, verbe ? verbe.length * 5.3 : 0) + 10;
+  const h = verbe ? 36 : 22;
+  return { t: `${proto}${verbe ? ' / ' + verbe : ''}`, x: cx - w / 2, y: cy - h / 2, w, h };
+}
+const cadreLibelle = (e) => ({ t: e.l[0], x: e.l[1] - e.l[0].length * 5.3 / 2, y: e.l[2] - 11, w: e.l[0].length * 5.3, h: 14 });
+
+const collisions = [];
+for (const e of L) {
+  const c = e.b ? cadreAnnotation(e) : e.l ? cadreLibelle(e) : null;
+  if (!c) continue;
+  for (const n of N) {
+    if (c.x < n.x + n.w + GARDE && c.x + c.w > n.x - GARDE
+      && c.y < n.y + n.h + GARDE && c.y + c.h > n.y - GARDE) {
+      collisions.push(`  « ${c.t} » recouvre « ${n.t} »`);
+    }
+  }
+}
+if (collisions.length) {
+  throw new Error(`Étiquettes de flèche en collision avec des boîtes :\n${collisions.join('\n')}`);
+}
 
 // Le sous-titre porte la techno et, quand la boîte désigne une chose qui existe
 // vraiment — une base, un bucket, un topic, une machine —, son identifiant. Un
@@ -99,8 +129,8 @@ const zones = Z.map((z) => `<g>`
 
 const aretes = L.map((e) => `<path d="${e.d}" fill="none" stroke="${LIGNE}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fl)"/>`).join('\n    ');
 const marques = L.filter((e) => e.b)
-  .map((e) => annotation(e.b[0], e.b[1], e.b[2], Z)).join('\n    ');
-const libelles = L.filter((e) => e.l).map((e) => `<text x="${e.l[1]}" y="${e.l[2]}" text-anchor="middle" font-size="11" fill="${DOUX}">${esc(e.l[0])}</text>`).join('\n    ');
+  .map((e) => annotation(e.b[0], e.b[1], e.b[2], Z, e.b[3])).join('\n    ');
+const libelles = L.filter((e) => e.l).map((e) => libelle(e.l[0], e.l[1], e.l[2], Z)).join('\n    ');
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="Architecture d'exécution de la plateforme de recharge Voltis">
   <title>Voltis — vue d'exécution</title>

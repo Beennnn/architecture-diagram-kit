@@ -48,17 +48,41 @@ function reserve(x, y, w, h, zones) {
   return g;
 }
 
+// Un LIBELLÉ de flèche : l'intention seule, quand le transport est déjà nommé
+// par la boîte d'arrivée — une flèche qui entre dans « Kafka » n'a pas besoin
+// d'une étiquette Kafka. Il porte la même réserve que l'annotation, sinon une
+// bordure de zone lui passe au travers.
+export function libelle(texte, cx, cy, zones = []) {
+  const largeur = texte.length * 5.3;
+  return reserve(cx - largeur / 2 - 5, cy - 11, largeur + 10, 15, zones)
+    + `<text x="${cx}" y="${cy}" text-anchor="middle" font-size="11" fill="${DOUX}">${esc(texte)}</text>`;
+}
+
 // Une ANNOTATION de flèche : le symbole et le nom posés SUR le trait, qui
 // s'interrompt derrière eux. Le bloc-marque, lui, fait environ 150 px : sur une
 // flèche courte de 82 px il débordait sur les boîtes, d'où le décalage vertical
 // qui le faisait flotter. Voir docs/rendus-fleches.svg.
-export function annotation(slug, cx, cy, zones = []) {
+// `verbe` porte l'intention, le protocole porte le transport. C4 exige les deux :
+// « envoie les événements de commande à, via Kafka » — dire que A utilise B
+// n'apprend rien, dire comment A utilise B, si. Les deux s'empilent dans une
+// seule réserve, intention au-dessus, comme le fait le rendu de C4-PlantUML :
+// sur une ligne, « consulte ses recharges · HTTPS / TLS » ferait 200 px pour une
+// flèche qui en fait 82.
+export function annotation(slug, cx, cy, zones = [], verbe = null) {
   const t = 17, texte = _PAR_SLUG[slug].label;
-  const largeur = t + 5 + texte.length * 6.6;
-  const x = cx - largeur / 2;
-  return reserve(x - 5, cy - 11, largeur + 10, 22, zones)
-    + symbole(slug, x, cy - t / 2, t).replace(/<rect width="48" height="48" rx="13" fill="[^"]*"\/>/, '')
-    + `<text x="${(x + t + 5).toFixed(1)}" y="${cy + 4}" font-size="11.5" font-weight="600" fill="${encreCouche(slug)}">${esc(texte)}</text>`;
+  const lgProto = t + 5 + texte.length * 6.6;
+  const lgVerbe = verbe ? verbe.length * 5.3 : 0;
+  const largeur = Math.max(lgProto, lgVerbe);
+  const xp = cx - lgProto / 2;
+  // Sans verbe le bloc tient sur une ligne, centré sur le trait ; avec verbe il
+  // en fait deux et le trait s'interrompt sur toute la hauteur du bloc.
+  const yProto = verbe ? cy + 9 : cy;
+  const haut = verbe ? 36 : 22;
+  const dessus = verbe ? cy - 19 : cy - 11;
+  return reserve(cx - largeur / 2 - 5, dessus, largeur + 10, haut, zones)
+    + (verbe ? `<text x="${cx}" y="${cy - 6}" text-anchor="middle" font-size="10.5" fill="${DOUX}">${esc(verbe)}</text>` : '')
+    + symbole(slug, xp, yProto - t / 2, t).replace(/<rect width="48" height="48" rx="13" fill="[^"]*"\/>/, '')
+    + `<text x="${(xp + t + 5).toFixed(1)}" y="${yProto + 4}" font-size="11.5" font-weight="600" fill="${encreCouche(slug)}">${esc(texte)}</text>`;
 }
 
 // Un bloc-marque horizontal centré sur un point. Conservé pour la planche

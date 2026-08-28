@@ -47,8 +47,8 @@ const N = [
 
 // ─── liens ────────────────────────────────────────────────────────────────
 const L = [
-  { d: 'M398,176 V257',                     b: ['https', 398, 216] },
-  { d: 'M638,176 V257',                     b: ['rest',  638, 216] },
+  { d: 'M398,176 V257',                     b: ['https', 398, 216, 'consulte le catalogue'] },
+  { d: 'M638,176 V257',                     b: ['rest',  638, 216, 'appelle l’API'] },
   { d: 'M300,138 H178 V257',                l: ['assets', 236, 128] },
   { d: 'M496,303 H512',                     l: ['', 0, 0] },
   { d: 'M716,303 H732',                     l: ['jeton', 724, 293] },
@@ -63,7 +63,7 @@ const L = [
   { d: 'M398,560 V697',                     l: ['lit / écrit', 442, 630] },
   { d: 'M638,560 V697',                     l: ['SQL', 660, 630] },
   { d: 'M858,560 V697',                     l: ['justificatifs', 908, 630] },
-  { d: 'M1156,515 H1222',                   b: ['smtp', 1189, 515] },
+  { d: 'M1156,515 H1222',                   b: ['smtp', 1189, 515, 'envoie les notifications'] },
 ];
 
 const bandes = BANDES.map((z) => `<g>`
@@ -94,7 +94,7 @@ const noeuds = N.map((n) => {
 const aretes = L.map((e) => `<path d="${e.d}" fill="none" stroke="${LIGNE}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fl)"/>`).join('\n    ');
 const libelles = L.filter((e) => e.l && e.l[0]).map((e) => `<text x="${e.l[1]}" y="${e.l[2]}" text-anchor="middle" font-size="11" fill="${DOUX}">${esc(e.l[0])}</text>`).join('\n    ');
 const marques = L.filter((e) => e.b)
-  .map((e) => annotation(e.b[0], e.b[1], e.b[2], BANDES)).join('\n    ');
+  .map((e) => annotation(e.b[0], e.b[1], e.b[2], BANDES, e.b[3])).join('\n    ');
 
 const TOTAL = '17 conteneurs · 12,5 vCPU / 27 Gio pour le calcul · 8 vCPU / 26 Gio + 580 Gio pour les données';
 

@@ -15,9 +15,13 @@ Justifications et sources : [état de l'art](etat-de-l-art-schemas.md).
       Un conteneur et une classe sur la même image, et le lecteur ne sait plus
       où il est. *(C4 — abstraction-first.)*
 
-- [ ] **4. Nommer chaque flèche, et l'orienter.**
-      « lit les commandes dans » porte une information ; « utilise » n'en porte
-      aucune.
+- [ ] **4. Nommer chaque flèche : l'intention *et* le transport.**
+      « publie les mesures » dit pourquoi, « MQTT » dit comment. C4 demande les
+      deux ; « utilise » n'en donne aucun. Deux exceptions, et seulement deux :
+      le transport se tait quand la boîte d'arrivée le nomme déjà — une flèche
+      qui entre dans « Kafka » n'a pas besoin d'une étiquette Kafka ; et
+      l'intention se tait quand la topologie la dit — « Internet → Pare-feu en
+      HTTPS » se passe de verbe.
 
 - [ ] **5. Une légende, toujours.**
       Les six couleurs de couche sont une convention arbitraire. Sans légende,

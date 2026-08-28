@@ -88,6 +88,20 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   const couchesUtilisees = [...new Set(noeuds.map((n) => PAR_SLUG[n.ico]).filter((e) => e && !e.marqueOfficielle)
     .map((e) => FAM[e.famille]).filter(Boolean))]
     .map((k) => [COUCHES[k].label, COUCHES[k].clair]);
+  // Une étiquette de flèche ne doit recouvrir aucune boîte. Contrôle mécanique :
+  // à l'échelle du schéma, dix pixels de recouvrement ne se voient pas, et se
+  // voient très bien à l'impression.
+  for (const m of marques) {
+    const proto = PAR_SLUG[m[0]].label;
+    const lw = Math.max(17 + 5 + proto.length * 6.6, m[3] ? m[3].length * 5.3 : 0) + 10;
+    const lh = m[3] ? 36 : 22;
+    const c = { x: m[1] - lw / 2, y: m[2] - lh / 2, w: lw, h: lh };
+    for (const n of noeuds) {
+      if (c.x < n.x + n.w + 6 && c.x + c.w > n.x - 6 && c.y < n.y + n.h + 6 && c.y + c.h > n.y - 6) {
+        throw new Error(`${f} : l'étiquette « ${proto}${m[3] ? ' / ' + m[3] : ''} » recouvre « ${n.t} ».`);
+      }
+    }
+  }
   const leg = legende(40, h - 46, formesUtilisees, couchesUtilisees, noeuds.some((n) => n.vedette));
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="${esc(titre)}">
   <title>${esc(titre)}</title>
@@ -99,7 +113,7 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   ${liens.map(lien).join('\n  ')}
   ${noeuds.map(noeud).join('\n  ')}
   ${notes.map((n) => T(n[0], n[1], n[2], { a: n[3], f: n[4] || 10.5 })).join('\n  ')}
-  ${marques.map((m) => annotation(m[0], m[1], m[2], zones)).join('\n  ')}
+  ${marques.map((m) => annotation(m[0], m[1], m[2], zones, m[3])).join('\n  ')}
   ${apres}
   ${leg}
 </svg>
@@ -111,44 +125,44 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
 /* ══════════════ 1 · matériel et réseau ══════════════ */
 const vmA = (x, y, ico, t, s) => ({ x, y, w: 128, h: 54, t, s, ico, forme: 'noeud' });
 rendre({
-  f: 'exemple-infra.svg', w: 1280, h: 760,
+  f: 'exemple-infra.svg', w: 1340, h: 760,
   titre: 'Socle — machines, réseau, virtualisation',
   sous: "Niveau matériel · ce schéma ne contient aucun composant applicatif",
   zones: [
-    { x: 232, y: 100, w: 250, h: 200, t: 'DMZ', s: 'exposée' },
-    { x: 522, y: 100, w: 718, h: 520, t: 'LAN production', s: 'VLAN 20 · non routé vers l’extérieur' },
+    { x: 288, y: 100, w: 250, h: 200, t: 'DMZ', s: 'exposée' },
+    { x: 578, y: 100, w: 718, h: 520, t: 'LAN production', s: 'VLAN 20 · non routé vers l’extérieur' },
   ],
   noeuds: [
     { x: 40, y: 150, w: 150, h: 64, t: 'Internet', s: 'hors périmètre', ico: 'cdn', forme: 'externe' },
-    { x: 262, y: 170, w: 190, h: 70, t: 'Pare-feu', s: 'pfSense', ico: 'pfsense', id: 'fw-edge-01', forme: 'service' },
-    { x: 552, y: 150, w: 190, h: 66, t: 'Commutateur', s: '48 ports', ico: 'commutateur', forme: 'service' },
-    { x: 790, y: 150, w: 190, h: 66, t: 'Routeur', s: 'BGP', ico: 'routeur', forme: 'service' },
-    { x: 1028, y: 150, w: 190, h: 66, t: 'Résolveur DNS', s: 'interne', ico: 'dns', id: 'ns1.interne', forme: 'service' },
+    { x: 318, y: 170, w: 190, h: 70, t: 'Pare-feu', s: 'pfSense', ico: 'pfsense', id: 'fw-edge-01', forme: 'service' },
+    { x: 608, y: 150, w: 190, h: 66, t: 'Commutateur', s: '48 ports', ico: 'commutateur', forme: 'service' },
+    { x: 846, y: 150, w: 190, h: 66, t: 'Routeur', s: 'BGP', ico: 'routeur', forme: 'service' },
+    { x: 1084, y: 150, w: 190, h: 66, t: 'Résolveur DNS', s: 'interne', ico: 'dns', id: 'ns1.interne', forme: 'service' },
 
-    { x: 552, y: 280, w: 320, h: 180, t: 'Serveur A', s: '2 × Xeon · 256 Gio', ico: 'serveur', id: 'srv-a', forme: 'noeud', vedette: true },
-    { x: 572, y: 336, w: 280, h: 44, t: 'Proxmox VE', s: 'hyperviseur', ico: 'proxmox', forme: 'service' },
+    { x: 608, y: 280, w: 320, h: 180, t: 'Serveur A', s: '2 × Xeon · 256 Gio', ico: 'serveur', id: 'srv-a', forme: 'noeud', vedette: true },
+    { x: 628, y: 336, w: 280, h: 44, t: 'Proxmox VE', s: 'hyperviseur', ico: 'proxmox', forme: 'service' },
     vmA(572, 392, 'ubuntu', 'vm-app-1', 'Ubuntu 24.04'),
     vmA(724, 392, 'ubuntu', 'vm-app-2', 'Ubuntu 24.04'),
 
-    { x: 900, y: 280, w: 320, h: 180, t: 'Serveur B', s: '2 × Xeon · 256 Gio', ico: 'serveur', id: 'srv-b', forme: 'noeud' },
-    { x: 920, y: 336, w: 280, h: 44, t: 'Hyperviseur', s: 'KVM', ico: 'hyperviseur', forme: 'service' },
+    { x: 956, y: 280, w: 320, h: 180, t: 'Serveur B', s: '2 × Xeon · 256 Gio', ico: 'serveur', id: 'srv-b', forme: 'noeud' },
+    { x: 976, y: 336, w: 280, h: 44, t: 'Hyperviseur', s: 'KVM', ico: 'hyperviseur', forme: 'service' },
     vmA(920, 392, 'linux', 'vm-data-1', 'Debian 12'),
     vmA(1072, 392, 'linux', 'vm-data-2', 'Debian 12'),
 
-    { x: 552, y: 500, w: 320, h: 78, t: 'Baie de disques', s: 'RAID 10 · 12 To', ico: 'volume', id: 'baie-01', forme: 'stockage' },
-    { x: 900, y: 500, w: 320, h: 78, t: 'Sauvegarde', s: 'hors site · quotidienne', ico: 'stockage-objet', id: 'sauv-distante', forme: 'stockage' },
+    { x: 608, y: 500, w: 320, h: 78, t: 'Baie de disques', s: 'RAID 10 · 12 To', ico: 'volume', id: 'baie-01', forme: 'stockage' },
+    { x: 956, y: 500, w: 320, h: 78, t: 'Sauvegarde', s: 'hors site · quotidienne', ico: 'stockage-objet', id: 'sauv-distante', forme: 'stockage' },
   ],
   liens: [
-    { d: 'M190,182 H254' },
-    { d: 'M452,205 H510 V183 H544' },
-    { d: 'M742,183 H782' },
-    { d: 'M980,183 H1020' },
-    { d: 'M647,216 V272' },
-    { d: 'M995,216 V272' },
-    { d: 'M712,460 V492' },
-    { d: 'M1060,460 V492' },
+    { d: 'M190,182 H310' },
+    { d: 'M508,205 H566 V183 H600' },
+    { d: 'M798,183 H838' },
+    { d: 'M1036,183 H1076' },
+    { d: 'M703,216 V272' },
+    { d: 'M1051,216 V272' },
+    { d: 'M768,460 V492' },
+    { d: 'M1116,460 V492' },
   ],
-  marques: [['https', 222, 182]],
+  marques: [['https', 250, 182]],
   notes: [[490, 176, 'trafic filtré', 'middle'], [700, 246, 'VLAN 20', 'middle'], [1048, 246, 'VLAN 20', 'middle'],
           [745, 480, 'iSCSI', 'middle'], [1093, 480, 'réplication', 'middle']],
 });
@@ -189,7 +203,7 @@ rendre({
     { d: 'M1020,300 H1072' }, { d: 'M1020,420 H1072' },
     { d: 'M210,458 V482' }, { d: 'M540,458 V482' },
   ],
-  marques: [['grpc', 610, 240]],
+  marques: [['grpc', 610, 237, 'route vers les pods']],
   notes: [[1046, 292, 'SQL', 'middle'], [1046, 412, 'objets', 'middle'],
           [246, 478, 'docker pull', 'middle'], [578, 478, 'monte', 'middle']],
 });
@@ -239,7 +253,7 @@ rendre({
     { d: 'M1072,293 H1110 V240 H1142' },
     { d: 'M1072,359 H1142' },
   ],
-  marques: [['rest', 212, 227]],
+  marques: [['rest', 216, 227]],
   notes: [[212, 282, 'consomme', 'end'], [1106, 218, 'SQL', 'middle'], [1106, 350, 'PUT', 'middle'],
           [499, 218, 'appelle', 'middle'], [779, 218, 'persiste', 'middle']],
 });
