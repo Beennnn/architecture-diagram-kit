@@ -68,6 +68,7 @@ node scripts/exemples-systeme.mjs
 echo "→ Planches de specimen (specimen/)"
 node scripts/specimen-lockups.mjs
 node scripts/specimen.mjs
+node scripts/specimen-rendus.mjs
 node scripts/styles.mjs
 
 echo
