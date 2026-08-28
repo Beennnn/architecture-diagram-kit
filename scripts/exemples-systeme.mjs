@@ -3,7 +3,12 @@
 // un seul schéma viole la règle « un seul niveau d'abstraction par schéma ».
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, marqueur } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, marqueur, legende } from './schema.mjs';
+
+const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
+const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
+const FAM = {}; for (const [k, c] of Object.entries(COUCHES)) for (const f of c.familles) FAM[f] = k;
+const PAR_SLUG = Object.fromEntries(MAP.map((e) => [e.slug, e]));
 
 const T = (x, y, s, o = {}) =>
   `<text x="${x}" y="${y}"${o.a ? ` text-anchor="${o.a}"` : ''} font-size="${o.f || 11}"${o.g ? ` font-weight="600"` : ''} fill="${o.c || DOUX}"${o.m ? ` font-family="'IBM Plex Mono',monospace"` : ''}>${esc(s)}</text>`;
@@ -35,6 +40,13 @@ const noeud = (n) => {
 const lien = (e) => `<path d="${e.d}" fill="none" stroke="${LIGNE}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fl)"/>`;
 
 function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], marques = [], notes = [], apres = '' }) {
+  // La légende se déduit du contenu : elle ne peut pas annoncer une forme
+  // absente ni oublier une couleur employée.
+  const formesUtilisees = [...new Set(noeuds.map((n) => n.forme || 'service'))].concat(zones.length ? ['frontiere'] : []);
+  const couchesUtilisees = [...new Set(noeuds.map((n) => PAR_SLUG[n.ico]).filter((e) => e && !e.marqueOfficielle)
+    .map((e) => FAM[e.famille]).filter(Boolean))]
+    .map((k) => [COUCHES[k].label, COUCHES[k].clair]);
+  const leg = legende(40, h - 46, formesUtilisees, couchesUtilisees);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="${esc(titre)}">
   <title>${esc(titre)}</title>
   <defs>${fleche()}</defs>
@@ -47,6 +59,7 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
   ${notes.map((n) => T(n[0], n[1], n[2], { a: n[3], f: n[4] || 10.5 })).join('\n  ')}
   ${marques.map((m) => badge(m[0], m[1], m[2], m[3] || 0.74)).join('\n  ')}
   ${apres}
+  ${leg}
 </svg>
 `;
   fs.writeFileSync(path.join(ROOT, 'docs', f), svg);
@@ -56,7 +69,7 @@ function rendre({ f, w, h, titre, sous, zones = [], noeuds = [], liens = [], mar
 /* ══════════════ 1 · matériel et réseau ══════════════ */
 const vmA = (x, y, ico, t, s) => ({ x, y, w: 128, h: 54, t, s, ico, forme: 'noeud' });
 rendre({
-  f: 'exemple-infra.svg', w: 1280, h: 700,
+  f: 'exemple-infra.svg', w: 1280, h: 760,
   titre: 'Socle — machines, réseau, virtualisation',
   sous: "Niveau matériel · ce schéma ne contient aucun composant applicatif",
   zones: [
@@ -102,7 +115,7 @@ rendre({
 const pod = (x, y, t, s, ico) => ({ x, y, w: 132, h: 52, t, s, ico, forme: 'service' });
 const clusterip = (x, y) => ({ x, y, w: 268, h: 48, t: 'Service ClusterIP', ico: 'service-cluster', forme: 'service' });
 rendre({
-  f: 'exemple-k8s.svg', w: 1280, h: 720,
+  f: 'exemple-k8s.svg', w: 1280, h: 780,
   titre: 'Plateforme — cluster Kubernetes',
   sous: 'Niveau plateforme · les VM du schéma précédent sont ici les nœuds du cluster',
   zones: [{ x: 40, y: 100, w: 1000, h: 540, t: 'Cluster de production', s: '3 nœuds · Istio en maillage' }],
@@ -145,7 +158,7 @@ rendre({
 // magasins réels sont dehors. De même, aucun badge de protocole à l'intérieur :
 // un protocole marque un franchissement de frontière, pas un appel de méthode.
 rendre({
-  f: 'exemple-composant.svg', w: 1400, h: 600,
+  f: 'exemple-composant.svg', w: 1400, h: 660,
   titre: 'Composant — intérieur du service Commandes',
   sous: 'Niveau code · un seul des pods du schéma précédent, ouvert',
   zones: [
@@ -206,7 +219,7 @@ const M = [
 ];
 
 rendre({
-  f: 'exemple-livraison.svg', w: 1400, h: 700,
+  f: 'exemple-livraison.svg', w: 1400, h: 760,
   titre: 'Livraison — de la modification au déploiement',
   sous: 'Niveau chaîne · aucune de ces boîtes n’existe à l’exécution',
   zones: [{ x: 40, y: 120, w: 1030, h: 360, t: 'Intégration continue', s: 'déclenchée à chaque poussée' }],
