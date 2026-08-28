@@ -3,9 +3,14 @@
 // forme de schéma très différente de celle de exemple.mjs.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, LIGNE, esc, symbole, badge, boite, fleche, legende } from './schema.mjs';
 
-const W = 1400, H = 940;
+const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
+const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
+const FAM = {}; for (const [k, c] of Object.entries(COUCHES)) for (const f of c.familles) FAM[f] = k;
+const PAR_SLUG = Object.fromEntries(MAP.map((e) => [e.slug, e]));
+
+const W = 1400, H = 1000;
 const NW = 196;
 
 // ─── couches ──────────────────────────────────────────────────────────────
@@ -96,6 +101,10 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
     ${marques}
   <text x="40" y="${H - 42}" font-size="11.5" font-weight="600" fill="${DOUX}">Total</text>
   <text x="90" y="${H - 42}" font-size="11.5" fill="${DOUX}" font-family="'IBM Plex Mono',monospace">${esc(TOTAL)}</text>
+  ${legende(40, H - 90,
+    [...new Set(N.map((n) => n.forme || 'service'))].concat(BANDES.length ? ['frontiere'] : []),
+    [...new Set(N.map((n) => PAR_SLUG[n.ico]).filter((e) => e && !e.marqueOfficielle)
+      .map((e) => FAM[e.famille]).filter(Boolean))].map((k) => [COUCHES[k].label, COUCHES[k].clair]))}
 </svg>
 `;
 fs.writeFileSync(path.join(ROOT, 'docs/exemple-couches.svg'), svg);

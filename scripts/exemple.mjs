@@ -7,7 +7,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche } from './schema.mjs';
+import { ROOT, ENCRE, DOUX, TRAIT, LIGNE, esc, symbole, badge, boite, fleche, legende } from './schema.mjs';
+
+const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
+const COUCHES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/couches.json'), 'utf8')).couches;
+const FAM = {}; for (const [k, c] of Object.entries(COUCHES)) for (const f of c.familles) FAM[f] = k;
+const PAR_SLUG = Object.fromEntries(MAP.map((e) => [e.slug, e]));
 
 // ─── nœuds ────────────────────────────────────────────────────────────────
 // symbole: null = aucun badge disponible (c'est le constat de l'exercice)
@@ -47,7 +52,7 @@ const L = [
   { d: 'M190,506 H272',                    b: ['ssh',   231, 482] },
 ];
 
-const W = 1290, H = 720;
+const W = 1290, H = 780;
 
 const noeuds = N.map((n) => {
   const cy = n.y + n.h / 2;
@@ -77,6 +82,10 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   <rect width="${W}" height="${H}" fill="#FFFFFF"/>
   <text x="40" y="46" font-size="19" font-weight="700" fill="${ENCRE}">Voltis — recharge de véhicules électriques</text>
   <text x="40" y="68" font-size="12.5" fill="${DOUX}">Vue d'exécution · les mesures des bornes deviennent des factures mensuelles</text>
+  ${legende(40, H - 46,
+    [...new Set(N.map((n) => n.forme || 'service'))].concat(Z.length ? ['frontiere'] : []),
+    [...new Set(N.map((n) => PAR_SLUG[n.ico]).filter((e) => e && !e.marqueOfficielle)
+      .map((e) => FAM[e.famille]).filter(Boolean))].map((k) => [COUCHES[k].label, COUCHES[k].clair]))}
     ${zones}
     ${aretes}
     ${noeuds}
