@@ -44,6 +44,31 @@ const traits = (dy) => COURTES.map((c) =>
   `<line x1="${c.x + BW}" y1="${c.y + dy}" x2="${c.x + BW + 77}" y2="${c.y + dy}" stroke="${LIGNE}" stroke-width="1.5" marker-end="url(#fl)"/>`).join('')
   + `<path d="${cheminCoude(dy)}" fill="none" stroke="${LIGNE}" stroke-width="1.5" marker-end="url(#fl)"/>`;
 
+// Le point à mi-longueur d'une polyligne, et l'orientation du segment qui le
+// porte. textPath place son texte là tout seul ; un symbole n'étant pas du
+// texte, il faut le calculer — ce qui retire à textPath son dernier avantage.
+function miParcours(points) {
+  const seg = [];
+  let total = 0;
+  for (let i = 1; i < points.length; i++) {
+    const l = Math.hypot(points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]);
+    seg.push(l); total += l;
+  }
+  let reste = total / 2;
+  for (let i = 0; i < seg.length; i++) {
+    if (reste <= seg[i]) {
+      const [ax, ay] = points[i], [bx, by] = points[i + 1], t = seg[i] ? reste / seg[i] : 0;
+      return { x: ax + (bx - ax) * t, y: ay + (by - ay) * t, vertical: ax === bx };
+    }
+    reste -= seg[i];
+  }
+  const d = points[points.length - 1];
+  return { x: d[0], y: d[1], vertical: false };
+}
+const pointsCourte = (c, dy) => [[c.x + BW, c.y + dy], [c.x + BW + 77, c.y + dy]];
+const pointsCoude = (dy) => [[COUDE.xd, COUDE.yd + dy], [COUDE.xd, COUDE.ym + dy],
+  [COUDE.xm, COUDE.ym + dy], [COUDE.xm, COUDE.ya + dy]];
+
 const milieuCourte = (c) => c.x + BW + 41;
 const milieuCoude = () => [(COUDE.xd + COUDE.xm) / 2, COUDE.ym];
 
@@ -76,6 +101,24 @@ const C = (dy) => COURTES.map((c, i) =>
   + `<text font-size="11.5" font-weight="600" fill="${encre(COUDE.slug)}" dy="-5">`
   + `<textPath href="#tps-${dy}" startOffset="50%" text-anchor="middle">${esc(nom(COUDE.slug))}</textPath></text>`;
 
+// D — le texte reste porté par le tracé, et le symbole vient sous lui pour
+//     rendre le dual coding. Il faut donc calculer le milieu que textPath
+//     trouvait seul : la mécanique des deux options n'est plus la même.
+function symboleSousTexte(slug, pt) {
+  const t = 16;
+  return symbole(slug, pt.x - t / 2, pt.y - t - 3, t)
+    .replace(/<rect width="48" height="48" rx="13" fill="[^"]*"\/>/, '');
+}
+const D = (dy) => COURTES.map((c, i) =>
+  `<path id="dp${i}-${dy}" d="M${c.x + BW},${c.y + dy} H${c.x + BW + 77}" fill="none" stroke="none"/>`
+  + `<text font-size="11.5" font-weight="600" fill="${encre(c.slug)}" dy="-23">`
+  + `<textPath href="#dp${i}-${dy}" startOffset="50%" text-anchor="middle">${esc(nom(c.slug))}</textPath></text>`
+  + symboleSousTexte(c.slug, miParcours(pointsCourte(c, dy)))).join('')
+  + `<path id="dps-${dy}" d="${cheminCoude(dy)}" fill="none" stroke="none"/>`
+  + `<text font-size="11.5" font-weight="600" fill="${encre(COUDE.slug)}" dy="-23">`
+  + `<textPath href="#dps-${dy}" startOffset="50%" text-anchor="middle">${esc(nom(COUDE.slug))}</textPath></text>`
+  + symboleSousTexte(COUDE.slug, miParcours(pointsCoude(dy)));
+
 const RANGS = [
   { cle: 'A', titre: 'Bloc-marque au-dessus du trait', sous: 'l’existant', rendu: A, verdict: ['#5B6873', '#F1F3F4', 'EXISTANT'],
     notes: ['Le bloc-marque fait 150 px pour une flèche de 82 :',
@@ -89,6 +132,8 @@ const RANGS = [
             'Convention de draw.io, d’AWS et de PlantUML.'] },
   { cle: 'C', titre: 'Texte porté par le tracé', sous: 'textPath', rendu: C, verdict: ['#C0392F', '#FBECEA', 'À ÉCARTER ICI'],
     notes: ['Techniquement disponible, et le bon outil sur un', 'tracé courbe. Mais il ne peut pas emporter de', 'symbole : le dual coding tombe, et c’est justement', 'ce que ce dépôt fabrique. Le texte étant lié au', 'tracé, il bascule à la verticale dès que son point', 'milieu tombe sur un segment vertical — donc son', 'orientation dépend du routage, pas d’une décision.'] },
+  { cle: 'D', titre: 'Texte sur le tracé, symbole dessous', sous: 'la proposition : sémantique portée par le texte, symbole en appui', rendu: D, verdict: ['#B36208', '#FBF0E2', 'RÉTABLIT LE SYMBOLE'],
+    notes: ['Rend le dual coding que C avait perdu, et garde le', 'texte lié au tracé. Mais le symbole, lui, ne suit', 'rien : il a fallu calculer le milieu que textPath', 'trouvait seul — l’avantage de textPath s’annule là.', 'Surtout, empiler pousse l’annotation vers le haut,', 'dans l’espace déjà occupé : voyez SMTP percuter le', 'bas de Facturation, le symbole détaché du trait.'] },
 ];
 
 const LARGEUR_NOTE = Math.floor((X0 - 48 - 16) / 4.9);
@@ -123,7 +168,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   + `<line x1="24" y1="104" x2="${W - 24}" y2="104" stroke="#E3E7EA"/>`
   + out
   + `<line x1="24" y1="${H - 54}" x2="${W - 24}" y2="${H - 54}" stroke="#E3E7EA"/>`
-  + `<text x="24" y="${H - 32}" font-size="12" fill="${DOUX}">Recommandation : <tspan font-weight="700" fill="${ENCRE}">B</tspan>. Le bloc-marque reste le bon objet dans une boîte, où il a la place ; sur une flèche, il est trop lourd pour ce qu’il annote.</text>`
+  + `<text x="24" y="${H - 32}" font-size="12" fill="${DOUX}">Recommandation : <tspan font-weight="700" fill="${ENCRE}">B</tspan>, où le texte domine déjà le symbole — 11,5 px gras coloré contre 17 px monochrome. La hiérarchie voulue en D y est acquise, sans quitter le couloir du trait.</text>`
   + `<text x="24" y="${H - 14}" font-size="10.5" fill="${LIGNE}">Rien n’est appliqué : la vue Voltis est toujours en A. Planche générée par scripts/specimen-fleches.mjs.</text>`
   + `</svg>`;
 
