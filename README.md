@@ -176,6 +176,8 @@ Node ≥ 18 et npm. Versions épinglées dans `regenerer.sh`.
   sept points, dans l'ordre de l'impact mesuré.
 - **[Exemple complet](docs/exemple-voltis.svg)** — un schéma d'architecture
   assemblé avec les badges du dépôt.
+- **[Exemple en couches](docs/exemple-couches.svg)** — présentation,
+  microservices, stockage relationnel et bucket, avec le dimensionnement.
 
 ### Décisions
 

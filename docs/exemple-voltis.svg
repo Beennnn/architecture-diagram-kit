@@ -1,9 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1290" height="720" viewBox="0 0 1290 720" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif" role="img" aria-label="Architecture d'exécution de la plateforme de recharge Voltis">
   <title>Voltis — vue d'exécution</title>
   <defs>
-    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0,1 L9,5 L0,9" fill="none" stroke="#8896A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9" fill="none" stroke="#8896A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
   </defs>
   <rect width="1290" height="720" fill="#FFFFFF"/>
   <text x="40" y="46" font-size="19" font-weight="700" fill="#16181A">Voltis — recharge de véhicules électriques</text>

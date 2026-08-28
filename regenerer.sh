@@ -60,7 +60,9 @@ node scripts/lockups.mjs
 
 echo "→ Bibliothèques draw.io (drawio/)"
 node scripts/drawio.mjs
+node scripts/excalidraw.mjs
 node scripts/exemple.mjs
+node scripts/exemple-couches.mjs
 
 echo "→ Planches de specimen (specimen/)"
 node scripts/specimen-lockups.mjs

@@ -13,6 +13,8 @@
   points, dans l'ordre de l'impact mesuré.
 - **[Exemple complet](exemple-voltis.svg)** — un schéma d'architecture assemblé
   avec les badges du dépôt, généré par `scripts/exemple.mjs`.
+- **[Exemple en couches](exemple-couches.svg)** — une place de marché en trois
+  couches, avec le dimensionnement de chaque brique.
 
 ## Utiliser le jeu
 
