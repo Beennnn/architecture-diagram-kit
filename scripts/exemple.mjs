@@ -22,12 +22,12 @@ const N = [
   { x: 40,   y: 470, w: 150, h: 72, t: 'Exploitation',      s: 'astreinte',       ico: 'equipe',      forme: 'acteur' },
   { x: 280,  y: 150, w: 200, h: 72, t: 'API publique',      s: 'contrat OpenAPI', ico: 'openapi' },
   { x: 280,  y: 310, w: 200, h: 72, t: 'Ingestion',         s: 'Spring Boot',     ico: 'springboot' },
-  { x: 280,  y: 470, w: 200, h: 72, t: 'Bastion',           s: 'accès restreint', ico: 'bastion' },
-  { x: 530,  y: 310, w: 200, h: 72, t: 'Bus de mesures',    s: '3 partitions',    ico: 'kafka',       forme: 'flux', vedette: true },
+  { x: 280,  y: 470, w: 200, h: 72, t: 'Bastion',           s: 'accès restreint', ico: 'bastion', id: 'bastion-01' },
+  { x: 530,  y: 310, w: 200, h: 72, t: 'Bus de mesures',    s: '3 partitions',    ico: 'kafka', id: 'mesures.v1',       forme: 'flux', vedette: true },
   { x: 760,  y: 150, w: 200, h: 72, t: 'Sessions',          s: 'Spring Boot',     ico: 'springboot' },
   { x: 530,  y: 470, w: 200, h: 72, t: 'Facturation',       s: 'Spring Boot',     ico: 'springboot' },
-  { x: 1030, y: 150, w: 200, h: 72, t: 'Sessions',          s: 'PostgreSQL 16',   ico: 'postgresql',  forme: 'stockage' },
-  { x: 1030, y: 470, w: 200, h: 72, t: 'Factures PDF',      s: 'stockage objet',  ico: 's3',          forme: 'stockage' },
+  { x: 1030, y: 150, w: 200, h: 72, t: 'Sessions',          s: 'PostgreSQL 16',   ico: 'postgresql', id: 'voltis-sessions',  forme: 'stockage' },
+  { x: 1030, y: 470, w: 200, h: 72, t: 'Factures PDF',      s: 'stockage objet',  ico: 's3', id: 'voltis-factures',          forme: 'stockage' },
   { x: 790,  y: 620, w: 200, h: 64, t: 'Relais courriel',   s: 'externe',         ico: 'smtp',        forme: 'externe' },
 ];
 
@@ -54,6 +54,31 @@ const L = [
 
 const W = 1290, H = 780;
 
+// Le sous-titre porte la techno et, quand la boîte désigne une chose qui existe
+// vraiment — une base, un bucket, un topic, une machine —, son identifiant. Un
+// bucket s'appelle « voltis-factures », pas « S3 » : sans lui, le schéma décrit
+// une catégorie et pas un système. La chasse fixe sépare les deux registres.
+// En ligne quand ça tient, sur sa propre ligne sinon : une boîte étroite ne doit
+// pas obliger à raccourcir un identifiant, qui n'est pas négociable.
+const tientEnLigne = (n, dispo) =>
+  n.s.length * 11 * 0.48 + 3 * 11 * 0.48 + n.id.length * 11 * 0.60 <= dispo;
+
+function sousTitre(n, tx, y, anchor) {
+  const t = (yy, txt, taille, couleur, mono) => `<text x="${tx}" y="${yy}" text-anchor="${anchor}"`
+    + ` font-size="${taille}"${mono ? ` font-family="'IBM Plex Mono',monospace"` : ''} fill="${couleur}">${esc(txt)}</text>`;
+  if (!n.id) return t(y, n.s, 11, DOUX);
+  const dispo = n.x + n.w - tx - 10;
+  if (tientEnLigne(n, dispo)) {
+    return t(y, n.s, 11, DOUX)
+      .replace('</text>', ` · <tspan font-family="'IBM Plex Mono',monospace">${esc(n.id)}</tspan></text>`);
+  }
+  const largeurId = n.id.length * 10 * 0.60;
+  if (largeurId > dispo) {
+    throw new Error(`« ${n.t} » : identifiant « ${n.id} » de ${Math.round(largeurId)} px pour ${Math.round(dispo)} px.`);
+  }
+  return t(y - 6, n.s, 11, DOUX) + t(y + 8, n.id, 10, LIGNE, true);
+}
+
 const noeuds = N.map((n) => {
   const vd = n.vedette ? ACCENT : null;
   const cy = n.y + n.h / 2;
@@ -63,7 +88,8 @@ const noeuds = N.map((n) => {
   return `<g>${boite({ ...n, vedette: vd })}`
     + (n.ico ? symbole(n.ico, n.x + 14, cy - 17 + dec) : '')
     + `<text x="${tx}" y="${cy - 3 + dec}" text-anchor="${anchor}" font-size="14" font-weight="600" fill="${vd || ENCRE}">${esc(n.t)}</text>`
-    + `<text x="${tx}" y="${cy + 15 + dec}" text-anchor="${anchor}" font-size="11" fill="${DOUX}">${esc(n.s)}</text></g>`;
+    + sousTitre(n, tx, cy + 15 + dec, anchor)
+    + `</g>`;
 }).join('\n    ');
 
 const zones = Z.map((z) => `<g>`

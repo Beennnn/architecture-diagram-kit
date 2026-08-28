@@ -71,6 +71,14 @@ const bandes = BANDES.map((z) => `<g>`
   + `<text x="${z.x + z.w - 18}" y="${z.y + 26}" text-anchor="end" font-size="13" font-weight="600" fill="${DOUX}">${esc(z.t)}</text>`
   + `<text x="${z.x + z.w - 18}" y="${z.y + 44}" text-anchor="end" font-size="11" fill="${LIGNE}">${esc(z.s)}</text></g>`).join('\n    ');
 
+// Le sous-titre porte la techno et, quand la boîte désigne une chose qui existe
+// vraiment — une base, un bucket, un topic, une machine —, son identifiant. Un
+// bucket s'appelle « voltis-factures », pas « S3 » : sans lui, le schéma décrit
+// une catégorie et pas un système. La chasse fixe sépare les deux registres.
+const idSuffixe = (n) => n.id
+  ? ` · <tspan font-family="'IBM Plex Mono',monospace">${esc(n.id)}</tspan>`
+  : '';
+
 const noeuds = N.map((n) => {
   const vd = n.vedette ? ACCENT : null;
   const cy = n.y + n.h / 2, dec = n.forme === 'stockage' ? 6 : 0;
@@ -78,7 +86,7 @@ const noeuds = N.map((n) => {
   return `<g>${boite({ ...n, vedette: vd })}`
     + symbole(n.ico, n.x + 13, cy - 17 + dec, 32)
     + `<text x="${tx}" y="${base}" font-size="13.5" font-weight="600" fill="${vd || ENCRE}">${esc(n.t)}</text>`
-    + `<text x="${tx}" y="${base + 17}" font-size="11" fill="${DOUX}">${esc(n.s)}</text>`
+    + `<text x="${tx}" y="${base + 17}" font-size="11" fill="${DOUX}">${esc(n.s)}${idSuffixe(n)}</text>`
     + (n.r ? `<text x="${tx}" y="${base + 33}" font-size="10" font-weight="600" fill="#0B6E7F" font-family="'IBM Plex Mono',monospace">${esc(n.r)}</text>` : '')
     + `</g>`;
 }).join('\n    ');

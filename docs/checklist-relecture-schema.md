@@ -26,5 +26,17 @@ Justifications et sources : [état de l'art](etat-de-l-art-schemas.md).
 - [ ] **6. Développer tous les acronymes.**
       Y compris ceux « que tout le monde connaît » dans votre équipe.
 
-- [ ] **7. Le faire lire par quelqu'un d'extérieur, sans commentaire.**
+- [ ] **7. Nommer les choses qui existent vraiment.**
+      Une boîte qui désigne une base, un bucket, un topic, une machine ou un
+      cluster porte son identifiant, en chasse fixe : `voltis-factures`, pas
+      « S3 ». Sans lui, le schéma décrit une catégorie de systèmes, pas le
+      vôtre — et personne ne peut aller vérifier. Les composants sans instance
+      propre (un contrôleur, une couche) n'en ont évidemment pas.
+
+- [ ] **8. Un seul sujet accentué, et déclaré.**
+      L'accent désigne ce que le schéma sert à montrer. Au-delà d'une boîte, il
+      ne désigne plus rien. La légende doit le nommer, sinon le lecteur le
+      cherche parmi les couches.
+
+- [ ] **9. Le faire lire par quelqu'un d'extérieur, sans commentaire.**
       Le seul test qui vaille. Ce qu'il demande, c'est ce qui manque.

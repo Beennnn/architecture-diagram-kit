@@ -15,9 +15,48 @@ const T = (x, y, s, o = {}) =>
 
 // La zone passe par boite() : elle avait sa propre géométrie, donc son propre
 // fond, qui a survécu au changement d'échelle de l'ADR 0007 sans le suivre.
-const zone = (z) => boite({ x: z.x, y: z.y, w: z.w, h: z.h, forme: 'frontiere', imbrique: z.imbrique })
-  + T(z.x + z.w - 14, z.y + 22, z.t, { a: 'end', f: 12, g: 1 })
-  + (z.s ? T(z.x + z.w - 14, z.y + 38, z.s, { a: 'end', f: 10, c: LIGNE }) : '');
+// Une zone reçoit un symbole quand elle EST un produit ou une plateforme
+// (« Cluster de production » est du Kubernetes). Une frontière abstraite —
+// un segment réseau, une couche d'architecture — n'en reçoit pas : lui en
+// coller un ferait croire à un composant là où il n'y a qu'un périmètre.
+const zone = (z) => {
+  const droite = z.x + z.w - 14;
+  const finTexte = z.ico ? droite - 28 : droite;
+  return boite({ x: z.x, y: z.y, w: z.w, h: z.h, forme: 'frontiere', imbrique: z.imbrique })
+    + (z.ico ? symbole(z.ico, droite - 22, z.y + 12, 22) : '')
+    + T(finTexte, z.y + 22, z.t, { a: 'end', f: 12, g: 1 })
+    + (z.s ? T(finTexte, z.y + 38, z.s, { a: 'end', f: 10, c: LIGNE }) : '');
+};
+
+// Le sous-titre porte la techno et, quand la boîte désigne une chose qui existe
+// vraiment — une base, un bucket, un topic, une machine —, son identifiant. Un
+// bucket s'appelle « voltis-factures », pas « S3 » : sans lui, le schéma décrit
+// une catégorie et pas un système. La chasse fixe sépare les deux registres.
+// Largeurs approchées : 0,48 em en Plex Sans, 0,60 em en Plex Mono. La marge
+// d'erreur est absorbée par les 10 px de fond de boîte réservés.
+const largeurSousTitre = (n, taille) =>
+  n.s.length * taille * 0.48 + (n.id ? (3 * taille * 0.48 + n.id.length * taille * 0.60) : 0);
+
+const sousTitre = (x, y, n, taille) => {
+  const dispo = n.x + n.w - x - 10;
+  if (!n.id) return T(x, y, n.s, { f: taille });
+  // En ligne quand ça tient, sur sa propre ligne sinon : une boîte étroite ne
+  // doit pas obliger à raccourcir un identifiant, qui n'est pas négociable.
+  if (largeurSousTitre(n, taille) <= dispo) {
+    return T(x, y, n.s, { f: taille })
+      .replace('</text>', ` · <tspan font-family="'IBM Plex Mono',monospace">${esc(n.id)}</tspan></text>`);
+  }
+  const largeurId = n.id.length * (taille - 1) * 0.60;
+  if (largeurId > dispo) {
+    throw new Error(`« ${n.t} » : l'identifiant « ${n.id} » fait ${Math.round(largeurId)} px `
+      + `pour ${Math.round(dispo)} px disponibles, même seul sur sa ligne.`);
+  }
+  if (n.y + n.h - (y + 13) < 6) {
+    throw new Error(`« ${n.t} » : pas la place d'une troisième ligne (${n.h} px de haut).`);
+  }
+  return T(x, y - 6, n.s, { f: taille })
+    + T(x, y + 8, n.id, { f: taille - 1, m: 1, c: LIGNE });
+};
 
 // Un nœud : titre + sous-titre, badge à gauche, deux tailles selon la hauteur
 const noeud = (n) => {
@@ -28,7 +67,7 @@ const noeud = (n) => {
     return `<g>${boite({ ...n, vedette: vd })}`
       + (n.ico ? symbole(n.ico, n.x + 12, n.y + 12, 26) : '')
       + T(n.x + 46, n.y + 24, n.t, { f: 13, g: 1, c: vd || ENCRE })
-      + (n.s ? T(n.x + 46, n.y + 39, n.s, { f: 10.5 }) : '') + `</g>`;
+      + (n.s ? sousTitre(n.x + 46, n.y + 39, n, 10.5) : '') + `</g>`;
   }
   const petit = n.h <= 58;
   const dec = n.forme === 'stockage' ? 6 : 0;
@@ -37,7 +76,7 @@ const noeud = (n) => {
   return `<g>${boite({ ...n, vedette: vd })}`
     + (n.ico ? symbole(n.ico, n.x + (petit ? 10 : 12), cy - it / 2, it) : '')
     + T(tx, n.s ? cy - 2 : cy + 4, n.t, { f: petit ? 12 : 13.5, g: 1, c: vd || ENCRE })
-    + (n.s ? T(tx, cy + 14, n.s, { f: petit ? 9.5 : 10.5 }) : '') + `</g>`;
+    + (n.s ? sousTitre(tx, cy + 14, n, petit ? 9.5 : 10.5) : '') + `</g>`;
 };
 
 const lien = (e) => `<path d="${e.d}" fill="none" stroke="${LIGNE}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fl)"/>`;
@@ -81,23 +120,23 @@ rendre({
   ],
   noeuds: [
     { x: 40, y: 150, w: 150, h: 64, t: 'Internet', s: 'hors périmètre', ico: 'cdn', forme: 'externe' },
-    { x: 262, y: 170, w: 190, h: 70, t: 'Pare-feu', s: 'pfSense', ico: 'pfsense', forme: 'service' },
+    { x: 262, y: 170, w: 190, h: 70, t: 'Pare-feu', s: 'pfSense', ico: 'pfsense', id: 'fw-edge-01', forme: 'service' },
     { x: 552, y: 150, w: 190, h: 66, t: 'Commutateur', s: '48 ports', ico: 'commutateur', forme: 'service' },
     { x: 790, y: 150, w: 190, h: 66, t: 'Routeur', s: 'BGP', ico: 'routeur', forme: 'service' },
-    { x: 1028, y: 150, w: 190, h: 66, t: 'Résolveur DNS', s: 'interne', ico: 'dns', forme: 'service' },
+    { x: 1028, y: 150, w: 190, h: 66, t: 'Résolveur DNS', s: 'interne', ico: 'dns', id: 'ns1.interne', forme: 'service' },
 
-    { x: 552, y: 280, w: 320, h: 180, t: 'Serveur A', s: '2 × Xeon · 256 Gio', ico: 'serveur', forme: 'noeud', vedette: true },
+    { x: 552, y: 280, w: 320, h: 180, t: 'Serveur A', s: '2 × Xeon · 256 Gio', ico: 'serveur', id: 'srv-a', forme: 'noeud', vedette: true },
     { x: 572, y: 336, w: 280, h: 44, t: 'Proxmox VE', s: 'hyperviseur', ico: 'proxmox', forme: 'service' },
     vmA(572, 392, 'ubuntu', 'vm-app-1', 'Ubuntu 24.04'),
     vmA(724, 392, 'ubuntu', 'vm-app-2', 'Ubuntu 24.04'),
 
-    { x: 900, y: 280, w: 320, h: 180, t: 'Serveur B', s: '2 × Xeon · 256 Gio', ico: 'serveur', forme: 'noeud' },
+    { x: 900, y: 280, w: 320, h: 180, t: 'Serveur B', s: '2 × Xeon · 256 Gio', ico: 'serveur', id: 'srv-b', forme: 'noeud' },
     { x: 920, y: 336, w: 280, h: 44, t: 'Hyperviseur', s: 'KVM', ico: 'hyperviseur', forme: 'service' },
     vmA(920, 392, 'linux', 'vm-data-1', 'Debian 12'),
     vmA(1072, 392, 'linux', 'vm-data-2', 'Debian 12'),
 
-    { x: 552, y: 500, w: 320, h: 78, t: 'Baie de disques', s: 'RAID 10 · 12 To', ico: 'volume', forme: 'stockage' },
-    { x: 900, y: 500, w: 320, h: 78, t: 'Sauvegarde', s: 'hors site · quotidienne', ico: 'stockage-objet', forme: 'stockage' },
+    { x: 552, y: 500, w: 320, h: 78, t: 'Baie de disques', s: 'RAID 10 · 12 To', ico: 'volume', id: 'baie-01', forme: 'stockage' },
+    { x: 900, y: 500, w: 320, h: 78, t: 'Sauvegarde', s: 'hors site · quotidienne', ico: 'stockage-objet', id: 'sauv-distante', forme: 'stockage' },
   ],
   liens: [
     { d: 'M190,182 H254' },
@@ -121,7 +160,7 @@ rendre({
   f: 'exemple-k8s.svg', w: 1280, h: 780,
   titre: 'Plateforme — cluster Kubernetes',
   sous: 'Niveau plateforme · les VM du schéma précédent sont ici les nœuds du cluster',
-  zones: [{ x: 40, y: 100, w: 1000, h: 540, t: 'Cluster de production', s: '3 nœuds · Istio en maillage' }],
+  zones: [{ x: 40, y: 100, w: 1000, h: 540, t: 'Cluster de production', s: '3 nœuds · Istio en maillage', ico: 'kubernetes' }],
   noeuds: [
     { x: 400, y: 150, w: 280, h: 62, t: 'Ingress', s: 'terminaison TLS', ico: 'passerelle-api', forme: 'service' },
 
@@ -137,11 +176,11 @@ rendre({
     pod(738, 322, 'maillage', 'Istio', 'istio'), pod(874, 322, 'secrets', 'Vault', 'vault'),
     clusterip(738, 388),
 
-    { x: 60, y: 490, w: 300, h: 66, t: 'Registre d’images', s: 'tiré par les nœuds', ico: 'registre', forme: 'stockage' },
-    { x: 400, y: 490, w: 300, h: 66, t: 'Volume persistant', s: 'monté par les pods', ico: 'volume', forme: 'stockage' },
+    { x: 60, y: 490, w: 300, h: 66, t: 'Registre d’images', s: 'tiré par les nœuds', ico: 'registre', id: 'registry.interne', forme: 'stockage' },
+    { x: 400, y: 490, w: 300, h: 66, t: 'Volume persistant', s: 'monté par les pods', ico: 'volume', id: 'pvc-donnees', forme: 'stockage' },
 
-    { x: 1080, y: 262, w: 170, h: 92, t: 'Relationnel', s: 'PostgreSQL 16', ico: 'postgresql', forme: 'stockage' },
-    { x: 1080, y: 392, w: 170, h: 92, t: 'Objets', s: 'bucket S3', ico: 's3', forme: 'stockage' },
+    { x: 1080, y: 262, w: 170, h: 92, t: 'Relationnel', s: 'PostgreSQL 16', id: 'voltis-commandes', ico: 'postgresql', forme: 'stockage' },
+    { x: 1080, y: 392, w: 170, h: 92, t: 'Objets', s: 'S3', id: 'voltis-factures', ico: 's3', forme: 'stockage' },
   ],
   liens: [
     { d: 'M540,212 V240 H210 V254' }, { d: 'M540,240 V254' }, { d: 'M540,240 H870 V254' },
@@ -165,13 +204,13 @@ rendre({
   titre: 'Composant — intérieur du service Commandes',
   sous: 'Niveau code · un seul des pods du schéma précédent, ouvert',
   zones: [
-    { x: 210, y: 100, w: 900, h: 420, t: 'Service Commandes', s: 'Spring Boot · un conteneur' },
+    { x: 210, y: 100, w: 900, h: 420, t: 'Service Commandes', s: 'Spring Boot · un conteneur', ico: 'springboot' },
     { x: 234, y: 148, w: 258, h: 262, t: 'Entrées', s: 'adaptateurs', imbrique: true },
     { x: 514, y: 148, w: 258, h: 262, t: 'Domaine', s: 'sans dépendance', imbrique: true },
     { x: 794, y: 148, w: 296, h: 262, t: 'Sorties', s: 'adaptateurs', imbrique: true },
   ],
   noeuds: [
-    { x: 30, y: 258, w: 150, h: 70, t: 'Bus', s: 'Kafka', ico: 'kafka', forme: 'flux' },
+    { x: 30, y: 258, w: 150, h: 70, t: 'Bus', s: 'Kafka', id: 'mesures.v1', ico: 'kafka', forme: 'flux' },
 
     { x: 252, y: 200, w: 222, h: 54, t: 'Contrôleur REST', s: '/v2/commandes', ico: 'controleur', forme: 'service' },
     { x: 252, y: 266, w: 222, h: 54, t: 'Consommateur', s: 'topic mesures', ico: 'worker', forme: 'service' },
@@ -184,8 +223,8 @@ rendre({
     { x: 234, y: 436, w: 378, h: 54, t: 'Configuration', s: 'profils · variables', ico: 'configuration', forme: 'service' },
     { x: 632, y: 436, w: 458, h: 54, t: 'Sécurité', s: 'Spring Security · filtre de jetons', ico: 'springsecurity', forme: 'service' },
 
-    { x: 1150, y: 190, w: 220, h: 86, t: 'Relationnel', s: 'PostgreSQL 16', ico: 'postgresql', forme: 'stockage' },
-    { x: 1150, y: 316, w: 220, h: 86, t: 'Objets', s: 'bucket S3', ico: 's3', forme: 'stockage' },
+    { x: 1150, y: 190, w: 220, h: 86, t: 'Relationnel', s: 'PostgreSQL 16', id: 'voltis-commandes', ico: 'postgresql', forme: 'stockage' },
+    { x: 1150, y: 316, w: 220, h: 86, t: 'Objets', s: 'S3', id: 'voltis-factures', ico: 's3', forme: 'stockage' },
   ],
   liens: [
     { d: 'M180,293 H244' },
@@ -225,7 +264,7 @@ rendre({
   f: 'exemple-livraison.svg', w: 1400, h: 760,
   titre: 'Livraison — de la modification au déploiement',
   sous: 'Niveau chaîne · aucune de ces boîtes n’existe à l’exécution',
-  zones: [{ x: 40, y: 120, w: 1030, h: 360, t: 'Intégration continue', s: 'déclenchée à chaque poussée' }],
+  zones: [{ x: 40, y: 120, w: 1030, h: 360, t: 'Intégration continue', s: 'déclenchée à chaque poussée', ico: 'gitlab' }],
   noeuds: [
     etape(64, 'Compilation', 'Maven', 'maven'),
     etape(264, 'Qualité', 'Spotless · format', 'formateur'),
@@ -240,7 +279,7 @@ rendre({
     outil(464, 388, 'Test de contrat', 'OpenAPI · AsyncAPI', 'test-contrat'),
     outil(664, 266, 'SBOM', 'SPDX', 'sbom', 'stockage'),
 
-    { x: 1160, y: 180, w: 200, h: 64, t: 'Déploiement', s: 'Kubernetes', ico: 'kubernetes', forme: 'service', vedette: true },
+    { x: 1160, y: 180, w: 200, h: 64, t: 'Déploiement', s: 'Kubernetes', ico: 'kubernetes', id: 'voltis-prod', forme: 'service', vedette: true },
     { x: 1160, y: 300, w: 200, h: 64, t: 'Décisions', s: 'ADR versionnés', ico: 'decision', forme: 'service' },
     { x: 1160, y: 400, w: 200, h: 64, t: 'Schémas', s: 'draw.io versionné', ico: 'drawio', forme: 'service' },
   ],
