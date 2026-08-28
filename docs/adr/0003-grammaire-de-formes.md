@@ -1,7 +1,12 @@
 # 0003 — Une grammaire de formes, normative et fermée
 
-- **Statut** : acceptée
+- **Statut** : acceptée, amendée deux fois
 - **Date** : 2026-08-28
+- **Amendée par** : [0005](0005-forme-noeud-et-precisions.md), qui ajoute une
+  **neuvième** forme — le nœud de déploiement — et les règles R9 et R10 ;
+  [0007](0007-echelle-de-fonds-et-accent.md), qui écarte l'échelle des fonds et
+  ajoute l'accent. Ce document dit « huit formes » : c'est l'état à sa
+  rédaction, pas l'état courant.
 
 ## Contexte
 
