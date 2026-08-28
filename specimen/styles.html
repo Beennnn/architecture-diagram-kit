@@ -1,0 +1,1411 @@
+<title>Traitements d'icônes pour schémas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#EEF1F3; --surface:#FFFFFF; --surface-2:#F7F9FA; --canvas:#FFFFFF;
+  --ink:#111820; --ink-2:#3D4A55; --muted:#6C7B87;
+  --line:#D3DBE0; --line-2:#E4EAEE; --edge:#93A3AE;
+  --accent:#0B6E7F; --accent-soft:#DCEFF2; --accent-ink:#08525E;
+  --c-web:#1B5FD9;
+  --c-api:#7038D8;
+  --c-fichiers:#0B7A6E;
+  --c-messaging:#B36208;
+  --c-acces:#C0392F;
+  --c-infra:#4C5A66;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D1317; --surface:#141C22; --surface-2:#18222A; --canvas:#141C22;
+    --ink:#E6EDF1; --ink-2:#B4C2CC; --muted:#8496A2;
+    --line:#28343D; --line-2:#1F2A32; --edge:#5C6E7C;
+    --accent:#3FBFD4; --accent-soft:#123038; --accent-ink:#8FDDEA;
+  --c-web:#6FA6FF;
+  --c-api:#B08CFF;
+  --c-fichiers:#43C9B8;
+  --c-messaging:#F0A64B;
+  --c-acces:#FF8A80;
+  --c-infra:#A3B3C0;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D1317; --surface:#141C22; --surface-2:#18222A; --canvas:#141C22;
+  --ink:#E6EDF1; --ink-2:#B4C2CC; --muted:#8496A2;
+  --line:#28343D; --line-2:#1F2A32; --edge:#5C6E7C;
+  --accent:#3FBFD4; --accent-soft:#123038; --accent-ink:#8FDDEA;
+  --c-web:#6FA6FF;
+  --c-api:#B08CFF;
+  --c-fichiers:#43C9B8;
+  --c-messaging:#F0A64B;
+  --c-acces:#FF8A80;
+  --c-infra:#A3B3C0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px}
+h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;text-wrap:balance;margin:0}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+.top .wrap{padding-top:48px;padding-bottom:36px;display:grid;gap:20px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0}
+h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.06;font-weight:700;letter-spacing:-.02em}
+.lede{max-width:64ch;color:var(--ink-2);margin:0}
+.lede strong{color:var(--ink);font-weight:600}
+
+.toolbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-bottom:36px}
+.toolbar .wrap{padding-top:12px;padding-bottom:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.toolbar .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.toolbar button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:7px 14px;font:500 13px/1 "IBM Plex Sans",sans-serif;cursor:pointer}
+.toolbar button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+.toolbar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+section{margin-top:52px;scroll-margin-top:76px}
+section:first-of-type{margin-top:0}
+.shead{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.shead h2{font-size:1.3rem;font-weight:600;letter-spacing:-.01em}
+.shead p{margin:0;color:var(--muted);font-size:13.5px}
+
+.board{background:var(--canvas);border:1px solid var(--line);border-radius:var(--r);padding:18px;overflow-x:auto}
+.diagramme{display:block;min-width:860px;width:100%;height:auto}
+.node rect{fill:var(--surface-2);stroke:var(--line);stroke-width:1.25}
+.node-t{fill:var(--ink);font:600 14px/1 "IBM Plex Sans",sans-serif;text-anchor:middle}
+.node-s{fill:var(--muted);font:400 11px/1 "IBM Plex Mono",monospace;text-anchor:middle}
+.edge{fill:none;stroke:var(--edge);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.chip-txt{font:600 11px/1 "IBM Plex Sans",sans-serif;fill:var(--c)}
+
+/* --- les six traitements, pilotés par un seul attribut --- */
+.chip{--soft:color-mix(in srgb,var(--c) 14%,var(--canvas))}
+.chip--label{display:none}
+body[data-style="nu"]        .chip-bg{fill:var(--canvas);stroke:none}
+body[data-style="nu"]        .chip-ico{color:var(--c)}
+body[data-style="douce"]     .chip-bg{fill:var(--soft);stroke:none}
+body[data-style="douce"]     .chip-ico{color:var(--c)}
+body[data-style="pleine"]    .chip-bg{fill:var(--c);stroke:none}
+body[data-style="pleine"]    .chip-ico{color:var(--canvas)}
+body[data-style="contour"]   .chip-bg{fill:var(--canvas);stroke:var(--c);stroke-width:1.5}
+body[data-style="contour"]   .chip-ico{color:var(--c)}
+body[data-style="etiquette"] .chip-bg{fill:var(--soft);stroke:none}
+body[data-style="etiquette"] .chip-ico{color:var(--c)}
+body[data-style="etiquette"] .chip--compact{display:none}
+body[data-style="etiquette"] .chip--label{display:inline}
+body[data-style="mono"]      .chip-bg{fill:var(--canvas);stroke:var(--ink);stroke-width:1.25}
+body[data-style="mono"]      .chip-ico{color:var(--ink)}
+body[data-style="mono"]      .chip-txt{fill:var(--ink)}
+
+.fiche{display:none;margin-top:14px;border-left:3px solid var(--accent);background:var(--surface);border:1px solid var(--line);border-left-width:3px;border-radius:var(--r);padding:14px 18px}
+.fiche h3{font-size:.95rem;font-weight:600;margin-bottom:4px}
+.fiche p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:78ch}
+body[data-style="douce"] .fiche[data-for="douce"]{display:block}
+body[data-style="pleine"] .fiche[data-for="pleine"]{display:block}
+body[data-style="contour"] .fiche[data-for="contour"]{display:block}
+body[data-style="nu"] .fiche[data-for="nu"]{display:block}
+body[data-style="etiquette"] .fiche[data-for="etiquette"]{display:block}
+body[data-style="mono"] .fiche[data-for="mono"]{display:block}
+
+.scale{display:grid;gap:14px;background:var(--canvas);border:1px solid var(--line);border-radius:var(--r);padding:20px;overflow-x:auto}
+.scale-row{display:flex;align-items:center;gap:22px;min-width:560px}
+.scale-name{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);width:96px;flex:none}
+.scale-cell{margin:0;display:flex;flex-direction:column;align-items:center;gap:7px}
+.scale-cell figcaption{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chipbox{display:block;overflow:visible}
+
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden}
+.gcell{background:var(--canvas);padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.gcell h3{font-size:.85rem;font-weight:500;color:var(--ink-2);text-align:center}
+
+.legende{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px}
+.legende li{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-2)}
+.swatch{width:12px;height:12px;border-radius:3px;flex:none}
+.legende em{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:11px;color:var(--muted)}
+
+.reco{margin-top:52px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 26px}
+.reco h2{font-size:1.2rem;margin-bottom:10px}
+.reco p{margin:0 0 12px;color:var(--ink-2);font-size:14.5px;max-width:76ch}
+.reco p:last-child{margin-bottom:0}
+.reco strong{color:var(--ink)}
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin-top:16px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{background:var(--surface-2);font:600 11px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+tbody th{font-weight:600;white-space:nowrap}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Décision de style · 6 traitements · 1 schéma témoin</p>
+    <h1>Quel traitement pour les icônes de protocole&nbsp;?</h1>
+    <p class="lede">Dans un schéma d'architecture, une icône de protocole ne vit pas dans une grille : elle se pose <strong>sur une flèche</strong>, à 16–20 px, entre deux boîtes, souvent à un croisement de traits. Les six traitements ci-dessous sont appliqués au <strong>même schéma témoin</strong> — changez de traitement et regardez ce qui tient.</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="lbl">Traitement</span>
+    <button type="button" data-style="douce" aria-pressed="true">Pastille teintée</button>
+      <button type="button" data-style="pleine" aria-pressed="false">Pastille pleine</button>
+      <button type="button" data-style="contour" aria-pressed="false">Pastille contour</button>
+      <button type="button" data-style="nu" aria-pressed="false">Trait nu</button>
+      <button type="button" data-style="etiquette" aria-pressed="false">Étiquette</button>
+      <button type="button" data-style="mono" aria-pressed="false">Monochrome</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <section>
+    <div class="shead"><h2>Sur un schéma</h2><p>Le test qui tranche : la pastille doit se poser sur le trait sans le hacher ni écraser les libellés.</p></div>
+    <div class="board"><svg class="diagramme" viewBox="0 0 1070 300" role="img" aria-label="Schéma d'architecture annoté par protocole">
+    <defs>
+      <marker id="fleche" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </marker>
+    </defs>
+    <path class="edge" d="M190,76 H312" marker-end="url(#fleche)"></path>
+    <path class="edge" d="M470,76 H592" marker-end="url(#fleche)"></path>
+    <path class="edge" d="M750,76 H872" marker-end="url(#fleche)"></path>
+    <path class="edge" d="M115,196 V152 H395 V116" marker-end="url(#fleche)"></path>
+    <path class="edge" d="M675,108 V188" marker-end="url(#fleche)"></path>
+    <path class="edge" d="M750,228 H872" marker-end="url(#fleche)"></path>
+    <g class="node">
+      <rect x="40" y="44" width="150" height="64" rx="10"></rect>
+      <text class="node-t" x="115" y="70">Navigateur</text>
+      <text class="node-s" x="115" y="89">poste client</text>
+    </g>
+    <g class="node">
+      <rect x="320" y="44" width="150" height="64" rx="10"></rect>
+      <text class="node-t" x="395" y="70">Reverse proxy</text>
+      <text class="node-s" x="395" y="89">nginx</text>
+    </g>
+    <g class="node">
+      <rect x="600" y="44" width="150" height="64" rx="10"></rect>
+      <text class="node-t" x="675" y="70">API Gateway</text>
+      <text class="node-s" x="675" y="89">edge</text>
+    </g>
+    <g class="node">
+      <rect x="880" y="44" width="150" height="64" rx="10"></rect>
+      <text class="node-t" x="955" y="70">Service Comptes</text>
+      <text class="node-s" x="955" y="89">conteneur</text>
+    </g>
+    <g class="node">
+      <rect x="40" y="196" width="150" height="64" rx="10"></rect>
+      <text class="node-t" x="115" y="222">Poste admin</text>
+      <text class="node-s" x="115" y="241">exploitation</text>
+    </g>
+    <g class="node">
+      <rect x="600" y="196" width="150" height="64" rx="10"></rect>
+      <text class="node-t" x="675" y="222">Broker</text>
+      <text class="node-s" x="675" y="241">RabbitMQ</text>
+    </g>
+    <g class="node">
+      <rect x="880" y="196" width="150" height="64" rx="10"></rect>
+      <text class="node-t" x="955" y="222">Relais mail</text>
+      <text class="node-s" x="955" y="241">sortant</text>
+    </g>
+    <g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="238" y="63" width="26" height="26" rx="7"></rect>
+        <svg class="chip-ico" x="243" y="68" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="215.5" y="64" width="71" height="24" rx="12"></rect>
+        <svg class="chip-ico" x="225.5" y="68" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+        <text class="chip-txt" x="245.5" y="76" dominant-baseline="central">HTTPS</text>
+      </g>
+    </g>
+    <g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="518" y="63" width="26" height="26" rx="7"></rect>
+        <svg class="chip-ico" x="523" y="68" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+  <path d="M3.6 9h16.8" />
+  <path d="M3.6 15h16.8" />
+  <path d="M11.5 3a17 17 0 0 0 0 18" />
+  <path d="M12.5 3a17 17 0 0 1 0 18" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="499" y="64" width="64" height="24" rx="12"></rect>
+        <svg class="chip-ico" x="509" y="68" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+  <path d="M3.6 9h16.8" />
+  <path d="M3.6 15h16.8" />
+  <path d="M11.5 3a17 17 0 0 0 0 18" />
+  <path d="M12.5 3a17 17 0 0 1 0 18" /></svg>
+        <text class="chip-txt" x="529" y="76" dominant-baseline="central">HTTP</text>
+      </g>
+    </g>
+    <g class="chip" style="--c:var(--c-api)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="798" y="63" width="26" height="26" rx="7"></rect>
+        <svg class="chip-ico" x="803" y="68" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 7l-18 0" />
+  <path d="M18 10l3 -3l-3 -3" />
+  <path d="M6 20l-3 -3l3 -3" />
+  <path d="M3 17l18 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="779" y="64" width="64" height="24" rx="12"></rect>
+        <svg class="chip-ico" x="789" y="68" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 7l-18 0" />
+  <path d="M18 10l3 -3l-3 -3" />
+  <path d="M6 20l-3 -3l3 -3" />
+  <path d="M3 17l18 0" /></svg>
+        <text class="chip-txt" x="809" y="76" dominant-baseline="central">gRPC</text>
+      </g>
+    </g>
+    <g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="238" y="139" width="26" height="26" rx="7"></rect>
+        <svg class="chip-ico" x="243" y="144" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="222" y="140" width="58" height="24" rx="12"></rect>
+        <svg class="chip-ico" x="232" y="144" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+        <text class="chip-txt" x="252" y="152" dominant-baseline="central">SSH</text>
+      </g>
+    </g>
+    <g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="662" y="139" width="26" height="26" rx="7"></rect>
+        <svg class="chip-ico" x="667" y="144" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
+  <path d="M4 12l8 4l8 -4" />
+  <path d="M4 16l8 4l8 -4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="643" y="140" width="64" height="24" rx="12"></rect>
+        <svg class="chip-ico" x="653" y="144" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
+  <path d="M4 12l8 4l8 -4" />
+  <path d="M4 16l8 4l8 -4" /></svg>
+        <text class="chip-txt" x="673" y="152" dominant-baseline="central">AMQP</text>
+      </g>
+    </g>
+    <g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="798" y="215" width="26" height="26" rx="7"></rect>
+        <svg class="chip-ico" x="803" y="220" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7h3" />
+  <path d="M3 11h2" />
+  <path d="M9.02 8.801l-.6 6a2 2 0 0 0 1.99 2.199h7.98a2 2 0 0 0 1.99 -1.801l.6 -6a2 2 0 0 0 -1.99 -2.199h-7.98a2 2 0 0 0 -1.99 1.801" />
+  <path d="M9.8 7.5l2.982 3.28a3 3 0 0 0 4.238 .202l3.28 -2.982" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="779" y="216" width="64" height="24" rx="12"></rect>
+        <svg class="chip-ico" x="789" y="220" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7h3" />
+  <path d="M3 11h2" />
+  <path d="M9.02 8.801l-.6 6a2 2 0 0 0 1.99 2.199h7.98a2 2 0 0 0 1.99 -1.801l.6 -6a2 2 0 0 0 -1.99 -2.199h-7.98a2 2 0 0 0 -1.99 1.801" />
+  <path d="M9.8 7.5l2.982 3.28a3 3 0 0 0 4.238 .202l3.28 -2.982" /></svg>
+        <text class="chip-txt" x="809" y="228" dominant-baseline="central">SMTP</text>
+      </g>
+    </g>
+  </svg></div>
+    <div class="fiche" data-for="douce"><h3>Pastille teintée</h3><p>Fond à 14 % de la teinte, glyphe coloré. Se pose sur un trait sans le couper, reste lisible à 16 px.</p></div>
+      <div class="fiche" data-for="pleine"><h3>Pastille pleine</h3><p>Aplat de couleur, glyphe blanc détouré. Le plus visible de loin, le plus lourd en densité.</p></div>
+      <div class="fiche" data-for="contour"><h3>Pastille contour</h3><p>Fond canvas, filet 1,5 px coloré. Discret, proche des conventions AWS / Azure.</p></div>
+      <div class="fiche" data-for="nu"><h3>Trait nu</h3><p>Le glyphe seul, avec un halo à la couleur du fond. Le plus léger, le plus fragile sur fond chargé.</p></div>
+      <div class="fiche" data-for="etiquette"><h3>Étiquette</h3><p>Icône + nom du protocole. Lève toute ambiguïté (FTP vs SFTP), mais encombre les schémas denses.</p></div>
+      <div class="fiche" data-for="mono"><h3>Monochrome</h3><p>Filet noir, aucune couleur. Pour l’impression N&amp;B et les schémas déjà colorés par ailleurs.</p></div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>À l'échelle</h2><p>16 px, c'est la taille réelle sur une flèche dans un schéma exporté en A4.</p></div>
+    <div class="scale">
+    <div class="scale-row">
+      <span class="scale-name">HTTPS / TLS</span>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 73 24" style="height:24px;width:73px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="28.5" y="4" width="16" height="16" rx="4"></rect>
+        <svg class="chip-ico" x="31.5" y="7" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="4.5" width="65" height="15" rx="7.5"></rect>
+        <svg class="chip-ico" x="14" y="7" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+        <text class="chip-txt" x="28" y="12" dominant-baseline="central">HTTPS</text>
+      </g>
+    </g></svg>
+        <figcaption>16 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 75 28" style="height:28px;width:75px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="27.5" y="4" width="20" height="20" rx="5"></rect>
+        <svg class="chip-ico" x="31.5" y="8" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5" width="67" height="18" rx="9"></rect>
+        <svg class="chip-ico" x="14" y="8" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+        <text class="chip-txt" x="30" y="14" dominant-baseline="central">HTTPS</text>
+      </g>
+    </g></svg>
+        <figcaption>20 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 78 32" style="height:32px;width:78px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="27" y="4" width="24" height="24" rx="6"></rect>
+        <svg class="chip-ico" x="31.5" y="8.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5" width="70" height="22" rx="11"></rect>
+        <svg class="chip-ico" x="14" y="8.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+        <text class="chip-txt" x="33" y="16" dominant-baseline="central">HTTPS</text>
+      </g>
+    </g></svg>
+        <figcaption>24 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 83 40" style="height:40px;width:83px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="25.5" y="4" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="31.5" y="10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5.5" width="75" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+        <text class="chip-txt" x="38" y="20" dominant-baseline="central">HTTPS</text>
+      </g>
+    </g></svg>
+        <figcaption>32 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 93 56" style="height:56px;width:93px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22.5" y="4" width="48" height="48" rx="13"></rect>
+        <svg class="chip-ico" x="31.5" y="13" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="6" width="85" height="44" rx="22"></rect>
+        <svg class="chip-ico" x="14" y="13" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+        <text class="chip-txt" x="48" y="28" dominant-baseline="central">HTTPS</text>
+      </g>
+    </g></svg>
+        <figcaption>48 px</figcaption>
+      </figure>
+    </div>
+    <div class="scale-row">
+      <span class="scale-name">MQTT</span>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 66 24" style="height:24px;width:66px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="25" y="4" width="16" height="16" rx="4"></rect>
+        <svg class="chip-ico" x="28" y="7" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="4.5" width="58" height="15" rx="7.5"></rect>
+        <svg class="chip-ico" x="14" y="7" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+        <text class="chip-txt" x="28" y="12" dominant-baseline="central">MQTT</text>
+      </g>
+    </g></svg>
+        <figcaption>16 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 68 28" style="height:28px;width:68px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="24" y="4" width="20" height="20" rx="5"></rect>
+        <svg class="chip-ico" x="28" y="8" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5" width="60" height="18" rx="9"></rect>
+        <svg class="chip-ico" x="14" y="8" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+        <text class="chip-txt" x="30" y="14" dominant-baseline="central">MQTT</text>
+      </g>
+    </g></svg>
+        <figcaption>20 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 71 32" style="height:32px;width:71px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="23.5" y="4" width="24" height="24" rx="6"></rect>
+        <svg class="chip-ico" x="28" y="8.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5" width="63" height="22" rx="11"></rect>
+        <svg class="chip-ico" x="14" y="8.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+        <text class="chip-txt" x="33" y="16" dominant-baseline="central">MQTT</text>
+      </g>
+    </g></svg>
+        <figcaption>24 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 76 40" style="height:40px;width:76px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="4" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+        <text class="chip-txt" x="38" y="20" dominant-baseline="central">MQTT</text>
+      </g>
+    </g></svg>
+        <figcaption>32 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 86 56" style="height:56px;width:86px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="4" width="48" height="48" rx="13"></rect>
+        <svg class="chip-ico" x="28" y="13" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="6" width="78" height="44" rx="22"></rect>
+        <svg class="chip-ico" x="14" y="13" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+        <text class="chip-txt" x="48" y="28" dominant-baseline="central">MQTT</text>
+      </g>
+    </g></svg>
+        <figcaption>48 px</figcaption>
+      </figure>
+    </div>
+    <div class="scale-row">
+      <span class="scale-name">SSH</span>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 60 24" style="height:24px;width:60px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="4" width="16" height="16" rx="4"></rect>
+        <svg class="chip-ico" x="25" y="7" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="4.5" width="52" height="15" rx="7.5"></rect>
+        <svg class="chip-ico" x="14" y="7" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+        <text class="chip-txt" x="28" y="12" dominant-baseline="central">SSH</text>
+      </g>
+    </g></svg>
+        <figcaption>16 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 62 28" style="height:28px;width:62px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="21" y="4" width="20" height="20" rx="5"></rect>
+        <svg class="chip-ico" x="25" y="8" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5" width="54" height="18" rx="9"></rect>
+        <svg class="chip-ico" x="14" y="8" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+        <text class="chip-txt" x="30" y="14" dominant-baseline="central">SSH</text>
+      </g>
+    </g></svg>
+        <figcaption>20 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 65 32" style="height:32px;width:65px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="20.5" y="4" width="24" height="24" rx="6"></rect>
+        <svg class="chip-ico" x="25" y="8.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5" width="57" height="22" rx="11"></rect>
+        <svg class="chip-ico" x="14" y="8.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+        <text class="chip-txt" x="33" y="16" dominant-baseline="central">SSH</text>
+      </g>
+    </g></svg>
+        <figcaption>24 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 70 40" style="height:40px;width:70px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="4" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="5.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+        <text class="chip-txt" x="38" y="20" dominant-baseline="central">SSH</text>
+      </g>
+    </g></svg>
+        <figcaption>32 px</figcaption>
+      </figure>
+      <figure class="scale-cell">
+        <svg class="chipbox" viewBox="0 0 80 56" style="height:56px;width:80px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="16" y="4" width="48" height="48" rx="13"></rect>
+        <svg class="chip-ico" x="25" y="13" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="6" width="72" height="44" rx="22"></rect>
+        <svg class="chip-ico" x="14" y="13" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+        <text class="chip-txt" x="48" y="28" dominant-baseline="central">SSH</text>
+      </g>
+    </g></svg>
+        <figcaption>48 px</figcaption>
+      </figure>
+    </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Les 32 protocoles dans ce traitement</h2><p>Couleur portée par la couche, pas par le protocole : six teintes seulement, pour que le schéma reste lisible.</p></div>
+    <div class="ggrid">
+      <article class="gcell" data-couche="web">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+  <path d="M3.6 9h16.8" />
+  <path d="M3.6 15h16.8" />
+  <path d="M11.5 3a17 17 0 0 0 0 18" />
+  <path d="M12.5 3a17 17 0 0 1 0 18" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+  <path d="M3.6 9h16.8" />
+  <path d="M3.6 15h16.8" />
+  <path d="M11.5 3a17 17 0 0 0 0 18" />
+  <path d="M12.5 3a17 17 0 0 1 0 18" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">HTTP</text>
+      </g>
+    </g></svg>
+        <h3>HTTP</h3>
+      </article>
+      <article class="gcell" data-couche="web">
+        <svg class="chipbox" viewBox="0 0 83 44" style="height:44px;width:83px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="25.5" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="31.5" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="75" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">HTTPS</text>
+      </g>
+    </g></svg>
+        <h3>HTTPS / TLS</h3>
+      </article>
+      <article class="gcell" data-couche="acces">
+        <svg class="chipbox" viewBox="0 0 70 44" style="height:44px;width:70px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">SSH</text>
+      </g>
+    </g></svg>
+        <h3>SSH</h3>
+      </article>
+      <article class="gcell" data-couche="acces">
+        <svg class="chipbox" viewBox="0 0 89 44" style="height:44px;width:89px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="28.5" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="34.5" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 7l5 5l-5 5" />
+  <path d="M13 17l6 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="81" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 7l5 5l-5 5" />
+  <path d="M13 17l6 0" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">Telnet</text>
+      </g>
+    </g></svg>
+        <h3>Telnet</h3>
+      </article>
+      <article class="gcell" data-couche="fichiers">
+        <svg class="chipbox" viewBox="0 0 70 44" style="height:44px;width:70px"><g class="chip" style="--c:var(--c-fichiers)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+  <path d="M12 11v6" />
+  <path d="M9.5 13.5l2.5 -2.5l2.5 2.5" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+  <path d="M12 11v6" />
+  <path d="M9.5 13.5l2.5 -2.5l2.5 2.5" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">FTP</text>
+      </g>
+    </g></svg>
+        <h3>FTP</h3>
+      </article>
+      <article class="gcell" data-couche="fichiers">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-fichiers)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 19h-8a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v4" />
+  <path d="M16 22l5 -5" />
+  <path d="M21 21.5v-4.5h-4.5" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 19h-8a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v4" />
+  <path d="M16 22l5 -5" />
+  <path d="M21 21.5v-4.5h-4.5" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">SFTP</text>
+      </g>
+    </g></svg>
+        <h3>SFTP / SCP</h3>
+      </article>
+      <article class="gcell" data-couche="fichiers">
+        <svg class="chipbox" viewBox="0 0 89 44" style="height:44px;width:89px"><g class="chip" style="--c:var(--c-fichiers)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="28.5" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="34.5" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12.5 19h-7.5a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v3" />
+  <path d="M17.001 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19.001 15.5v1.5" />
+  <path d="M19.001 21v1.5" />
+  <path d="M22.032 17.25l-1.299 .75" />
+  <path d="M17.27 20l-1.3 .75" />
+  <path d="M15.97 17.25l1.3 .75" />
+  <path d="M20.733 20l1.3 .75" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="81" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12.5 19h-7.5a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v3" />
+  <path d="M17.001 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M19.001 15.5v1.5" />
+  <path d="M19.001 21v1.5" />
+  <path d="M22.032 17.25l-1.299 .75" />
+  <path d="M17.27 20l-1.3 .75" />
+  <path d="M15.97 17.25l1.3 .75" />
+  <path d="M20.733 20l1.3 .75" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">WebDAV</text>
+      </g>
+    </g></svg>
+        <h3>WebDAV</h3>
+      </article>
+      <article class="gcell" data-couche="fichiers">
+        <svg class="chipbox" viewBox="0 0 70 44" style="height:44px;width:70px"><g class="chip" style="--c:var(--c-fichiers)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12.5 16h-8.5a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v8" />
+  <path d="M7 20h5.5" />
+  <path d="M9 16v4" />
+  <path d="M16 22l5 -5" />
+  <path d="M21 21.5v-4.5h-4.5" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12.5 16h-8.5a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v8" />
+  <path d="M7 20h5.5" />
+  <path d="M9 16v4" />
+  <path d="M16 22l5 -5" />
+  <path d="M21 21.5v-4.5h-4.5" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">SMB</text>
+      </g>
+    </g></svg>
+        <h3>SMB / CIFS</h3>
+      </article>
+      <article class="gcell" data-couche="fichiers">
+        <svg class="chipbox" viewBox="0 0 70 44" style="height:44px;width:70px"><g class="chip" style="--c:var(--c-fichiers)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-2" />
+  <path d="M3 15a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -2" />
+  <path d="M7 8l0 .01" />
+  <path d="M7 16l0 .01" />
+  <path d="M11 8h6" />
+  <path d="M11 16h6" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-2" />
+  <path d="M3 15a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -2" />
+  <path d="M7 8l0 .01" />
+  <path d="M7 16l0 .01" />
+  <path d="M11 8h6" />
+  <path d="M11 16h6" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">NFS</text>
+      </g>
+    </g></svg>
+        <h3>NFS</h3>
+      </article>
+      <article class="gcell" data-couche="api">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-api)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 13h5" />
+  <path d="M12 16v-8h3a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-3" />
+  <path d="M20 8v8" />
+  <path d="M9 16v-5.5a2.5 2.5 0 0 0 -5 0v5.5" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 13h5" />
+  <path d="M12 16v-8h3a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-3" />
+  <path d="M20 8v8" />
+  <path d="M9 16v-5.5a2.5 2.5 0 0 0 -5 0v5.5" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">REST</text>
+      </g>
+    </g></svg>
+        <h3>REST</h3>
+      </article>
+      <article class="gcell" data-couche="api">
+        <svg class="chipbox" viewBox="0 0 96 44" style="height:44px;width:96px"><g class="chip" style="--c:var(--c-api)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="32" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="38" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 3h4v4h-4l0 -4" />
+  <path d="M3 17h4v4h-4l0 -4" />
+  <path d="M17 17h4v4h-4l0 -4" />
+  <path d="M7 17l5 -4l5 4" />
+  <path d="M12 7l0 6" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="88" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 3h4v4h-4l0 -4" />
+  <path d="M3 17h4v4h-4l0 -4" />
+  <path d="M17 17h4v4h-4l0 -4" />
+  <path d="M7 17l5 -4l5 4" />
+  <path d="M12 7l0 6" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">GraphQL</text>
+      </g>
+    </g></svg>
+        <h3>GraphQL</h3>
+      </article>
+      <article class="gcell" data-couche="api">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-api)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 7l-18 0" />
+  <path d="M18 10l3 -3l-3 -3" />
+  <path d="M6 20l-3 -3l3 -3" />
+  <path d="M3 17l18 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 7l-18 0" />
+  <path d="M18 10l3 -3l-3 -3" />
+  <path d="M6 20l-3 -3l3 -3" />
+  <path d="M3 17l18 0" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">gRPC</text>
+      </g>
+    </g></svg>
+        <h3>gRPC</h3>
+      </article>
+      <article class="gcell" data-couche="api">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-api)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+  <path d="M10 13l-1 2l1 2" />
+  <path d="M14 13l1 2l-1 2" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+  <path d="M10 13l-1 2l1 2" />
+  <path d="M14 13l1 2l-1 2" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">SOAP</text>
+      </g>
+    </g></svg>
+        <h3>SOAP / XML-RPC</h3>
+      </article>
+      <article class="gcell" data-couche="web">
+        <svg class="chipbox" viewBox="0 0 109 44" style="height:44px;width:109px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="38.5" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="44.5" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5" />
+  <path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5" />
+  <path d="M3 21l2.5 -2.5" />
+  <path d="M18.5 5.5l2.5 -2.5" />
+  <path d="M10 11l-2 2" />
+  <path d="M13 14l-2 2" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="101" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5" />
+  <path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5" />
+  <path d="M3 21l2.5 -2.5" />
+  <path d="M18.5 5.5l2.5 -2.5" />
+  <path d="M10 11l-2 2" />
+  <path d="M13 14l-2 2" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">WebSocket</text>
+      </g>
+    </g></svg>
+        <h3>WebSocket</h3>
+      </article>
+      <article class="gcell" data-couche="api">
+        <svg class="chipbox" viewBox="0 0 96 44" style="height:44px;width:96px"><g class="chip" style="--c:var(--c-api)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="32" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="38" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4.876 13.61a4 4 0 1 0 6.124 3.39h6" />
+  <path d="M15.066 20.502a4 4 0 1 0 1.934 -7.502c-.706 0 -1.424 .179 -2 .5l-3 -5.5" />
+  <path d="M16 8a4 4 0 1 0 -8 0c0 1.506 .77 2.818 2 3.5l-3 5.5" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="88" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4.876 13.61a4 4 0 1 0 6.124 3.39h6" />
+  <path d="M15.066 20.502a4 4 0 1 0 1.934 -7.502c-.706 0 -1.424 .179 -2 .5l-3 -5.5" />
+  <path d="M16 8a4 4 0 1 0 -8 0c0 1.506 .77 2.818 2 3.5l-3 5.5" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">Webhook</text>
+      </g>
+    </g></svg>
+        <h3>Webhook</h3>
+      </article>
+      <article class="gcell" data-couche="messaging">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18.364 19.364a9 9 0 1 0 -12.728 0" />
+  <path d="M15.536 16.536a5 5 0 1 0 -7.072 0" />
+  <path d="M11 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">MQTT</text>
+      </g>
+    </g></svg>
+        <h3>MQTT</h3>
+      </article>
+      <article class="gcell" data-couche="messaging">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
+  <path d="M4 12l8 4l8 -4" />
+  <path d="M4 16l8 4l8 -4" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
+  <path d="M4 12l8 4l8 -4" />
+  <path d="M4 16l8 4l8 -4" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">AMQP</text>
+      </g>
+    </g></svg>
+        <h3>AMQP</h3>
+      </article>
+      <article class="gcell" data-couche="messaging">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
+  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
+  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">XMPP</text>
+      </g>
+    </g></svg>
+        <h3>XMPP</h3>
+      </article>
+      <article class="gcell" data-couche="messaging">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7h3" />
+  <path d="M3 11h2" />
+  <path d="M9.02 8.801l-.6 6a2 2 0 0 0 1.99 2.199h7.98a2 2 0 0 0 1.99 -1.801l.6 -6a2 2 0 0 0 -1.99 -2.199h-7.98a2 2 0 0 0 -1.99 1.801" />
+  <path d="M9.8 7.5l2.982 3.28a3 3 0 0 0 4.238 .202l3.28 -2.982" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7h3" />
+  <path d="M3 11h2" />
+  <path d="M9.02 8.801l-.6 6a2 2 0 0 0 1.99 2.199h7.98a2 2 0 0 0 1.99 -1.801l.6 -6a2 2 0 0 0 -1.99 -2.199h-7.98a2 2 0 0 0 -1.99 1.801" />
+  <path d="M9.8 7.5l2.982 3.28a3 3 0 0 0 4.238 .202l3.28 -2.982" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">SMTP</text>
+      </g>
+    </g></svg>
+        <h3>SMTP</h3>
+      </article>
+      <article class="gcell" data-couche="messaging">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9l9 6l9 -6l-9 -6l-9 6" />
+  <path d="M21 9v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />
+  <path d="M3 19l6 -6" />
+  <path d="M15 13l6 6" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9l9 6l9 -6l-9 -6l-9 6" />
+  <path d="M21 9v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />
+  <path d="M3 19l6 -6" />
+  <path d="M15 13l6 6" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">IMAP</text>
+      </g>
+    </g></svg>
+        <h3>IMAP</h3>
+      </article>
+      <article class="gcell" data-couche="messaging">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-messaging)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 21v-6.5a3.5 3.5 0 0 0 -7 0v6.5h18v-6a4 4 0 0 0 -4 -4h-10.5" />
+  <path d="M12 11v-8h4l2 2l-2 2h-4" />
+  <path d="M6 15h1" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 21v-6.5a3.5 3.5 0 0 0 -7 0v6.5h18v-6a4 4 0 0 0 -4 -4h-10.5" />
+  <path d="M12 11v-8h4l2 2l-2 2h-4" />
+  <path d="M6 15h1" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">POP3</text>
+      </g>
+    </g></svg>
+        <h3>POP3</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 70 44" style="height:44px;width:70px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 12a9 9 0 1 0 -9 9" />
+  <path d="M3.6 9h16.8" />
+  <path d="M3.6 15h7.9" />
+  <path d="M11.5 3a17 17 0 0 0 0 18" />
+  <path d="M12.5 3a16.984 16.984 0 0 1 2.574 8.62" />
+  <path d="M15 18a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+  <path d="M20.2 20.2l1.8 1.8" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 12a9 9 0 1 0 -9 9" />
+  <path d="M3.6 9h16.8" />
+  <path d="M3.6 15h7.9" />
+  <path d="M11.5 3a17 17 0 0 0 0 18" />
+  <path d="M12.5 3a16.984 16.984 0 0 1 2.574 8.62" />
+  <path d="M15 18a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+  <path d="M20.2 20.2l1.8 1.8" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">DNS</text>
+      </g>
+    </g></svg>
+        <h3>DNS</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 15a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -4" />
+  <path d="M17 17l0 .01" />
+  <path d="M13 17l0 .01" />
+  <path d="M15 13l0 -2" />
+  <path d="M11.75 8.75a4 4 0 0 1 6.5 0" />
+  <path d="M8.5 6.5a8 8 0 0 1 13 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 15a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -4" />
+  <path d="M17 17l0 .01" />
+  <path d="M13 17l0 .01" />
+  <path d="M15 13l0 -2" />
+  <path d="M11.75 8.75a4 4 0 0 1 6.5 0" />
+  <path d="M8.5 6.5a8 8 0 0 1 13 0" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">DHCP</text>
+      </g>
+    </g></svg>
+        <h3>DHCP</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 6h11" />
+  <path d="M12 12h8" />
+  <path d="M15 18h5" />
+  <path d="M5 6v.01" />
+  <path d="M8 12v.01" />
+  <path d="M11 18v.01" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 6h11" />
+  <path d="M12 12h8" />
+  <path d="M15 18h5" />
+  <path d="M5 6v.01" />
+  <path d="M8 12v.01" />
+  <path d="M11 18v.01" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">LDAP</text>
+      </g>
+    </g></svg>
+        <h3>LDAP</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M13.41 10.59l2.59 -2.59" />
+  <path d="M7 12a5 5 0 0 1 5 -5" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M13.41 10.59l2.59 -2.59" />
+  <path d="M7 12a5 5 0 0 1 5 -5" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">SNMP</text>
+      </g>
+    </g></svg>
+        <h3>SNMP</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 70 44" style="height:44px;width:70px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 7v5l2 2" />
+  <path d="M17 22l5 -3l-5 -3l0 6" />
+  <path d="M13.017 20.943a9 9 0 1 1 7.831 -7.292" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 7v5l2 2" />
+  <path d="M17 22l5 -3l-5 -3l0 6" />
+  <path d="M13.017 20.943a9 9 0 1 1 7.831 -7.292" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">NTP</text>
+      </g>
+    </g></svg>
+        <h3>NTP</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 4a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1l0 -2" />
+  <path d="M8 14a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+  <path d="M19 7v7a7 7 0 0 1 -14 0v-7" />
+  <path d="M12 14l.01 0" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 4a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1l0 -2" />
+  <path d="M8 14a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+  <path d="M19 7v7a7 7 0 0 1 -14 0v-7" />
+  <path d="M12 14l.01 0" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">RTSP</text>
+      </g>
+    </g></svg>
+        <h3>RTSP</h3>
+      </article>
+      <article class="gcell" data-couche="acces">
+        <svg class="chipbox" viewBox="0 0 141 44" style="height:44px;width:141px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="54.5" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="60.5" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+  <path d="M11 11a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M12 12l0 2.5" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="133" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+  <path d="M11 11a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M12 12l0 2.5" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">VPN (IPsec/WG)</text>
+      </g>
+    </g></svg>
+        <h3>VPN (IPsec/WG)</h3>
+      </article>
+      <article class="gcell" data-couche="acces">
+        <svg class="chipbox" viewBox="0 0 96 44" style="height:44px;width:96px"><g class="chip" style="--c:var(--c-acces)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="32" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="38" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0" />
+  <path d="M15 9h.01" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="88" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0" />
+  <path d="M15 9h.01" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">OAuth 2</text>
+      </g>
+    </g></svg>
+        <h3>OAuth 2 / OIDC</h3>
+      </article>
+      <article class="gcell" data-couche="web">
+        <svg class="chipbox" viewBox="0 0 70 44" style="height:44px;width:70px"><g class="chip" style="--c:var(--c-web)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="19" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="25" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 19a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="62" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 19a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">RSS</text>
+      </g>
+    </g></svg>
+        <h3>RSS / Atom</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 115 44" style="height:44px;width:115px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="41.5" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="47.5" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 4l3 3l-3 3" />
+  <path d="M18 20l3 -3l-3 -3" />
+  <path d="M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5" />
+  <path d="M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="107" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 4l3 3l-3 3" />
+  <path d="M18 20l3 -3l-3 -3" />
+  <path d="M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5" />
+  <path d="M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">BitTorrent</text>
+      </g>
+    </g></svg>
+        <h3>BitTorrent</h3>
+      </article>
+      <article class="gcell" data-couche="infra">
+        <svg class="chipbox" viewBox="0 0 76 44" style="height:44px;width:76px"><g class="chip" style="--c:var(--c-infra)">
+      <g class="chip--compact">
+        <rect class="chip-bg" x="22" y="6" width="32" height="32" rx="9"></rect>
+        <svg class="chip-ico" x="28" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 18a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M20 6a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M8 6a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M20 18a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M7.5 7.5l3 3" />
+  <path d="M7.5 16.5l3 -3" />
+  <path d="M13.5 13.5l3 3" />
+  <path d="M16.5 7.5l-3 3" /></svg>
+      </g>
+      <g class="chip--label">
+        <rect class="chip-bg" x="4" y="7.5" width="68" height="29" rx="14.5"></rect>
+        <svg class="chip-ico" x="14" y="12" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 18a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M20 6a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M8 6a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M20 18a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0" />
+  <path d="M7.5 7.5l3 3" />
+  <path d="M7.5 16.5l3 -3" />
+  <path d="M13.5 13.5l3 3" />
+  <path d="M16.5 7.5l-3 3" /></svg>
+        <text class="chip-txt" x="38" y="22" dominant-baseline="central">IPFS</text>
+      </g>
+    </g></svg>
+        <h3>IPFS</h3>
+      </article>
+    </div>
+    <ul class="legende">
+        <li><span class="swatch" style="background:var(--c-web)"></span>Web &amp; temps réel<em>4</em></li>
+        <li><span class="swatch" style="background:var(--c-api)"></span>API<em>5</em></li>
+        <li><span class="swatch" style="background:var(--c-fichiers)"></span>Fichiers<em>5</em></li>
+        <li><span class="swatch" style="background:var(--c-messaging)"></span>Messages &amp; mail<em>6</em></li>
+        <li><span class="swatch" style="background:var(--c-acces)"></span>Accès &amp; sécurité<em>4</em></li>
+        <li><span class="swatch" style="background:var(--c-infra)"></span>Infrastructure<em>8</em></li>
+    </ul>
+  </section>
+
+  <div class="reco">
+    <h2>Ma recommandation</h2>
+    <p><strong>Pastille teintée</strong> comme traitement par défaut, <strong>étiquette</strong> en variante pour les schémas où le protocole doit être nommé.</p>
+    <p>La pastille teintée est la seule qui tient les trois contraintes à la fois : elle masque le trait sous elle (donc la flèche ne traverse pas le glyphe), elle garde un glyphe à pleine couleur donc lisible à 16 px, et elle reste assez discrète pour ne pas voler la vedette aux boîtes du schéma. La pastille pleine gagne en visibilité mais six aplats saturés sur un schéma dense deviennent vite criards ; le trait nu décroche dès que le fond n'est pas uni ; le contour perd son filet à 16 px.</p>
+    <p>Le point qui compte autant que le traitement : <strong>la couleur porte la couche, pas le protocole.</strong> Six teintes pour 32 protocoles — un lecteur retient « bleu = web, orange = messages », jamais 32 couleurs. C'est ce qui rend la convention transmissible à quelqu'un qui n'a pas le catalogue sous les yeux.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th scope="col">Paramètre</th><th scope="col">Valeur retenue</th><th scope="col">Pourquoi</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Famille d'icônes</th><td>Tabler, tracé 2 px</td><td>Couverture réseau la plus complète (17 icônes sans équivalent Lucide)</td></tr>
+          <tr><th scope="row">Pastille</th><td>Carré arrondi, rayon = 27 % du côté</td><td>Assez rond pour ne pas concurrencer les boîtes, assez carré pour s'aligner</td></tr>
+          <tr><th scope="row">Ratio glyphe / pastille</th><td>62 %</td><td>En-dessous, le glyphe flotte ; au-dessus, il touche le bord</td></tr>
+          <tr><th scope="row">Taille minimale</th><td>20 px sur flèche, 16 px en dernier recours</td><td>En dessous, les glyphes les plus chargés se ferment</td></tr>
+          <tr><th scope="row">Densité du glyphe</th><td>&lt; 100 commandes de tracé</td><td>Deux icônes ont été remplacées sur ce critère : HTTP <code>world-www</code> → <code>world</code>, HTTPS <code>lock-square-rounded</code> → <code>lock</code></td></tr>
+          <tr><th scope="row">Écart entre boîtes</th><td>≥ 130 px</td><td>C'est la place qu'exige une étiquette ; en dessous, seule la pastille compacte passe</td></tr>
+          <tr><th scope="row">Couleur</th><td>6 couches, pas 32 protocoles</td><td>Une légende de six entrées se retient ; une de trente-deux, non</td></tr>
+          <tr><th scope="row">Fond de pastille</th><td>14 % de la teinte sur le canvas</td><td>Masque le trait sans créer un deuxième aplat concurrent</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var body=document.body, defaut='douce';
+  try{ defaut=localStorage.getItem('proto-style')||defaut; }catch(e){}
+  function set(k){
+    body.dataset.style=k;
+    document.querySelectorAll('.toolbar button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.style===k));});
+    try{localStorage.setItem('proto-style',k);}catch(e){}
+  }
+  document.querySelectorAll('.toolbar button').forEach(function(b){
+    b.addEventListener('click',function(){set(b.dataset.style);});
+  });
+  set(defaut);
+})();
+</script>
