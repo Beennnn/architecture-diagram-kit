@@ -44,9 +44,9 @@ const RULES = [
   ['README.md', /symbols\/\s+(\d+) SVG/, files('symbols'), 'files in symbols'],
   ['README.md', /drawio\/products\.xml\s+draw\.io shape library · (\d+)/, count('product'), 'products in products.json'],
   ['README.md', /drawio\/roles\.xml\s+draw\.io shape library · (\d+)/, count('role'), 'roles in roles.json'],
-  ['README.md', /^(\d+) marks in the set/m, mapping.filter((e) => e.logotype).length, 'entries declared as logotypes'],
-  ['README.md', /until it reaches \*\*(\d\.\d):1 of contrast\*\*/, minContrast, 'the MIN_CONTRAST threshold in scripts/lockups.mjs'],
-  ['README.md', /Chroma is therefore \*\*capped at (\d\.\d\d)\*\*/, CHROMA_MAX, 'the CHROMA_MAX ceiling in scripts/colors.mjs'],
+  ['README.md', /\*\*(\d+) entries\*\* carry `"logotype": true`/, mapping.filter((e) => e.logotype).length, 'entries declared as logotypes'],
+  ['README.md', /darkened until it reaches (\d\.\d):1 on its own fill/, minContrast, 'the MIN_CONTRAST threshold in scripts/lockups.mjs'],
+  ['README.md', /chroma capped at (\d\.\d\d)/, CHROMA_MAX, 'the CHROMA_MAX ceiling in scripts/colors.mjs'],
   ['excalidraw/README.md', /the (\d+) signs/, mapping.length, 'entries in mapping.json'],
 ];
 

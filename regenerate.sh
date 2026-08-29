@@ -71,6 +71,9 @@ node scripts/example-layers.mjs
 node scripts/example-systems.mjs
 node scripts/dark.mjs
 
+echo "→ README figures (docs/figures/)"
+node scripts/readme-figures.mjs
+
 echo "→ Specimen sheets (specimen/, docs/)"
 node scripts/specimen-lockups.mjs
 node scripts/specimen.mjs
