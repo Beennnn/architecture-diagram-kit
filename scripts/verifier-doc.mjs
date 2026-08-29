@@ -20,6 +20,19 @@ const contrasteMin = Number(lockups.match(/const CONTRASTE_MIN = ([\d.]+)/)[1]);
 const compte = (type) => mapping.filter((e) => e.type === type).length;
 const fichiers = (d) => fs.readdirSync(path.join(ROOT, d)).filter((f) => f.endsWith('.svg')).length;
 
+// L'index des ADR se tenait à jour à la main, et 0007 n'y figurait pas : une
+// décision prise mais introuvable vaut une décision non prise.
+{
+  const dir = path.join(ROOT, 'docs/adr');
+  const index = fs.readFileSync(path.join(dir, 'README.md'), 'utf8');
+  const manquants = fs.readdirSync(dir)
+    .filter((f) => /^\d{4}-.*\.md$/.test(f))
+    .filter((f) => !index.includes(`(${f})`));
+  if (manquants.length) {
+    throw new Error(`Des ADR ne figurent pas dans docs/adr/README.md :\n  ${manquants.join('\n  ')}`);
+  }
+}
+
 // Chaque règle : un fichier, une expression qui capture le nombre, la valeur
 // attendue, et de quoi le dire à l'auteur.
 const REGLES = [

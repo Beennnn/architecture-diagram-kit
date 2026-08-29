@@ -12,3 +12,5 @@ on en ajoute une nouvelle qui remplace l'ancienne.
 | [0004](0004-excalidraw-voie-secondaire.md) | Garder la voie Excalidraw, en second | Acceptée |
 | [0005](0005-forme-noeud-et-precisions.md) | Neuvième forme : le nœud de déploiement | Acceptée |
 | [0006](0006-marqueurs-de-qualite.md) | Les qualités sont des marqueurs, pas des badges | Acceptée |
+| [0007](0007-echelle-de-fonds-et-accent.md) | Écarter l'échelle des fonds, et accentuer un sujet par schéma | Acceptée |
+| [0008](0008-logotypes.md) | Un logotype n'écrit pas son nom deux fois | Acceptée |

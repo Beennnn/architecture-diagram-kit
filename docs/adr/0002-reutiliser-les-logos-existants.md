@@ -1,7 +1,10 @@
 # 0002 — Réutiliser le logo officiel dès qu'il existe et qu'il est redistribuable
 
-- **Statut** : acceptée
+- **Statut** : acceptée, amendée une fois
 - **Date** : 2026-08-28
+- **Amendée par** : [0008](0008-logotypes.md), pour le cas que ce document ne
+  prévoit pas — la marque qui *est* le nom, où le bloc-marque « signe + nom »
+  écrirait le nom deux fois.
 
 ## Contexte
 
