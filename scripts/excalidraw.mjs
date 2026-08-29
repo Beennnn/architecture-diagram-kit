@@ -55,7 +55,7 @@ for (const type of ['protocol', 'product', 'role']) {
       dataURL: `data:image/svg+xml;base64,${Buffer.from(svg, 'utf8').toString('base64')}`,
       created: 1,
     };
-    const g = [`ll-group-${++group}`];
+    const g = [`adk-group-${++group}`];
     elements.push({ ...base(x, y, SIZE, SIZE, g), type: 'image', fileId, status: 'saved', scale: [1, 1], crop: null });
     const name = short(r);
     elements.push({
@@ -85,7 +85,7 @@ for (const t of titles) {
 // silently at the first change of format. These assertions turn that risk into
 // a build failure.
 const scene = {
-  type: 'excalidraw', version: 2, source: 'https://github.com/Beennnn/logo-libres',
+  type: 'excalidraw', version: 2, source: 'https://github.com/Beennnn/architecture-diagram-kit',
   elements,
   appState: { gridSize: 20, gridStep: 5, gridModeEnabled: false, viewBackgroundColor: '#ffffff' },
   files,

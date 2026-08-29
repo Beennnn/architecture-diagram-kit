@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 const sha1 = (s) => crypto.createHash('sha1').update(s).digest('hex');
 
 let n = 0;
-export const id = () => `logolibres-${String(++n).padStart(4, '0')}`;
+export const id = () => `adk-${String(++n).padStart(4, '0')}`;
 export const fixed = () => 1; // constant seed and version: the scene must be reproducible
 
 export const base = (x, y, w, h, groupIds) => ({

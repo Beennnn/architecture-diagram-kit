@@ -82,7 +82,7 @@ NOTE.forEach((l, i) => {
 });
 
 const scene = {
-  type: 'excalidraw', version: 2, source: 'https://github.com/Beennnn/logo-libres',
+  type: 'excalidraw', version: 2, source: 'https://github.com/Beennnn/architecture-diagram-kit',
   elements, appState: { gridSize: null, viewBackgroundColor: '#ffffff' }, files: {},
 };
 verify(scene);
