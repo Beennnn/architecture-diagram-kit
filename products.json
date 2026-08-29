@@ -1,0 +1,562 @@
+{
+  "products": [
+    {
+      "slug": "java",
+      "label": "Java",
+      "simpleIcons": "openjdk",
+      "family": "Language & build",
+      "note": "The Java logo is an Oracle trademark and is not redistributable. We use the OpenJDK mark — the reference implementation — which Java developers recognise.",
+      "shape": "service"
+    },
+    {
+      "slug": "maven",
+      "label": "Maven",
+      "simpleIcons": "apachemaven",
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "junit",
+      "label": "JUnit",
+      "simpleIcons": "junit5",
+      "family": "Testing",
+      "shape": "service"
+    },
+    {
+      "slug": "springboot",
+      "label": "Spring Boot",
+      "simpleIcons": "springboot",
+      "family": "Framework",
+      "shape": "service"
+    },
+    {
+      "slug": "postgresql",
+      "label": "PostgreSQL",
+      "simpleIcons": "postgresql",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "s3",
+      "label": "S3",
+      "simpleIcons": null,
+      "tabler": "bucket",
+      "family": "Data",
+      "note": "AWS does not redistribute its marks under a free licence. The “bucket” pictogram borrows S3's own vocabulary, which its users recognise.",
+      "color": "#0B7A6E",
+      "shape": "store"
+    },
+    {
+      "slug": "kafka",
+      "label": "Kafka",
+      "simpleIcons": "apachekafka",
+      "family": "Messaging",
+      "shape": "stream"
+    },
+    {
+      "slug": "openapi",
+      "label": "OpenAPI",
+      "simpleIcons": "openapiinitiative",
+      "family": "API",
+      "shape": "service"
+    },
+    {
+      "slug": "kubernetes",
+      "label": "Kubernetes",
+      "simpleIcons": "kubernetes",
+      "family": "Platform",
+      "shape": "boundary"
+    },
+    {
+      "slug": "quarkus",
+      "label": "Quarkus",
+      "simpleIcons": "quarkus",
+      "family": "Framework",
+      "shape": "service"
+    },
+    {
+      "slug": "tomcat",
+      "label": "Tomcat",
+      "simpleIcons": "apachetomcat",
+      "family": "Framework",
+      "note": "A weak case, knowingly kept: the brand colour is very light (#F8DC75), which forces a desaturated ink, and the logo is a delicate line drawing. It clears the contrast threshold (4.9:1) but stays the least legible mark of the set at small sizes. Prefer the stacked layout, which is larger.",
+      "shape": "service"
+    },
+    {
+      "slug": "gradle",
+      "label": "Gradle",
+      "simpleIcons": "gradle",
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "redis",
+      "label": "Redis",
+      "simpleIcons": "redis",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "elasticsearch",
+      "label": "Elasticsearch",
+      "simpleIcons": "elasticsearch",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "nginx",
+      "label": "nginx",
+      "simpleIcons": "nginx",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "docker",
+      "label": "Docker",
+      "simpleIcons": "docker",
+      "family": "Platform",
+      "shape": "boundary"
+    },
+    {
+      "slug": "helm",
+      "label": "Helm",
+      "simpleIcons": "helm",
+      "family": "Platform",
+      "shape": "service"
+    },
+    {
+      "slug": "terraform",
+      "label": "Terraform",
+      "simpleIcons": "terraform",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "jenkins",
+      "label": "Jenkins",
+      "simpleIcons": "jenkins",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "gitlab",
+      "label": "GitLab",
+      "simpleIcons": "gitlab",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "grafana",
+      "label": "Grafana",
+      "simpleIcons": "grafana",
+      "family": "Observability",
+      "shape": "service"
+    },
+    {
+      "slug": "prometheus",
+      "label": "Prometheus",
+      "simpleIcons": "prometheus",
+      "family": "Observability",
+      "shape": "store"
+    },
+    {
+      "slug": "keycloak",
+      "label": "Keycloak",
+      "simpleIcons": "keycloak",
+      "family": "Security",
+      "shape": "service"
+    },
+    {
+      "slug": "rabbitmq",
+      "label": "RabbitMQ",
+      "simpleIcons": "rabbitmq",
+      "family": "Messaging",
+      "note": "Ruled out as a protocol sign by ADR 0002 — RabbitMQ is not AMQP, WireGuard is not “VPN”. As a product, the logo is perfectly legitimate again.",
+      "shape": "stream"
+    },
+    {
+      "slug": "wireguard",
+      "label": "WireGuard",
+      "simpleIcons": "wireguard",
+      "family": "Security",
+      "note": "Ruled out as a protocol sign by ADR 0002 — RabbitMQ is not AMQP, WireGuard is not “VPN”. As a product, the logo is perfectly legitimate again.",
+      "shape": "service"
+    },
+    {
+      "slug": "linux",
+      "label": "Linux",
+      "simpleIcons": "linux",
+      "family": "System",
+      "shape": "node"
+    },
+    {
+      "slug": "ubuntu",
+      "label": "Ubuntu",
+      "simpleIcons": "ubuntu",
+      "family": "System",
+      "shape": "node"
+    },
+    {
+      "slug": "vmware",
+      "label": "VMware",
+      "simpleIcons": "vmware",
+      "logotype": true,
+      "family": "System",
+      "shape": "service"
+    },
+    {
+      "slug": "proxmox",
+      "label": "Proxmox",
+      "simpleIcons": "proxmox",
+      "family": "System",
+      "shape": "service"
+    },
+    {
+      "slug": "pfsense",
+      "label": "pfSense",
+      "simpleIcons": "pfsense",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "istio",
+      "label": "Istio",
+      "simpleIcons": "istio",
+      "family": "Platform",
+      "shape": "service"
+    },
+    {
+      "slug": "vault",
+      "label": "Vault",
+      "simpleIcons": "vault",
+      "family": "Security",
+      "shape": "store"
+    },
+    {
+      "slug": "springsecurity",
+      "label": "Spring Security",
+      "simpleIcons": "springsecurity",
+      "family": "Framework",
+      "shape": "service"
+    },
+    {
+      "slug": "flyway",
+      "label": "Flyway",
+      "simpleIcons": "flyway",
+      "family": "Data",
+      "shape": "service"
+    },
+    {
+      "slug": "hibernate",
+      "label": "Hibernate",
+      "simpleIcons": "hibernate",
+      "family": "Framework",
+      "shape": "service"
+    },
+    {
+      "slug": "springmvc",
+      "label": "Spring MVC",
+      "simpleIcons": "spring",
+      "family": "Framework",
+      "shape": "service"
+    },
+    {
+      "slug": "drawio",
+      "label": "draw.io",
+      "simpleIcons": "diagramsdotnet",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "jsonschema",
+      "label": "JSON Schema",
+      "simpleIcons": "json",
+      "family": "API",
+      "shape": "service"
+    },
+    {
+      "slug": "oci",
+      "label": "Conteneurs OCI",
+      "simpleIcons": "opencontainersinitiative",
+      "family": "Platform",
+      "shape": "service"
+    },
+    {
+      "slug": "sbom",
+      "label": "SBOM",
+      "simpleIcons": "spdx",
+      "family": "Delivery",
+      "shape": "store"
+    },
+    {
+      "slug": "python",
+      "label": "Python",
+      "simpleIcons": "python",
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "go",
+      "label": "Go",
+      "simpleIcons": "go",
+      "logotype": true,
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "rust",
+      "label": "Rust",
+      "simpleIcons": "rust",
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "typescript",
+      "label": "TypeScript",
+      "simpleIcons": "typescript",
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "nodejs",
+      "label": "Node.js",
+      "simpleIcons": "nodedotjs",
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "dotnet",
+      "label": ".NET",
+      "simpleIcons": "dotnet",
+      "logotype": true,
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "kotlin",
+      "label": "Kotlin",
+      "simpleIcons": "kotlin",
+      "family": "Language & build",
+      "shape": "service"
+    },
+    {
+      "slug": "react",
+      "label": "React",
+      "simpleIcons": "react",
+      "family": "Web",
+      "shape": "application"
+    },
+    {
+      "slug": "vue",
+      "label": "Vue.js",
+      "simpleIcons": "vuedotjs",
+      "family": "Web",
+      "shape": "application"
+    },
+    {
+      "slug": "angular",
+      "label": "Angular",
+      "simpleIcons": "angular",
+      "family": "Web",
+      "shape": "application"
+    },
+    {
+      "slug": "vite",
+      "label": "Vite",
+      "simpleIcons": "vite",
+      "family": "Web",
+      "shape": "service"
+    },
+    {
+      "slug": "tailwind",
+      "label": "Tailwind CSS",
+      "simpleIcons": "tailwindcss",
+      "family": "Web",
+      "shape": "service"
+    },
+    {
+      "slug": "android",
+      "label": "Android",
+      "simpleIcons": "android",
+      "family": "Client",
+      "shape": "application"
+    },
+    {
+      "slug": "flutter",
+      "label": "Flutter",
+      "simpleIcons": "flutter",
+      "family": "Client",
+      "shape": "application"
+    },
+    {
+      "slug": "swift",
+      "label": "Swift",
+      "simpleIcons": "swift",
+      "family": "Client",
+      "shape": "service"
+    },
+    {
+      "slug": "mysql",
+      "label": "MySQL",
+      "simpleIcons": "mysql",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "mongodb",
+      "label": "MongoDB",
+      "simpleIcons": "mongodb",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "sqlite",
+      "label": "SQLite",
+      "simpleIcons": "sqlite",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "clickhouse",
+      "label": "ClickHouse",
+      "simpleIcons": "clickhouse",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "neo4j",
+      "label": "Neo4j",
+      "simpleIcons": "neo4j",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "minio",
+      "label": "MinIO",
+      "simpleIcons": "minio",
+      "family": "Data",
+      "note": "S3-compatible object storage you can install on premises: the local counterpart to S3, useful when the diagram does not describe a public cloud.",
+      "shape": "store"
+    },
+    {
+      "slug": "spark",
+      "label": "Apache Spark",
+      "simpleIcons": "apachespark",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "airflow",
+      "label": "Apache Airflow",
+      "simpleIcons": "apacheairflow",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "duckdb",
+      "label": "DuckDB",
+      "simpleIcons": "duckdb",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "jupyter",
+      "label": "Jupyter",
+      "simpleIcons": "jupyter",
+      "family": "Compute",
+      "shape": "application"
+    },
+    {
+      "slug": "pytorch",
+      "label": "PyTorch",
+      "simpleIcons": "pytorch",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "huggingface",
+      "label": "Hugging Face",
+      "simpleIcons": "huggingface",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "ollama",
+      "label": "Ollama",
+      "simpleIcons": "ollama",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "gcp",
+      "label": "Google Cloud",
+      "simpleIcons": "googlecloud",
+      "family": "Platform",
+      "note": "The only major cloud provider whose mark is in Simple Icons: AWS and Azure were removed from it for trademark reasons. For those, use the generic “cloud provider” role.",
+      "shape": "boundary"
+    },
+    {
+      "slug": "opentelemetry",
+      "label": "OpenTelemetry",
+      "simpleIcons": "opentelemetry",
+      "family": "Observability",
+      "shape": "service"
+    },
+    {
+      "slug": "jaeger",
+      "label": "Jaeger",
+      "simpleIcons": "jaeger",
+      "family": "Observability",
+      "shape": "service"
+    },
+    {
+      "slug": "github-actions",
+      "label": "GitHub Actions",
+      "simpleIcons": "githubactions",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "argocd",
+      "label": "Argo CD",
+      "simpleIcons": "argo",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "ansible",
+      "label": "Ansible",
+      "simpleIcons": "ansible",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "pytest",
+      "label": "pytest",
+      "simpleIcons": "pytest",
+      "family": "Testing",
+      "shape": "service"
+    },
+    {
+      "slug": "cypress",
+      "label": "Cypress",
+      "simpleIcons": "cypress",
+      "family": "Testing",
+      "shape": "service"
+    },
+    {
+      "slug": "nats",
+      "label": "NATS",
+      "simpleIcons": "natsdotio",
+      "family": "Messaging",
+      "shape": "stream"
+    },
+    {
+      "slug": "pulsar",
+      "label": "Apache Pulsar",
+      "simpleIcons": "apachepulsar",
+      "family": "Messaging",
+      "shape": "stream"
+    }
+  ]
+}

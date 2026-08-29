@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="Telnet">
+  <title>Telnet</title>
+  <rect width="48" height="48" rx="13" fill="#f9eeed"/>
+  <svg x="9" y="9" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C0392F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M5 7l5 5l-5 5" />
+    <path d="M13 17l6 0" />
+  </svg>
+</svg>

@@ -1,0 +1,321 @@
+<title>What the research says about diagrams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{
+  --paper:#F1F0EC; --surface:#FFFFFF; --surface-2:#F8F7F4;
+  --ink:#16181A; --ink-2:#3E444A; --muted:#6E767D;
+  --line:#D8D6D0; --line-2:#E7E5DF;
+  --accent:#0B6E7F; --accent-soft:#DCEFF2; --accent-ink:#075462;
+  --alerte:#A6402F; --alerte-soft:#F6E7E3;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+    --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+    --line:#2C3338; --line-2:#232A2E;
+    --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+    --alerte:#F0857A; --alerte-soft:#331C19;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+  --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+  --line:#2C3338; --line-2:#232A2E;
+  --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+  --alerte:#F0857A; --alerte-soft:#331C19;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px 100px}
+.large{max-width:1020px}
+h1,h2,h3,.sans{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.85em}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+.top .wrap{padding-top:56px;padding-bottom:40px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+h1{font-size:clamp(2.1rem,5.4vw,3.3rem);line-height:1.04;font-weight:700;letter-spacing:-.022em;margin:0 0 18px;text-wrap:balance}
+.chapo{font-size:1.12rem;color:var(--ink-2);margin:0;max-width:60ch}
+.chapo strong{color:var(--ink);font-weight:600}
+
+section{margin-top:54px}
+h2{font-size:1.5rem;font-weight:700;letter-spacing:-.015em;margin:0 0 6px;text-wrap:balance}
+h2 .num{font-family:"IBM Plex Mono",monospace;font-size:.62em;font-weight:500;color:var(--accent);margin-right:12px;letter-spacing:.06em}
+.sub{color:var(--muted);font-size:.94rem;margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line);font-family:"IBM Plex Sans",sans-serif}
+h3{font-size:1.08rem;font-weight:600;margin:30px 0 8px}
+p{margin:0 0 16px}
+p strong{font-weight:600}
+ul,ol{margin:0 0 16px;padding-left:1.25em}
+li{margin-bottom:7px}
+
+.cite{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:16px 20px;margin:22px 0}
+.cite p{margin:0 0 8px;font-size:.98rem}
+.cite p:last-child{margin-bottom:0}
+.cite .ref{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;color:var(--muted);display:block;margin-top:10px}
+.cite .ref b{color:var(--ink-2);font-weight:600}
+
+.tirer{background:var(--accent-soft);border:1px solid transparent;border-radius:var(--r);padding:14px 18px;margin:18px 0;
+  font-family:"IBM Plex Sans",sans-serif;font-size:14.5px;line-height:1.6;color:var(--accent-ink)}
+.tirer b{font-weight:600}
+.tirer::before{content:"Ce qu'on en tire";display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin-bottom:5px}
+
+.faible{background:var(--alerte-soft);border-radius:var(--r);padding:14px 18px;margin:18px 0;
+  font-family:"IBM Plex Sans",sans-serif;font-size:14.5px;line-height:1.6;color:var(--alerte)}
+.faible::before{content:"Where the set is weak";display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:5px}
+
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin:22px 0}
+table{border-collapse:collapse;width:100%;min-width:600px;font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;line-height:1.5}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{background:var(--surface-2);font:600 10.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+tbody th{font-weight:600;white-space:nowrap;color:var(--ink)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+td .ok{color:var(--accent);font-weight:600}
+td .ko{color:var(--alerte);font-weight:600}
+
+figure{margin:28px 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 22px 16px;overflow-x:auto}
+/* direct child only: “figure svg” would also reach the nested SVGs
+   des pictos et leur imposerait width:100%. */
+figure > svg{display:block;width:100%;height:auto;min-width:520px}
+figcaption{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.55}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 26px;margin-top:26px}
+.check ol{counter-reset:c;list-style:none;padding:0;margin:0;font-family:"IBM Plex Sans",sans-serif;font-size:14.5px}
+.check li{counter-increment:c;position:relative;padding-left:34px;margin-bottom:13px;line-height:1.55}
+.check li::before{content:counter(c);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:5px;
+  background:var(--accent-soft);color:var(--accent-ink);font:600 11px/22px "IBM Plex Mono",monospace;text-align:center}
+.check li b{font-weight:600}
+.check li span{color:var(--muted);display:block;font-size:13px;margin-top:1px}
+
+.sources{margin-top:54px;padding-top:22px;border-top:1px solid var(--line)}
+.sources h2{font-size:1.2rem}
+.sources ul{list-style:none;padding:0;font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;line-height:1.55}
+.sources li{margin-bottom:14px;padding-left:0}
+.sources .t{font-weight:600;color:var(--ink)}
+.sources .m{color:var(--muted);display:block;margin-top:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Briefing note · state of the art</p>
+    <h1>What the research says about diagrams</h1>
+    <p class="chapo">There is a literature on the design of visual notations, and it is largely ignored by the people who make diagrams. Its most consistent result: <strong>what decides whether a diagram reads is almost never what you spend time on.</strong> Here are the authoritative sources, what they establish, and what they imply for our set of lockups.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2><span class="num">01</span>The frame of reference</h2>
+  <p class="sub">Moody, <i>The “Physics” of Notations</i>, IEEE TSE, 2009</p>
+
+  <p>This is the founding paper, and it remains without a real competitor. Moody starts from a harsh observation: in software engineering, the design effort for a notation goes almost entirely into <em>semantics</em> — what the symbols mean — and the graphical form is handled at the end, by eye. The discipline has mature methods for evaluating a semantics, and none for evaluating a visual syntax.</p>
+
+  <p>He proposes nine principles, derived from perception theory and cognitive psychology. Four concern us directly.</p>
+
+  <div class="cite">
+    <p><b>Dual Coding</b> — text and graphics together are more effective than either alone. Text is not an admission that the graphic failed: the two channels reinforce each other.</p>
+    <p><b>Graphic Economy</b> — the number of graphically distinct symbols must stay within the limits of human discrimination. Beyond that, the notation stops being readable at a glance.</p>
+    <p><b>Perceptual Discriminability</b> — two symbols must be separated by a sufficient <i>visual distance</i>, measurable on the visual variables in use.</p>
+    <p><b>Semantic Transparency</b> — the form of a symbol should suggest its meaning to someone who has never seen it.</p>
+    <span class="ref">Daniel L. Moody, <b>“The Physics of Notations: Toward a Scientific Basis for Constructing Visual Notations in Software Engineering”</b>, IEEE Transactions on Software Engineering 35(6), 2009, pp. 756–779.</span>
+  </div>
+
+  <div class="tirer">
+    Two decisions already taken find their theoretical justification here, and it is not a retrospective coincidence: <b>Dual Coding</b> validates the lockup — sign <em>and</em> name, not one or the other. <b>Graphic Economy</b> validates six layer colours rather than thirty-two. The literature says the same thing we had deduced from practice.
+  </div>
+
+  <div class="faible">
+    <b>Perceptual Discriminability</b> is the principle our palette breaks: under deuteranopia, <code>web</code> and <code>api</code> have a visual distance of zero. ADR 0001 accepts that on the grounds that the name carries the information — which is <em>precisely</em> the Dual Coding argument. But it has to be said plainly: we compensate for a weakness with another principle, we do not correct it.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>What the empirical work measured</h2>
+  <p class="sub">Purchase et al. — layout weighs more than notation</p>
+
+  <p>Where Moody theorises, Purchase measures. Her series of experiments on UML class diagrams varies five layout properties and measures actual comprehension performance: accuracy of answers, time, visual effort.</p>
+
+  <p>The result is clear and it has not moved in twenty-five years. <strong>Minimising edge crossings is by far the most important aesthetic</strong> — “by far the most important”, ahead of symmetry, angular resolution and orthogonality. More recent work on weighted-vertex graphs finds the same ranking.</p>
+
+  <div class="tirer">
+    On an architecture diagram, <b>redrawing the layout to remove three crossings does more for readability than all the iconography work put together.</b> Our lockups will never redeem a badly laid-out graph.
+  </div>
+
+  <h3>Secondary notation</h3>
+  <p>Petre, in a paper that has become a classic, shows something else: what distinguishes the expert from the novice in reading a diagram is not knowledge of the notation but mastery of the <em>secondary notation</em> — alignment, white space, spatial grouping, everything defined by no formal semantics and that the author often produces without thinking.</p>
+
+  <div class="cite">
+    <p>Novices fail not because they do not know what the symbols mean, but because they lack the reading and navigation strategies the expert applies to the layout. Performance depends heavily on the layout.</p>
+    <span class="ref">Marian Petre, <b>“Why Looking Isn't Always Seeing: Readership Skills and Graphical Programming”</b>, Communications of the ACM 38(6), 1995.</span>
+  </div>
+
+  <p>A practical and counter-intuitive consequence: <strong>aligning the boxes that belong together, and separating with white space those that have nothing to do with each other, is a semantic act.</strong> The reader will decode it, whether you meant it or not. An accidental alignment lies.</p>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Why the name must touch the sign</h2>
+  <p class="sub">Split-attention effect, spatial contiguity</p>
+
+  <p>This is the most solidly established result of the note, because it rests on a meta-analysis and not on an isolated study.</p>
+
+  <div class="cite">
+    <p>The <b>spatial contiguity principle</b> states that people learn better when the words and the images that refer to one another are spatially close. Its reverse, the <b>split-attention effect</b>, measures the degradation caused by having to mentally integrate separated sources of information.</p>
+    <p>A random-effects meta-analysis over 58 independent comparisons (n = 2,426) establishes an overall effect size of <b>g = 0.63</b> (p &lt; 0.001) — a medium to strong effect, in educational science.</p>
+    <span class="ref">Schroeder &amp; Cenkci, <b>“Spatial Contiguity and Spatial Split-Attention Effects in Multimedia Learning Environments: a Meta-Analysis”</b>, Educational Psychology Review, 2018. See also Ayres &amp; Sweller, <i>The Split-Attention Principle</i>, Cambridge Handbook of Multimedia Learning.</span>
+  </div>
+
+  <p>An important nuance: the effect is conditioned by the <strong>complexity of the material</strong>. On simple content, proximity changes little. On content with strong interactivity between elements — which is exactly what an architecture diagram is — the effect is strong.</p>
+
+  <div class="tirer">
+    A legend in the margin associating a colour with a layer <b>imposes</b> a split of attention: the reader has to go back and forth and memorise. The name written inside the pill removes it. That is the empirical justification for choosing “label” over “symbol alone”, and it is stronger than the aesthetic argument.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>The practical consensus</h2>
+  <p class="sub">C4, arc42, Views &amp; Beyond — what everyone agrees on</p>
+
+  <p>Simon Brown's C4 model is today the most widely used framework for software architecture diagrams. Its main contribution is not graphical: it is <strong>abstraction-first</strong>, the idea that you choose the level of abstraction first — context, container, component, code — and that a diagram never mixes two.</p>
+
+  <p>A notable fact, often misunderstood: <strong>C4 is deliberately notation-independent.</strong> It prescribes neither shape, nor colour, nor arrow style. It states one requirement on form, and it is absolute:</p>
+
+  <div class="cite">
+    <p>Every diagram must carry a <b>key / legend</b> explaining the notation used — shapes, colours, line styles, arrow types, terminations.</p>
+    <span class="ref">Simon Brown, <b>the C4 model</b>, <a href="https://c4model.com/diagrams/notation">c4model.com/diagrams/notation</a>. The model took shape between 2006 and 2011; book: <i>The C4 Model: Visualizing Software Architecture</i>.</span>
+  </div>
+
+  <p>The rest of the consensus, found identically in arc42 and in the SEI's <i>Documenting Software Architectures</i>:</p>
+
+  <ul>
+    <li>A <strong>title</strong> on every diagram, saying the type and the scope.</li>
+    <li>Every element carries a <strong>name</strong>, a <strong>type</strong>, a <strong>technology</strong> and a <strong>sentence</strong> of description.</li>
+    <li>Every arrow is <strong>directed</strong> and <strong>named</strong> — “reads the orders from”, not “uses”.</li>
+    <li><strong>No unexplained acronym.</strong></li>
+    <li>The diagram must be understood <strong>on its own</strong>, without its author beside it.</li>
+  </ul>
+
+  <div class="tirer">
+    Our set serves the “technology” point: that is exactly what a lockup encodes. But it exempts <b>none</b> of the other rules — least of all the legend, since our six layer colours are a convention the reader cannot guess.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>The consequence for draw.io</h2>
+  <p class="sub">Who should draw the name: the SVG, or draw.io?</p>
+
+  <p>The question looks technical. It is in fact settled by section 03, and the answer is the opposite of the intuition.</p>
+
+  <p>We produce lockups with <strong>vectorised text</strong> — self-contained, identical everywhere, no font to install. That is the right answer for a sheet, a README, a slide, a Figma file: contexts with no composition layer.</p>
+
+  <p><strong>In draw.io it is the wrong answer.</strong> Because draw.io <em>can</em> compose, and vectorised text loses four properties there:</p>
+
+  <figure>
+    <svg viewBox="0 0 640 250" role="img" aria-label="Comparison between a name vectorised into the SVG and a name rendered by draw.io">
+      <defs>
+        <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <text x="0" y="16" fill="var(--muted)" style="font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.1em">A · NAME BAKED INTO THE SVG</text>
+      <rect x="0" y="34" width="290" height="76" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+      <rect x="18" y="56" width="120" height="32" rx="16" fill="#dfe9fa"/>
+      <svg x="27" y="62" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B5FD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/>
+      </svg>
+      <text x="54" y="77" fill="#1B5FD9" style="font:600 13px 'IBM Plex Sans',sans-serif">HTTPS</text>
+      <text x="152" y="66" fill="var(--muted)" style="font:400 11px 'IBM Plex Sans',sans-serif">an image,</text>
+      <text x="152" y="81" fill="var(--muted)" style="font:400 11px 'IBM Plex Sans',sans-serif">the text is a drawing</text>
+      <text x="0" y="16" transform="translate(350,0)" fill="var(--accent)" style="font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.1em">B · NAME RENDERED BY DRAW.IO</text>
+      <rect x="350" y="34" width="290" height="76" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-opacity=".35"/>
+      <rect x="368" y="52" width="40" height="40" rx="11" fill="#dfe9fa"/>
+      <svg x="378" y="62" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B5FD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/>
+      </svg>
+      <text x="418" y="70" fill="var(--ink)" style="font:600 13px 'IBM Plex Sans',sans-serif">HTTPS</text>
+      <text x="418" y="86" fill="var(--muted)" style="font:400 10.5px 'IBM Plex Mono',monospace">:8443</text>
+      <text x="0" y="150" fill="var(--ink-2)" style="font:600 12px 'IBM Plex Sans',sans-serif">What B gains</text>
+      <g style="font:400 12px 'IBM Plex Sans',sans-serif" fill="var(--ink-2)">
+        <text x="0" y="172">Ctrl+F finds the text</text>
+        <text x="0" y="192">you can be specific: “HTTPS :8443”, “REST /v2”</text>
+        <text x="0" y="212">the text stays text in SVG and HTML exports</text>
+        <text x="0" y="232">the font follows the diagram's</text>
+      </g>
+      <g stroke="var(--accent)" stroke-width="1.4" fill="none" marker-end="url(#fl)" opacity=".55">
+        <path d="M300,72 H336"/>
+      </g>
+      <text x="350" y="150" fill="var(--ink-2)" style="font:600 12px 'IBM Plex Sans',sans-serif">What that implies for the library</text>
+      <g style="font:400 12px 'IBM Plex Sans',sans-serif" fill="var(--ink-2)">
+        <text x="350" y="172">we ship the SIGN alone (symbols/)</text>
+        <text x="350" y="192">draw.io lays the label as the shape's label</text>
+        <text x="350" y="212">the layer colour goes into the style's fontColor</text>
+        <text x="350" y="232">the baked lockups stay for docs and slides</text>
+      </g>
+    </svg>
+    <figcaption>Spatial contiguity is respected in both cases — the name touches the sign. But in B the name stays live text.</figcaption>
+  </figure>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th scope="col">Property</th><th scope="col">Baked name</th><th scope="col">draw.io name</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Ctrl+F search</th><td><span class="ko">no</span></td><td><span class="ok">yes</span></td></tr>
+        <tr><th scope="row">Editable in place</th><td><span class="ko">no</span></td><td><span class="ok">yes</span> — “HTTPS :8443”</td></tr>
+        <tr><th scope="row">Real text on export</th><td><span class="ko">no</span> — curves</td><td><span class="ok">yes</span> — readable by a screen reader</td></tr>
+        <tr><th scope="row">Follows the diagram's font</th><td><span class="ko">no</span></td><td><span class="ok">yes</span></td></tr>
+        <tr><th scope="row">Identical rendering everywhere</th><td><span class="ok">yes</span></td><td>depends on the available fonts</td></tr>
+        <tr><th scope="row">Usable outside the tool</th><td><span class="ok">yes</span></td><td><span class="ko">no</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Hence the construction: a draw.io <code>.xml</code> library — an <code>&lt;mxlibrary&gt;</code> node containing a JSON array — where every entry carries the <strong>symbol alone</strong> as a <code>data:image/svg+xml</code> URI, plus a <code>title</code> that becomes the label, and a <code>style</code> fixing the layer colour in <code>fontColor</code>. Separate libraries — protocols, products, roles and the grammar — so the picker stays navigable.</p>
+
+  <div class="tirer">
+    The two sets do not compete, they serve two contexts. <b>draw.io composes</b> → give it the sign and it writes the name. <b>A slide does not compose</b> → give it the baked lockup. The repository produces both.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>The review protocol</h2>
+  <p class="sub">In the order of measured impact, not in the order of comfort</p>
+
+  <div class="check">
+    <ol>
+      <li><b>Count the arrow crossings, and remove them.</b><span>The strongest lever, and the one always skipped. Moving a box costs ten seconds.</span></li>
+      <li><b>Check that every alignment is intentional.</b><span>Two aligned boxes say “we belong together”. If that is false, break the alignment.</span></li>
+      <li><b>One level of abstraction per diagram.</b><span>A container and a class on the same picture, and the reader no longer knows where they are.</span></li>
+      <li><b>Name every arrow, and direct it.</b><span>“reads the orders from” carries information; “uses” carries none.</span></li>
+      <li><b>A legend, always.</b><span>Our six layer colours are an arbitrary convention. Without a legend they mean nothing.</span></li>
+      <li><b>Expand every acronym.</b><span>Including the ones “everybody knows” on your team.</span></li>
+      <li><b>Have someone from outside read it, with no commentary.</b><span>The only test that counts. What they ask about is what is missing.</span></li>
+    </ol>
+  </div>
+</section>
+
+<div class="sources">
+  <h2>Sources</h2>
+  <ul>
+    <li><span class="t">Daniel L. Moody — “The Physics of Notations”</span>
+      <span class="m">IEEE Transactions on Software Engineering 35(6), 2009, pp. 756–779. The frame of reference: nine principles for designing a visual notation. <a href="https://www.semanticscholar.org/paper/The-%E2%80%9CPhysics%E2%80%9D-of-Notations:-Toward-a-Scientific-for-Moody/bcd2c5379a34068040750a751e4fd2710d90c15c">Semantic Scholar</a> · <a href="https://dl.acm.org/doi/abs/10.1145/1810295.1810442">ACM</a></span></li>
+    <li><span class="t">Purchase, McGill et al. — Graph drawing aesthetics and the comprehension of UML diagrams</span>
+      <span class="m">Edge crossings dominate every other layout property. <a href="https://www.semanticscholar.org/paper/527ca0518fca9efdbea27c8a3289a4c8d67e22f6">Semantic Scholar</a> · <a href="https://link.springer.com/article/10.1023/A:1016344215610">Empirical Software Engineering</a> · <a href="https://eprints.gla.ac.uk/227646/1/227646.pdf">a survey of user evaluations</a></span></li>
+    <li><span class="t">Marian Petre — “Why Looking Isn't Always Seeing”</span>
+      <span class="m">Communications of the ACM 38(6), 1995. Secondary notation: the layout carries meaning the expert reads and the novice misses. <a href="http://www.cs.toronto.edu/~chechik/courses18/csc2125/paper12.pdf">PDF</a> · <a href="https://dl.acm.org/doi/abs/10.1145/203241.203251">ACM</a></span></li>
+    <li><span class="t">Schroeder &amp; Cenkci — Spatial contiguity and split attention, a meta-analysis</span>
+      <span class="m">Educational Psychology Review, 2018. 58 comparisons, n = 2,426, g = 0.63. <a href="https://link.springer.com/article/10.1007/s10648-018-9435-9">Springer</a> · <a href="https://www.cambridge.org/core/books/abs/cambridge-handbook-of-multimedia-learning/splitattention-principle-in-multimedia-learning/497A2FCB9737E3009B3CF0E4D97F7B99">Cambridge Handbook</a></span></li>
+    <li><span class="t">Simon Brown — the C4 model</span>
+      <span class="m">Abstraction-first, notation independence, the legend requirement. <a href="https://c4model.com/">c4model.com</a> · <a href="https://c4model.com/diagrams/notation">notation</a> · <a href="https://www.infoq.com/articles/C4-architecture-model/">InfoQ article</a></span></li>
+    <li><span class="t">The draw.io library format</span>
+      <span class="m">An <code>&lt;mxlibrary&gt;</code> node, a JSON array, entries with <code>data</code> / <code>w</code> / <code>h</code> / <code>title</code> / <code>style</code> / <code>aspect</code>. <a href="https://www.drawio.com/doc/faq/format-custom-shape-library">Documentation</a> · <a href="https://github.com/jgraph/drawio-libs">jgraph/drawio-libs</a></span></li>
+    <li><span class="t">Going further</span>
+      <span class="m">Larkin &amp; Simon, <i>Why a Diagram is (Sometimes) Worth Ten Thousand Words</i> (Cognitive Science, 1987) · Bertin, <i>Sémiologie graphique</i> (1967) on visual variables · Cleveland &amp; McGill (1984) on the perceptual ranking of encodings · Ware, <i>Information Visualization: Perception for Design</i> · Green &amp; Petre, <i>Cognitive Dimensions of Notations</i> (1996)</span></li>
+  </ul>
+</div>
+
+</div>

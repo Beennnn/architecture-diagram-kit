@@ -1,0 +1,67 @@
+# The guard rails in this repository did nothing at the door: they only ran if
+# somebody launched regenerate.sh by hand. A contribution breaking the grammar
+# therefore went through without a sound.
+#
+# This workflow reinvents no check. It runs the full regeneration — which
+# already carries the uniqueness of the pictograms, the height of the cylinders,
+# label collisions, description overflow, the legend landing on a box, contrast
+# in the dark variant, the shapes.json / FILLS agreement, fills missing from the
+# libraries — and then verifies that the git tree stayed clean.
+#
+# That last verification is the most important one: it proves that the versioned
+# output corresponds exactly to its sources. Without it, a generated SVG can be
+# edited by hand and nobody knows.
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The icon sets are downloaded at pinned versions: the cache is therefore
+      # safe, and its key names them so that a version change renews it instead
+      # of serving stale content.
+      - name: Cache of the icon packages
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: icons-${{ hashFiles('regenerate.sh') }}
+
+      - run: npm ci
+
+      - name: Regenerate everything
+        run: ./regenerate.sh
+
+      - name: The git tree must have stayed clean
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "::error::Regeneration modifies versioned files: the output does not match its sources."
+            git status --short
+            echo "---- differences ----"
+            git --no-pager diff --stat
+            exit 1
+          fi
+          echo "The output is reproducible."
+
+      # The generators validate their own structure, but none of them reads the
+      # file back. A malformed XML would therefore reach the user.
+      - name: The produced files must be well-formed XML
+        run: |
+          sudo apt-get install -y --no-install-recommends libxml2-utils >/dev/null
+          errors=0
+          for f in docs/*.svg drawio/*.xml specimen/*.html; do
+            [[ -e "$f" ]] || continue
+            case "$f" in *.html) continue;; esac
+            xmllint --noout "$f" || { echo "::error file=$f::malformed XML"; errors=1; }
+          done
+          exit $errors

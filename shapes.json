@@ -1,0 +1,103 @@
+{
+  "$comment": "Shape grammar — the rule lives in docs/adr/0003-shape-grammar.md. A shape encodes the NATURE of an object, never its importance nor its state. Nine shapes, no more.",
+  "shapes": {
+    "service": {
+      "label": "Service",
+      "nature": "a component that runs code",
+      "geometry": "square-cornered rectangle",
+      "svg": {
+        "rx": 0,
+        "fill": "#FFFFFF",
+        "stroke": 1.6
+      }
+    },
+    "application": {
+      "label": "Application",
+      "nature": "something a person interacts with directly",
+      "geometry": "rounded rectangle",
+      "svg": {
+        "rx": 10,
+        "fill": "#FFFFFF",
+        "stroke": 1.6
+      }
+    },
+    "store": {
+      "label": "Store",
+      "nature": "data that survives a restart",
+      "geometry": "cylinder",
+      "svg": {
+        "cylinder": true,
+        "fill": "#FFFFFF",
+        "stroke": 1.6
+      }
+    },
+    "stream": {
+      "label": "Stream",
+      "nature": "a queue, a topic, a bus — data passing through",
+      "geometry": "capsule",
+      "svg": {
+        "rx": "half",
+        "fill": "#FFFFFF",
+        "stroke": 1.6
+      }
+    },
+    "actor": {
+      "label": "Actor",
+      "nature": "a person, or the workstation they act through",
+      "geometry": "rounded rectangle on a light grey fill",
+      "svg": {
+        "rx": 10,
+        "fill": "#E8ECEF",
+        "stroke": 1.6
+      }
+    },
+    "device": {
+      "label": "Device",
+      "nature": "a physical device outside the information system",
+      "geometry": "square-cornered rectangle, light grey fill",
+      "svg": {
+        "rx": 3,
+        "fill": "#EDF0F2",
+        "stroke": 1.6
+      }
+    },
+    "external": {
+      "label": "External",
+      "nature": "a system outside our control",
+      "geometry": "rounded rectangle, dashed stroke, grey fill",
+      "svg": {
+        "rx": 8,
+        "fill": "#F3F5F6",
+        "stroke": 1.6,
+        "dashes": "5 4"
+      }
+    },
+    "boundary": {
+      "label": "Boundary",
+      "nature": "a zone: network, trust, deployment, context",
+      "geometry": "dashed frame, no solid fill",
+      "svg": {
+        "rx": 14,
+        "fill": "#F2F5F6",
+        "stroke": 1.4,
+        "dashes": "8 6"
+      },
+      "remark": "a container, not a node: no arrow ever connects to it"
+    },
+    "node": {
+      "label": "Deployment node",
+      "nature": "a machine that hosts: physical server, virtual machine, cluster node",
+      "geometry": "square-cornered rectangle, thick stroke, very light grey fill",
+      "svg": {
+        "rx": 2,
+        "fill": "#DFE5E9",
+        "stroke": 2.4
+      }
+    }
+  },
+  "ruledOut": {
+    "diamond": "reserved for flowcharts — a decision has no place in an architecture view",
+    "cloud": "ambiguous: “the internet”, “a cloud provider” or “I don't know”, depending on the reader; use “external”",
+    "hexagon": "no established meaning; competes with the capsule without adding anything"
+  }
+}

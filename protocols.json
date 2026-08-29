@@ -1,0 +1,266 @@
+{
+  "protocols": [
+    {
+      "slug": "http",
+      "label": "HTTP",
+      "tabler": "world",
+      "lucide": "globe",
+      "simpleIcons": null,
+      "family": "Web"
+    },
+    {
+      "slug": "https",
+      "label": "HTTPS / TLS",
+      "tabler": "lock",
+      "lucide": "globe-lock",
+      "simpleIcons": "openssl",
+      "family": "Web"
+    },
+    {
+      "slug": "ssh",
+      "label": "SSH",
+      "tabler": "terminal-2",
+      "lucide": "square-terminal",
+      "simpleIcons": null,
+      "family": "Access"
+    },
+    {
+      "slug": "telnet",
+      "label": "Telnet",
+      "tabler": "prompt",
+      "lucide": "terminal",
+      "simpleIcons": null,
+      "family": "Access"
+    },
+    {
+      "slug": "ftp",
+      "label": "FTP",
+      "tabler": "file-upload",
+      "lucide": "file-up",
+      "simpleIcons": null,
+      "family": "Files"
+    },
+    {
+      "slug": "sftp",
+      "label": "SFTP / SCP",
+      "tabler": "folder-share",
+      "lucide": "folder-sync",
+      "simpleIcons": null,
+      "family": "Files"
+    },
+    {
+      "slug": "webdav",
+      "label": "WebDAV",
+      "tabler": "folder-cog",
+      "lucide": "folder-cog",
+      "simpleIcons": null,
+      "family": "Files"
+    },
+    {
+      "slug": "smb",
+      "label": "SMB / CIFS",
+      "tabler": "device-desktop-share",
+      "lucide": "hard-drive",
+      "simpleIcons": null,
+      "family": "Files"
+    },
+    {
+      "slug": "nfs",
+      "label": "NFS",
+      "tabler": "share-3",
+      "lucide": "server",
+      "simpleIcons": null,
+      "family": "Files"
+    },
+    {
+      "slug": "rest",
+      "label": "REST",
+      "tabler": "api",
+      "lucide": "braces",
+      "simpleIcons": "openapiinitiative",
+      "family": "API"
+    },
+    {
+      "slug": "graphql",
+      "label": "GraphQL",
+      "tabler": "hierarchy-2",
+      "lucide": "share-2",
+      "simpleIcons": "graphql",
+      "family": "API",
+      "officialMark": true
+    },
+    {
+      "slug": "grpc",
+      "label": "gRPC",
+      "tabler": "arrows-right-left",
+      "lucide": "arrow-left-right",
+      "simpleIcons": null,
+      "family": "API"
+    },
+    {
+      "slug": "soap",
+      "label": "SOAP / XML-RPC",
+      "tabler": "file-code",
+      "lucide": "file-code",
+      "simpleIcons": "xml",
+      "family": "API"
+    },
+    {
+      "slug": "websocket",
+      "label": "WebSocket",
+      "tabler": "plug-connected",
+      "lucide": "plug-zap",
+      "simpleIcons": "socketdotio",
+      "family": "Real time"
+    },
+    {
+      "slug": "webhook",
+      "label": "Webhook",
+      "tabler": "webhook",
+      "lucide": "webhook",
+      "simpleIcons": null,
+      "family": "API"
+    },
+    {
+      "slug": "mqtt",
+      "label": "MQTT",
+      "tabler": "broadcast",
+      "lucide": "radio-tower",
+      "simpleIcons": "mqtt",
+      "family": "Messaging",
+      "officialMark": true
+    },
+    {
+      "slug": "amqp",
+      "label": "AMQP",
+      "tabler": "stack-2",
+      "lucide": "layers",
+      "simpleIcons": "rabbitmq",
+      "family": "Messaging"
+    },
+    {
+      "slug": "xmpp",
+      "label": "XMPP",
+      "tabler": "messages",
+      "lucide": "messages-square",
+      "simpleIcons": "xmpp",
+      "family": "Messaging",
+      "officialMark": true
+    },
+    {
+      "slug": "smtp",
+      "label": "SMTP",
+      "tabler": "mail-fast",
+      "lucide": "mail",
+      "simpleIcons": null,
+      "family": "Mail"
+    },
+    {
+      "slug": "imap",
+      "label": "IMAP",
+      "tabler": "mail-opened",
+      "lucide": "mail-open",
+      "simpleIcons": null,
+      "family": "Mail"
+    },
+    {
+      "slug": "pop3",
+      "label": "POP3",
+      "tabler": "mailbox",
+      "lucide": "inbox",
+      "simpleIcons": null,
+      "family": "Mail"
+    },
+    {
+      "slug": "dns",
+      "label": "DNS",
+      "tabler": "world-search",
+      "lucide": "signpost",
+      "simpleIcons": null,
+      "family": "Network"
+    },
+    {
+      "slug": "dhcp",
+      "label": "DHCP",
+      "tabler": "ticket",
+      "lucide": "router",
+      "simpleIcons": null,
+      "family": "Network"
+    },
+    {
+      "slug": "ldap",
+      "label": "LDAP",
+      "tabler": "list-tree",
+      "lucide": "list-tree",
+      "simpleIcons": null,
+      "family": "Directory"
+    },
+    {
+      "slug": "snmp",
+      "label": "SNMP",
+      "tabler": "gauge",
+      "lucide": "gauge",
+      "simpleIcons": null,
+      "family": "Monitoring"
+    },
+    {
+      "slug": "ntp",
+      "label": "NTP",
+      "tabler": "clock-play",
+      "lucide": "timer",
+      "simpleIcons": null,
+      "family": "Network"
+    },
+    {
+      "slug": "rtsp",
+      "label": "RTSP",
+      "tabler": "device-cctv",
+      "lucide": "video",
+      "simpleIcons": null,
+      "family": "Media"
+    },
+    {
+      "slug": "vpn",
+      "label": "VPN (IPsec/WG)",
+      "tabler": "shield-lock",
+      "lucide": "shield-check",
+      "simpleIcons": "wireguard",
+      "family": "Security"
+    },
+    {
+      "slug": "oauth",
+      "label": "OAuth 2 / OIDC",
+      "tabler": "key",
+      "lucide": "key-round",
+      "simpleIcons": "jsonwebtokens",
+      "family": "Security"
+    },
+    {
+      "slug": "rss",
+      "label": "RSS / Atom",
+      "tabler": "rss",
+      "lucide": "rss",
+      "simpleIcons": "rss",
+      "family": "Web",
+      "officialMark": true
+    },
+    {
+      "slug": "bittorrent",
+      "label": "BitTorrent",
+      "tabler": "arrows-shuffle",
+      "lucide": "shuffle",
+      "simpleIcons": "bittorrent",
+      "family": "P2P",
+      "officialMark": true
+    },
+    {
+      "slug": "ipfs",
+      "label": "IPFS",
+      "tabler": "topology-star",
+      "lucide": "waypoints",
+      "simpleIcons": "ipfs",
+      "family": "P2P",
+      "officialMark": true
+    }
+  ]
+}

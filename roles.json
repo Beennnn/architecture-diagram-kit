@@ -1,0 +1,572 @@
+{
+  "roles": [
+    {
+      "slug": "load-balancer",
+      "label": "Load balancer",
+      "tabler": "arrows-split-2",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "reverse-proxy",
+      "label": "Reverse proxy",
+      "tabler": "arrow-guide",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "api-gateway",
+      "label": "API gateway",
+      "tabler": "door-enter",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "cdn",
+      "label": "CDN",
+      "tabler": "world-bolt",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "firewall",
+      "label": "Firewall",
+      "tabler": "wall",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "service",
+      "label": "Service",
+      "tabler": "box",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "worker",
+      "label": "Worker",
+      "tabler": "settings-automation",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "scheduled-job",
+      "label": "Scheduled job",
+      "tabler": "clock-cog",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "function",
+      "label": "Function",
+      "tabler": "bolt",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "cache",
+      "label": "Cache",
+      "tabler": "stack-3",
+      "family": "Files",
+      "shape": "store"
+    },
+    {
+      "slug": "object-storage",
+      "label": "Object storage",
+      "tabler": "archive",
+      "family": "Files",
+      "shape": "store"
+    },
+    {
+      "slug": "data-warehouse",
+      "label": "Data warehouse",
+      "tabler": "building-warehouse",
+      "family": "Files",
+      "shape": "store"
+    },
+    {
+      "slug": "search-index",
+      "label": "Search index",
+      "tabler": "list-search",
+      "family": "Files",
+      "shape": "store"
+    },
+    {
+      "slug": "image-registry",
+      "label": "Image registry",
+      "tabler": "packages",
+      "family": "Files",
+      "shape": "store"
+    },
+    {
+      "slug": "bastion",
+      "label": "Bastion",
+      "tabler": "door",
+      "family": "Security",
+      "shape": "service"
+    },
+    {
+      "slug": "secrets-vault",
+      "label": "Secrets vault",
+      "tabler": "lock-square-rounded",
+      "family": "Security",
+      "shape": "store"
+    },
+    {
+      "slug": "certificate-authority",
+      "label": "Certificate authority",
+      "tabler": "certificate-2",
+      "family": "Security",
+      "shape": "service"
+    },
+    {
+      "slug": "workstation",
+      "label": "Workstation",
+      "tabler": "device-desktop",
+      "family": "Client",
+      "shape": "actor"
+    },
+    {
+      "slug": "mobile-app",
+      "label": "Mobile app",
+      "tabler": "device-mobile",
+      "family": "Client",
+      "shape": "actor"
+    },
+    {
+      "slug": "user",
+      "label": "User",
+      "tabler": "user",
+      "family": "Client",
+      "shape": "actor"
+    },
+    {
+      "slug": "team",
+      "label": "Team",
+      "tabler": "users",
+      "family": "Client",
+      "shape": "actor"
+    },
+    {
+      "slug": "connected-device",
+      "label": "Connected device",
+      "tabler": "access-point",
+      "family": "Client",
+      "shape": "device"
+    },
+    {
+      "slug": "logs",
+      "label": "Logs",
+      "tabler": "list-details",
+      "family": "Monitoring",
+      "shape": "store"
+    },
+    {
+      "slug": "metrics",
+      "label": "Metrics",
+      "tabler": "chart-line",
+      "family": "Monitoring",
+      "shape": "service"
+    },
+    {
+      "slug": "alerting",
+      "label": "Alerting",
+      "tabler": "bell",
+      "family": "Monitoring",
+      "shape": "service"
+    },
+    {
+      "slug": "physical-server",
+      "label": "Physical server",
+      "tabler": "server-2",
+      "family": "Hardware",
+      "shape": "node"
+    },
+    {
+      "slug": "vm",
+      "label": "Virtual machine",
+      "tabler": "box-multiple",
+      "family": "Hardware",
+      "shape": "node"
+    },
+    {
+      "slug": "hypervisor",
+      "label": "Hypervisor",
+      "tabler": "cpu",
+      "family": "Hardware",
+      "shape": "service"
+    },
+    {
+      "slug": "switch",
+      "label": "Switch",
+      "tabler": "topology-star-3",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "router",
+      "label": "Router",
+      "tabler": "router",
+      "family": "Network",
+      "shape": "service"
+    },
+    {
+      "slug": "cluster-node",
+      "label": "Cluster node",
+      "tabler": "cube-3d-sphere",
+      "family": "Platform",
+      "shape": "node"
+    },
+    {
+      "slug": "pod",
+      "label": "Pod",
+      "tabler": "container",
+      "family": "Platform",
+      "shape": "service"
+    },
+    {
+      "slug": "cluster-service",
+      "label": "Cluster service",
+      "tabler": "affiliate",
+      "family": "Platform",
+      "shape": "service"
+    },
+    {
+      "slug": "volume",
+      "label": "Persistent volume",
+      "tabler": "versions",
+      "family": "Files",
+      "shape": "store"
+    },
+    {
+      "slug": "controller",
+      "label": "Controller",
+      "tabler": "api-app",
+      "family": "Code",
+      "shape": "service"
+    },
+    {
+      "slug": "application-service",
+      "label": "Application service",
+      "tabler": "brackets",
+      "family": "Code",
+      "shape": "service"
+    },
+    {
+      "slug": "repository",
+      "label": "Repository",
+      "tabler": "database-cog",
+      "family": "Code",
+      "shape": "service"
+    },
+    {
+      "slug": "entity",
+      "label": "Entity",
+      "tabler": "table-options",
+      "family": "Code",
+      "shape": "store"
+    },
+    {
+      "slug": "configuration",
+      "label": "Configuration",
+      "tabler": "adjustments",
+      "family": "Code",
+      "shape": "store"
+    },
+    {
+      "slug": "build",
+      "label": "Build",
+      "tabler": "hammer",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "formatter",
+      "label": "Code formatter",
+      "tabler": "wand",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "static-analysis",
+      "label": "Static analysis",
+      "tabler": "bug",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "architecture-test",
+      "label": "Architecture test",
+      "tabler": "ruler-measure",
+      "family": "Testing",
+      "shape": "service"
+    },
+    {
+      "slug": "coverage",
+      "label": "Coverage",
+      "tabler": "percentage",
+      "family": "Testing",
+      "shape": "service"
+    },
+    {
+      "slug": "mutation-test",
+      "label": "Mutation test",
+      "tabler": "virus",
+      "family": "Testing",
+      "shape": "service"
+    },
+    {
+      "slug": "contract-test",
+      "label": "Contract test",
+      "tabler": "file-check",
+      "family": "Testing",
+      "shape": "service"
+    },
+    {
+      "slug": "event-contract",
+      "label": "Event contract",
+      "tabler": "file-typography",
+      "family": "API",
+      "shape": "service"
+    },
+    {
+      "slug": "outbox",
+      "label": "Outbox table",
+      "tabler": "send",
+      "family": "Files",
+      "shape": "store"
+    },
+    {
+      "slug": "domain-event",
+      "label": "Domain event",
+      "tabler": "flare",
+      "family": "Messaging",
+      "shape": "stream"
+    },
+    {
+      "slug": "architecture-decision",
+      "label": "Architecture decision",
+      "tabler": "notebook",
+      "family": "Delivery",
+      "shape": "service"
+    },
+    {
+      "slug": "cloud-provider",
+      "label": "Cloud provider",
+      "tabler": "cloud",
+      "family": "Platform",
+      "shape": "boundary",
+      "note": "AWS and Azure were removed from Simple Icons for trademark reasons: this role designates them without naming them, and the box label says which one."
+    },
+    {
+      "slug": "serverless-function",
+      "label": "Serverless function",
+      "tabler": "cloud-computing",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "vector-store",
+      "label": "Vector store",
+      "tabler": "vector",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "queue",
+      "label": "Queue",
+      "tabler": "inbox",
+      "family": "Messaging",
+      "shape": "stream"
+    },
+    {
+      "slug": "topic",
+      "label": "Topic",
+      "tabler": "antenna-bars-5",
+      "family": "Messaging",
+      "shape": "stream"
+    },
+    {
+      "slug": "event-bus",
+      "label": "Event bus",
+      "tabler": "topology-ring",
+      "family": "Messaging",
+      "shape": "stream"
+    },
+    {
+      "slug": "message-broker",
+      "label": "Message broker",
+      "tabler": "exchange",
+      "family": "Messaging",
+      "shape": "service"
+    },
+    {
+      "slug": "third-party-api",
+      "label": "Third-party API",
+      "tabler": "world-code",
+      "family": "API",
+      "shape": "external"
+    },
+    {
+      "slug": "saas-provider",
+      "label": "SaaS provider",
+      "tabler": "cloud-network",
+      "family": "Platform",
+      "shape": "external"
+    },
+    {
+      "slug": "partner-system",
+      "label": "Partner system",
+      "tabler": "external-link",
+      "family": "Platform",
+      "shape": "external"
+    },
+    {
+      "slug": "payment-provider",
+      "label": "Payment provider",
+      "tabler": "credit-card",
+      "family": "Security",
+      "shape": "external"
+    },
+    {
+      "slug": "web-app",
+      "label": "Web application",
+      "tabler": "app-window",
+      "family": "Client",
+      "shape": "application"
+    },
+    {
+      "slug": "desktop-app",
+      "label": "Desktop application",
+      "tabler": "device-imac",
+      "family": "Client",
+      "shape": "application"
+    },
+    {
+      "slug": "admin-console",
+      "label": "Admin console",
+      "tabler": "layout-dashboard",
+      "family": "Client",
+      "shape": "application"
+    },
+    {
+      "slug": "dashboard",
+      "label": "Dashboard",
+      "tabler": "chart-histogram",
+      "family": "Monitoring",
+      "shape": "application"
+    },
+    {
+      "slug": "network-zone",
+      "label": "Network zone",
+      "tabler": "network",
+      "family": "Network",
+      "shape": "boundary"
+    },
+    {
+      "slug": "availability-zone",
+      "label": "Availability zone",
+      "tabler": "world-pin",
+      "family": "Platform",
+      "shape": "boundary"
+    },
+    {
+      "slug": "tenant",
+      "label": "Tenant",
+      "tabler": "building-community",
+      "family": "Platform",
+      "shape": "boundary"
+    },
+    {
+      "slug": "container",
+      "label": "Container",
+      "tabler": "cube",
+      "family": "Platform",
+      "shape": "node"
+    },
+    {
+      "slug": "edge-node",
+      "label": "Edge node",
+      "tabler": "satellite",
+      "family": "Network",
+      "shape": "node"
+    },
+    {
+      "slug": "mainframe",
+      "label": "Mainframe",
+      "tabler": "building-skyscraper",
+      "family": "Hardware",
+      "shape": "node"
+    },
+    {
+      "slug": "data-lake",
+      "label": "Data lake",
+      "tabler": "file-database",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "ingestion-job",
+      "label": "Ingestion job",
+      "tabler": "database-import",
+      "family": "Data",
+      "shape": "service"
+    },
+    {
+      "slug": "stream-processor",
+      "label": "Stream processor",
+      "tabler": "filter",
+      "family": "Data",
+      "shape": "service"
+    },
+    {
+      "slug": "catalogue",
+      "label": "Data catalogue",
+      "tabler": "clipboard-data",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "training-job",
+      "label": "Training job",
+      "tabler": "brain",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "model-registry",
+      "label": "Model registry",
+      "tabler": "box-model",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "model-serving",
+      "label": "Model serving",
+      "tabler": "robot",
+      "family": "Compute",
+      "shape": "service"
+    },
+    {
+      "slug": "feature-store",
+      "label": "Feature store",
+      "tabler": "table",
+      "family": "Data",
+      "shape": "store"
+    },
+    {
+      "slug": "file-transfer",
+      "label": "File transfer",
+      "tabler": "transfer",
+      "family": "Files",
+      "shape": "service"
+    },
+    {
+      "slug": "etl-job",
+      "label": "Batch ETL job",
+      "tabler": "arrows-split",
+      "family": "Data",
+      "shape": "service"
+    }
+  ]
+}

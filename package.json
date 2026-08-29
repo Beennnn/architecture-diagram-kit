@@ -1,0 +1,15 @@
+{
+  "name": "logo-libres",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A consistent, rights-free icon set for architecture diagrams: protocols, products and infrastructure roles",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "build": "./regenerate.sh",
+    "build:offline": "./regenerate.sh --offline"
+  },
+  "dependencies": {
+    "opentype.js": "1.3.4"
+  }
+}

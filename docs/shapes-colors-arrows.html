@@ -1,0 +1,457 @@
+<title>Making a diagram that reads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{
+  --paper:#F1F0EC; --surface:#FFFFFF; --surface-2:#F8F7F4;
+  --ink:#16181A; --ink-2:#3E444A; --muted:#6E767D;
+  --line:#D8D6D0; --line-2:#E7E5DF;
+  --accent:#0B6E7F; --accent-soft:#DCEFF2; --accent-ink:#075462;
+  --alerte:#A6402F; --alerte-soft:#F6E7E3;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+    --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+    --line:#2C3338; --line-2:#232A2E;
+    --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+    --alerte:#F0857A; --alerte-soft:#331C19;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1214; --surface:#171B1E; --surface-2:#1D2226;
+  --ink:#E8EAEB; --ink-2:#B6BEC4; --muted:#89939A;
+  --line:#2C3338; --line-2:#232A2E;
+  --accent:#3FBFD4; --accent-soft:#11333A; --accent-ink:#8FDDEA;
+  --alerte:#F0857A; --alerte-soft:#331C19;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 26px 100px}
+h1,h2,h3,.sans{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif}
+code{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.85em}
+a{color:var(--accent);text-underline-offset:2px}
+
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+.top .wrap{padding-top:56px;padding-bottom:40px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+h1{font-size:clamp(2.1rem,5.4vw,3.3rem);line-height:1.04;font-weight:700;letter-spacing:-.022em;margin:0 0 18px;text-wrap:balance}
+.chapo{font-size:1.12rem;color:var(--ink-2);margin:0;max-width:60ch}
+.chapo strong{color:var(--ink);font-weight:600}
+
+section{margin-top:56px}
+h2{font-size:1.5rem;font-weight:700;letter-spacing:-.015em;margin:0 0 6px;text-wrap:balance}
+h2 .num{font-family:"IBM Plex Mono",monospace;font-size:.62em;font-weight:500;color:var(--accent);margin-right:12px}
+.sub{color:var(--muted);font-size:.94rem;margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line);font-family:"IBM Plex Sans",sans-serif}
+h3{font-size:1.06rem;font-weight:600;margin:28px 0 8px}
+p{margin:0 0 16px}
+ul{margin:0 0 16px;padding-left:1.2em}
+li{margin-bottom:7px}
+
+.regle{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);
+  padding:15px 19px;margin:20px 0;font-family:"IBM Plex Sans",sans-serif;font-size:15px;line-height:1.6}
+.regle b{font-weight:600}
+.piege{background:var(--alerte-soft);border-radius:var(--r);padding:14px 18px;margin:18px 0;
+  font-family:"IBM Plex Sans",sans-serif;font-size:14.5px;line-height:1.6;color:var(--alerte)}
+.piege::before{content:"The trap";display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:4px}
+
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin:22px 0}
+table{border-collapse:collapse;width:100%;min-width:620px;font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;line-height:1.5}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{background:var(--surface-2);font:600 10.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+tbody th{font-weight:600;white-space:nowrap;color:var(--ink)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+
+/* The figures sit on a constant light ground: an architecture diagram is read
+   on a light canvas, and the hues are calibrated for it. */
+figure{margin:26px 0;background:#FFFFFF;border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 14px;overflow-x:auto}
+figure > svg{display:block;width:100%;height:auto;min-width:560px}
+figcaption{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;color:var(--muted);margin-top:13px;line-height:1.55;max-width:70ch}
+figcaption b{color:var(--ink-2);font-weight:600}
+.fig-t{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+
+.recap{margin-top:56px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 28px}
+.recap h2{font-size:1.25rem;margin-bottom:14px}
+.recap ol{counter-reset:c;list-style:none;padding:0;margin:0;font-family:"IBM Plex Sans",sans-serif;font-size:14.5px}
+.recap li{counter-increment:c;position:relative;padding-left:34px;margin-bottom:13px;line-height:1.55}
+.recap li::before{content:counter(c);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:5px;
+  background:var(--accent-soft);color:var(--accent-ink);font:600 11px/22px "IBM Plex Mono",monospace;text-align:center}
+.recap li b{font-weight:600}
+.recap li span{color:var(--muted);display:block;font-size:13px;margin-top:1px}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Practical guide · shapes, colours, arrows</p>
+    <h1>Making a diagram that reads</h1>
+    <p class="chapo">The <a href="state-of-the-art-diagrams.html">state-of-the-art note</a> says what the research establishes. This one says what to do. A single idea runs through it: <strong>every visual variable encodes one thing and one only.</strong> Shape says what kind of object it is, colour which group it belongs to, size its importance, position the flow. A diagram becomes unreadable the day one of them encodes two.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2><span class="num">01</span>What each variable is allowed to say</h2>
+  <p class="sub">Assign them before drawing, not while drawing</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th scope="col">Variable</th><th scope="col">What it encodes</th><th scope="col">Capacity</th><th scope="col">Fragility</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Position</th><td>flow, sequence, belonging</td><td>unlimited</td><td>none — the strongest, do not waste it</td></tr>
+        <tr><th scope="row">Frame / zone</th><td>who is inside, who is outside</td><td>a few zones</td><td>unreadable if the zones overlap</td></tr>
+        <tr><th scope="row">Shape</th><td>what <em>kind</em> of object it is</td><td>5 to 7</td><td>none — survives black and white</td></tr>
+        <tr><th scope="row">Colour</th><td>which <em>group</em> it belongs to</td><td>6 at most</td><td>colour blindness, printing, projector</td></tr>
+        <tr><th scope="row">Size, weight</th><td>importance</td><td>3 levels</td><td>confused with “contains more text”</td></tr>
+        <tr><th scope="row">Solid / dashed line</th><td>one duality, only one</td><td>2</td><td>unusable without a legend</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="regle">
+    <b>Shape is the most under-used variable.</b> It is free, it is memorable, it survives a photocopy and colour blindness. Many diagrams use nothing but rectangles and then make colour carry all the meaning — the more fragile of the two.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Which shape for which use</h2>
+  <p class="sub">Six shapes are enough, and they combine</p>
+
+  <figure>
+    <svg viewBox="0 0 820 330" role="img" aria-label="A payment system drawn with six shapes: actor, application, service, store, queue and network boundary">
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g font-family="'IBM Plex Sans',sans-serif">
+
+      <!-- boundary: the “zone” variable -->
+      <rect x="128" y="34" width="516" height="272" rx="12" fill="#F2F5F6" stroke="#8896A2" stroke-width="1.4" stroke-dasharray="7 5"/>
+      <text x="142" y="54" fill="#5B6873" font-size="11.5" font-weight="600">Private network</text>
+
+      <!-- acteur -->
+      <circle cx="60" cy="128" r="13" fill="none" stroke="#3E444A" stroke-width="1.8"/>
+      <path d="M60 143 v22 M42 152 h36 M60 165 l-13 18 M60 165 l13 18" fill="none" stroke="#3E444A" stroke-width="1.8" stroke-linecap="round"/>
+      <text x="60" y="204" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Client</text>
+      <text x="60" y="220" text-anchor="middle" font-size="10.5" fill="#6E767D">actor</text>
+
+      <!-- application : rectangle arrondi -->
+      <rect x="158" y="96" width="118" height="60" rx="10" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="217" y="121" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Web server</text>
+      <text x="217" y="138" text-anchor="middle" font-size="10.5" fill="#6E767D">application</text>
+
+      <!-- service: square-cornered rectangle -->
+      <rect x="326" y="96" width="118" height="60" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="385" y="121" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Orders API</text>
+      <text x="385" y="138" text-anchor="middle" font-size="10.5" fill="#6E767D">service</text>
+
+      <!-- stockage : cylindre -->
+      <path d="M486 110 v42 a46 13 0 0 0 92 0 v-42" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <ellipse cx="532" cy="110" rx="46" ry="13" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="532" y="132" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Orders</text>
+      <text x="532" y="187" text-anchor="middle" font-size="10.5" fill="#6E767D">store</text>
+
+      <!-- queue: capsule -->
+      <rect x="326" y="222" width="118" height="44" rx="22" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="385" y="241" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Payments queue</text>
+      <text x="385" y="257" text-anchor="middle" font-size="10.5" fill="#6E767D">queue</text>
+
+      <!-- worker -->
+      <rect x="498" y="218" width="118" height="52" fill="#FFF" stroke="#3E444A" stroke-width="1.6"/>
+      <text x="557" y="240" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16181A">Settler</text>
+      <text x="557" y="256" text-anchor="middle" font-size="10.5" fill="#6E767D">service</text>
+
+      <!-- externe : rectangle au trait distinct, pas un nuage -->
+      <rect x="676" y="218" width="118" height="52" fill="#F3F5F6" stroke="#8896A2" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <text x="735" y="240" text-anchor="middle" font-size="12.5" font-weight="600" fill="#3E444A">Bank</text>
+      <text x="735" y="256" text-anchor="middle" font-size="10.5" fill="#6E767D">external</text>
+
+      <!-- arrows, all named -->
+      <g stroke="#5B6873" stroke-width="1.5" fill="none" marker-end="url(#a1)">
+        <path d="M84 126 H150"/>
+        <path d="M276 126 H318"/>
+        <path d="M444 126 H478"/>
+        <path d="M385 156 V214"/>
+        <path d="M444 244 H490"/>
+        <path d="M616 244 H668"/>
+      </g>
+      <g font-size="10.5" fill="#5B6873" text-anchor="middle">
+        <text x="117" y="114">HTTPS</text>
+        <text x="301" y="114">REST</text>
+        <text x="461" y="114">SQL</text>
+        <text x="385" y="192" text-anchor="middle">publishes</text>
+        <text x="467" y="232">consumes</text>
+        <text x="642" y="232">settles</text>
+      </g>
+      </g>
+    </svg>
+    <figcaption><b>Six shapes, each used once for one thing.</b> The dashed boundary is the best value of the lot: it says at a glance what is inside the private network, and it makes visible the one link leaving it — towards the bank. No colour is needed to read this diagram.</figcaption>
+  </figure>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th scope="col">Shape</th><th scope="col">Use</th><th scope="col">Remark</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Rectangle</th><td>a service, a component</td><td>the default; look no further</td></tr>
+        <tr><th scope="row">Rounded rectangle</th><td>an application, an interface</td><td>a team convention — put it in the legend</td></tr>
+        <tr><th scope="row">Cylinder</th><td>a store</td><td>a universal convention, do not fight it</td></tr>
+        <tr><th scope="row">Capsule</th><td>a queue, a bus, a topic</td><td>reads well because it evokes a pipe</td></tr>
+        <tr><th scope="row">Figure</th><td>a human actor</td><td>never for an automated system</td></tr>
+        <tr><th scope="row">Dashed frame</th><td>a boundary: network, trust, deployment, context</td><td><b>the most under-used</b></td></tr>
+        <tr><th scope="row">Diamond</th><td>a decision</td><td>flowchart <em>only</em> — never in architecture</td></tr>
+        <tr><th scope="row">Cloud</th><td>—</td><td>avoid it: it means “the internet”, “a cloud provider” or “I don't know”, depending on the reader</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="piege">
+    Making shape carry <em>importance</em> rather than <em>nature</em>. A critical component has no special shape: it has a size, a position, or a colour accent. Otherwise the diagram's grammar contradicts itself.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Colour encodes one dimension only</h2>
+  <p class="sub">The most frequent mistake, and the most expensive</p>
+
+  <p>On a real diagram the temptation is constant: two boxes coloured by owning team, a third in red because it is critical, a fourth in blue because it is Java. Each decision is reasonable taken alone. Together they make colour unreadable: the reader can no longer tell what a hue means.</p>
+
+  <figure>
+    <svg viewBox="0 0 780 210" role="img" aria-label="The same diagram coloured by three mixed criteria on the left, by a single criterion on the right">
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g font-family="'IBM Plex Sans',sans-serif">
+      <text x="0" y="14" class="fig-t" fill="#A6402F">Avoid · three criteria mixed</text>
+      <g stroke-width="1.5">
+        <rect x="0" y="34" width="96" height="46" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="120" y="34" width="96" height="46" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="240" y="34" width="96" height="46" rx="7" fill="#F7DEDA" stroke="#C0392F"/>
+        <rect x="120" y="120" width="96" height="46" rx="7" fill="#E4F0DE" stroke="#3D7A28"/>
+        <rect x="240" y="120" width="96" height="46" rx="7" fill="#EFEDE8" stroke="#8896A2"/>
+      </g>
+      <g font-size="11.5" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="48" y="62">Web</text><text x="168" y="62">API</text><text x="288" y="62">Payment</text>
+        <text x="168" y="148">Batch</text><text x="288" y="148">Archive</text>
+      </g>
+      <g stroke="#8896A2" stroke-width="1.4" fill="none" marker-end="url(#a2)">
+        <path d="M96 57 H112"/><path d="M216 57 H232"/><path d="M168 80 V112"/><path d="M216 143 H232"/>
+      </g>
+      <g font-size="10" fill="#8896A2">
+        <text x="0" y="190">blue = team A · red = critical · green = Java · grey = deprecated</text>
+        <text x="0" y="204">four grammars inside one variable</text>
+      </g>
+
+      <text x="440" y="14" class="fig-t" fill="#0B6E7F">Right · one criterion</text>
+      <g stroke-width="1.5">
+        <rect x="440" y="34" width="96" height="46" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="560" y="34" width="96" height="46" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="680" y="34" width="96" height="46" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="560" y="120" width="96" height="46" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="680" y="120" width="96" height="46" rx="7" fill="#DCEDEA" stroke="#0B7A6E"/>
+      </g>
+      <!-- criticality moves to another variable: a thick stroke -->
+      <rect x="680" y="34" width="96" height="46" rx="7" fill="none" stroke="#C0392F" stroke-width="3.2"/>
+      <g font-size="11.5" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="488" y="62">Web</text><text x="608" y="62">API</text><text x="728" y="62">Payment</text>
+        <text x="608" y="148">Batch</text><text x="728" y="148">Archive</text>
+      </g>
+      <g stroke="#8896A2" stroke-width="1.4" fill="none" marker-end="url(#a2)">
+        <path d="M536 57 H552"/><path d="M656 57 H672"/><path d="M608 80 V112"/><path d="M656 143 H672"/>
+      </g>
+      <g font-size="10" fill="#8896A2">
+        <text x="440" y="190">colour now says only the layer: web · api · data</text>
+        <text x="440" y="204">criticality has moved to another variable — the stroke</text>
+      </g>
+      </g>
+    </svg>
+    <figcaption><b>On the right, colour answers one question only:</b> “which layer does this belong to?” Criticality has not disappeared, it has changed variable — a thick stroke. Every piece of information keeps its channel, and the legend fits in three lines.</figcaption>
+  </figure>
+
+  <div class="regle">
+    <b>One dimension per variable.</b> If you have three pieces of information to encode — layer, criticality, team — you need three variables: colour, stroke, position. Not three uses of colour.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Grey carries the structure, colour carries the point</h2>
+  <p class="sub">A fully coloured diagram has no subject</p>
+
+  <p>A diagram almost always exists to say <em>one</em> thing: here is the path of a request, here is the component being added, here is where it breaks. If everything is coloured, nothing is. The rule that works: <strong>structure in neutrals, and colour reserved for what you are talking about.</strong></p>
+
+  <figure>
+    <svg viewBox="0 0 780 190" role="img" aria-label="The same diagram fully coloured on the left, in neutrals with a single accent on the right">
+      <defs>
+        <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g font-family="'IBM Plex Sans',sans-serif">
+      <text x="0" y="14" class="fig-t" fill="#A6402F">All coloured · no subject</text>
+      <g stroke-width="1.5">
+        <rect x="0" y="40" width="84" height="44" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="104" y="40" width="84" height="44" rx="7" fill="#EAE1FA" stroke="#7038D8"/>
+        <rect x="208" y="40" width="84" height="44" rx="7" fill="#FBE6CF" stroke="#B36208"/>
+        <rect x="104" y="112" width="84" height="44" rx="7" fill="#DCEDEA" stroke="#0B7A6E"/>
+        <rect x="208" y="112" width="84" height="44" rx="7" fill="#F7DEDA" stroke="#C0392F"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="42" y="67">Web</text><text x="146" y="67">API</text><text x="250" y="67">Cache</text>
+        <text x="146" y="139">Database</text><text x="250" y="139">Archive</text>
+      </g>
+      <g stroke="#8896A2" stroke-width="1.4" fill="none" marker-end="url(#a3)">
+        <path d="M84 62 H96"/><path d="M188 62 H200"/><path d="M146 84 V104"/><path d="M188 134 H200"/>
+      </g>
+      <text x="0" y="180" font-size="10" fill="#8896A2">five hues, no hierarchy: the eye does not know where to land</text>
+
+      <text x="440" y="14" class="fig-t" fill="#0B6E7F">Neutrals + one accent · the cache is the subject</text>
+      <g stroke-width="1.5">
+        <rect x="440" y="40" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+        <rect x="544" y="40" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+        <rect x="648" y="40" width="84" height="44" rx="7" fill="#FBE6CF" stroke="#B36208" stroke-width="2.2"/>
+        <rect x="544" y="112" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+        <rect x="648" y="112" width="84" height="44" rx="7" fill="#F4F5F6" stroke="#A8B2B9"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle">
+        <text x="482" y="67" fill="#5B6873">Web</text><text x="586" y="67" fill="#5B6873">API</text>
+        <text x="690" y="67" fill="#8A4B06">Cache</text>
+        <text x="586" y="139" fill="#5B6873">Database</text><text x="690" y="139" fill="#5B6873">Archive</text>
+      </g>
+      <g stroke="#C3CBD1" stroke-width="1.4" fill="none" marker-end="url(#a3)">
+        <path d="M524 62 H536"/><path d="M586 84 V104"/><path d="M628 134 H640"/>
+      </g>
+      <g stroke="#B36208" stroke-width="2" fill="none" marker-end="url(#a3)">
+        <path d="M628 62 H640"/>
+      </g>
+      <text x="440" y="180" font-size="10" fill="#8896A2">a single saturated hue: the eye goes straight to the subject</text>
+      </g>
+    </svg>
+    <figcaption><b>On the right, the diagram has a subject.</b> The neutrals hold the structure — it stays entirely readable — and the single saturated hue designates what the document is about. The arrow leading to the cache carries the same accent: the information is doubled, not repeated in vain.</figcaption>
+  </figure>
+
+  <div class="regle">
+    <b>A good proportion: two thirds of the diagram in neutrals.</b> The six layer colours only come out when the diagram is really about layers — on a diagram telling a flow, they are noise.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>The seven colour rules</h2>
+  <p class="sub">In the order in which they get broken</p>
+
+  <ul>
+    <li><b>Never colour alone.</b> Any information carried by a hue must also be carried by a word, a shape or a position. That is WCAG criterion 1.4.1, and it is also what saves the diagram at the photocopier.</li>
+    <li><b>Six categories at most.</b> Beyond that, the reader goes back to the legend at every box, and colour stops being a shortcut.</li>
+    <li><b>Red is reserved.</b> It means problem, failure, danger — in every technical culture. Spending it on “Payments team” is shouting for no reason.</li>
+    <li><b>The fill stays neutral — but neutral does not mean identical.</b> Grey values encode shape and nesting, and they have to be genuinely separated: our first four fills sat between 1.05 and 1.08:1 against white, which is not weak contrast but the absence of contrast. A projector rendered them all as white. The scale now runs from 1.09:1 for a zone to 1.27:1 for a deployment node.</li>
+    <li><b>The accent is not a layer.</b> One colour, and one only, is reserved for “this is the subject of this diagram”: it never designates a domain, it is absent from the layer palette, and the legend must name it separately — otherwise the reader looks for it among the layers. One accented box per diagram: beyond that it designates nothing. And because a magenta and a teal become the same colour under deuteranopia, the accent also carries a thicker stroke: the rule “never colour alone” applies to it first.</li>
+    <li><b>Contrast: 4.5:1 for text, 3:1 for lines.</b> A tired projector eats about a third of the contrast; what barely passes on screen will disappear in a meeting room.</li>
+    <li><b>The fill colour is soft, the stroke colour is firm.</b> A saturated flat crushes the text laid on it; a 10–15 % tint with a solid stroke keeps both readable.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Arrows</h2>
+  <p class="sub">Where the real meaning hides</p>
+
+  <p>Boxes say what exists; arrows say how the system works. And yet they are where the effort slackens.</p>
+
+  <ul>
+    <li><b>Name them.</b> “reads the orders from” carries information; “uses” carries none. If the name does not come, it usually means the relationship is not clear in your own head.</li>
+    <li><b>Point them at whoever receives the call</b>, not at wherever the data comes from. The direction of the arrow answers “who calls whom”, that is, who has to know about the other.</li>
+    <li><b>Banish the double-headed arrow.</b> It hides exactly who takes the initiative. Two distinct arrows, or one, with the return implied.</li>
+    <li><b>Solid against dashed: one duality per diagram.</b> Synchronous / asynchronous, or nominal / degraded, but not both — and always in the legend.</li>
+    <li><b>Orthogonal in a dense diagram</b>, direct when it is airy. And above all: cross as little as possible, that is the factor weighing most on comprehension.</li>
+  </ul>
+
+  <div class="piege">
+    Line weight to say “lots of traffic”. Tempting and almost always wrong: nobody can read three weights, and weight is already used to tell the subject from the rest. Write the throughput on the arrow.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Spacing says who goes with whom</h2>
+  <p class="sub">The variable everyone thinks is decorative</p>
+
+  <p>Two boxes close together form a group in the reader's eyes. It is involuntary and immediate, and it happens even if you did not intend it — so irregular spacing <em>lies</em>.</p>
+
+  <ul>
+    <li><b>Align to a grid</b> — 10 px in draw.io, on by default. A three-pixel offset shows, and reads as an intention.</li>
+    <li><b>The gap between two groups must be at least twice the gap inside a group.</b> That is the rule that makes a grouping obvious without drawing a single frame.</li>
+    <li><b>One box width</b> per level. Variable widths read as a hierarchy that does not exist.</li>
+    <li><b>Let the edges breathe.</b> A generous outer margin makes the diagram look composed rather than endured.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">08</span>The decisive test</h2>
+  <p class="sub">Thirty seconds, before you send it</p>
+
+  <figure>
+    <svg viewBox="0 0 780 170" role="img" aria-label="The same diagram in colour then desaturated: on the left the information survives, on the right it disappears">
+      <g font-family="'IBM Plex Sans',sans-serif">
+      <text x="0" y="14" class="fig-t" fill="#0B6E7F">Survives grey · shape and text encode too</text>
+      <g stroke-width="1.5">
+        <rect x="0" y="36" width="92" height="42" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <path d="M132 50 v28 a30 11 0 0 0 60 0 v-28" fill="#DCEDEA" stroke="#0B7A6E" stroke-width="1.5"/>
+        <ellipse cx="162" cy="50" rx="30" ry="11" fill="#DCEDEA" stroke="#0B7A6E" stroke-width="1.5"/>
+        <rect x="232" y="36" width="92" height="42" rx="21" fill="#FBE6CF" stroke="#B36208"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="46" y="62">API</text><text x="162" y="74">Database</text><text x="278" y="62">File</text>
+      </g>
+      <g stroke-width="1.5">
+        <rect x="0" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+        <path d="M132 120 v28 a30 11 0 0 0 60 0 v-28" fill="#E8E8E8" stroke="#6B6B6B" stroke-width="1.5"/>
+        <ellipse cx="162" cy="120" rx="30" ry="11" fill="#E8E8E8" stroke="#6B6B6B" stroke-width="1.5"/>
+        <rect x="232" y="106" width="92" height="42" rx="21" fill="#F0F0F0" stroke="#6B6B6B"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="46" y="132">API</text><text x="162" y="144">Database</text><text x="278" y="132">File</text>
+      </g>
+      <text x="0" y="166" font-size="10" fill="#8896A2">in grey it still reads: shape and label are enough</text>
+
+      <text x="440" y="14" class="fig-t" fill="#A6402F">Collapses · colour was encoding alone</text>
+      <g stroke-width="1.5">
+        <rect x="440" y="36" width="92" height="42" rx="7" fill="#DCE8FB" stroke="#1B5FD9"/>
+        <rect x="552" y="36" width="92" height="42" rx="7" fill="#DCEDEA" stroke="#0B7A6E"/>
+        <rect x="664" y="36" width="92" height="42" rx="7" fill="#FBE6CF" stroke="#B36208"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="486" y="62">Service</text><text x="598" y="62">Service</text><text x="710" y="62">Service</text>
+      </g>
+      <g stroke-width="1.5">
+        <rect x="440" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+        <rect x="552" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+        <rect x="664" y="106" width="92" height="42" rx="7" fill="#EDEDED" stroke="#6B6B6B"/>
+      </g>
+      <g font-size="11" font-weight="600" text-anchor="middle" fill="#16181A">
+        <text x="486" y="132">Service</text><text x="598" y="132">Service</text><text x="710" y="132">Service</text>
+      </g>
+      <text x="440" y="166" font-size="10" fill="#8896A2">three boxes now indistinguishable</text>
+      </g>
+    </svg>
+    <figcaption><b>The greyscale test.</b> Desaturate the diagram. If the information survives, it is carried by shape, text and position — so it will also survive colour blindness, printing and a projector. If the diagram collapses, colour was carrying alone, and a variable is missing.</figcaption>
+  </figure>
+</section>
+
+<div class="recap">
+  <h2>The recipe, in order</h2>
+  <ol>
+    <li><b>Write first what the diagram has to make clear.</b><span>One sentence. If you cannot, the diagram has no subject and no styling will save it.</span></li>
+    <li><b>Lay the boxes, with no colour.</b><span>Shapes and positions only. The diagram must already be readable at this stage.</span></li>
+    <li><b>Remove the arrow crossings.</b><span>Before any decoration. It is the heaviest lever.</span></li>
+    <li><b>Name every arrow.</b><span>If the verb does not come, the relationship is not clear.</span></li>
+    <li><b>Add the zone frames.</b><span>Network, trust, deployment. Often, colour becomes unnecessary here.</span></li>
+    <li><b>Add colour last, for one dimension only.</b><span>And keep two thirds of the diagram in neutrals.</span></li>
+    <li><b>Legend, title, acronyms expanded.</b><span>The diagram must be understood without you beside it.</span></li>
+    <li><b>Desaturate, then have someone from outside read it.</b><span>What they ask about is what is missing.</span></li>
+  </ol>
+</div>
+
+</div>

@@ -1,0 +1,72 @@
+{
+  "$comment": "Families grouped into coloured layers, for architecture diagrams. Six separable hues, contrasted for a white glyph at 16 px.",
+  "layers": {
+    "web": {
+      "label": "Web & real time",
+      "light": "#1B5FD9",
+      "dark": "#6FA6FF",
+      "families": [
+        "Web",
+        "Real time"
+      ]
+    },
+    "api": {
+      "label": "API",
+      "light": "#7038D8",
+      "dark": "#B08CFF",
+      "families": [
+        "API",
+        "Framework",
+        "Code"
+      ]
+    },
+    "files": {
+      "label": "Files",
+      "light": "#0B7A6E",
+      "dark": "#43C9B8",
+      "families": [
+        "Files",
+        "Data"
+      ]
+    },
+    "messaging": {
+      "label": "Messages & mail",
+      "light": "#B36208",
+      "dark": "#F0A64B",
+      "families": [
+        "Messaging",
+        "Mail"
+      ]
+    },
+    "access": {
+      "label": "Access & security",
+      "light": "#C0392F",
+      "dark": "#FF8A80",
+      "families": [
+        "Access",
+        "Security"
+      ]
+    },
+    "infra": {
+      "label": "Infrastructure",
+      "light": "#4C5A66",
+      "dark": "#A3B3C0",
+      "families": [
+        "Network",
+        "Directory",
+        "Monitoring",
+        "Media",
+        "P2P",
+        "Compute",
+        "Client",
+        "Language & build",
+        "Testing",
+        "Platform",
+        "Delivery",
+        "Observability",
+        "Hardware",
+        "System"
+      ]
+    }
+  }
+}
