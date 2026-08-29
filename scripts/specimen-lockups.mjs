@@ -40,6 +40,7 @@ const parCategorie = [...new Set(produits.map((r) => r.categorie))].map((cat) =>
 }).join('\n    ');
 
 const replis = produits.filter((r) => !r.marqueOfficielle || r.note);
+const logotypes = rows.filter((r) => r.logotype);
 
 const tableau = rows.map((r) => `<tr>
           <th scope="row">${esc(r.label)}</th>
@@ -176,6 +177,17 @@ tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
       <h3>Les deux cas où le logo n'est pas disponible</h3>
       ${replis.map((r) => `<p><strong>${esc(r.label)}</strong> — ${esc(r.note || '')}</p>`).join('\n      ')}
     </div>` : ''}
+  </section>
+
+  <section class="bloc">
+    <div class="shead">
+      <h2>Les logotypes — quand la marque écrit déjà le nom</h2>
+      <p>${logotypes.length} marques du jeu n'ont pas de symbole : elles <em>écrivent</em> le nom, un point c'est tout. Leur accoler notre libellé l'écrirait deux fois. Le codage double de Moody demande un signe <strong>et</strong> un texte, pas deux textes : le doublon prend de la place sans ajouter de canal de lecture. Pour ces entrées, le bloc-marque <strong>est</strong> la marque.</p>
+      <p>Restait à la rendre lisible. Inscrite dans le carré du <code>viewBox</code>, la bande « vmware » — 24 × 3,8 unités — s'écrivait en 4,7 px de haut : on gardait le mot parce que la marque ne parlait pas. Elle est désormais posée par son <strong>encre mesurée</strong> (<code>scripts/boite-encre.mjs</code>), à la hauteur de capitale qu'avait le mot. Le nom garde sa taille optique et la pastille s'élargit d'autant.</p>
+      <p>Helm et MySQL restent en dehors : leur marque porte un symbole — une roue, un dauphin — et son lettrage, lui, est illisible à nos tailles. Le mot y fait donc un vrai travail.</p>
+    </div>
+    ${serie('lockups/horizontal', logotypes.map((r) => r.slug))}
+    ${serie('lockups/empile', logotypes.map((r) => r.slug))}
   </section>
 
   <section class="bloc">

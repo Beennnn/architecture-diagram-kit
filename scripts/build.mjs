@@ -40,6 +40,15 @@ const { formes } = JSON.parse(fs.readFileSync(path.join(ROOT, 'formes.json'), 'u
   }
 }
 
+// Un logotype est une marque qui ÉCRIT le nom et ne montre rien d'autre : le
+// bloc-marque n'y ajouterait qu'un doublon. La déclaration suppose donc une
+// marque officielle à faire parler ; sans elle il n'y a rien à ne pas répéter.
+for (const e of [...protocoles, ...produits, ...roles]) {
+  if (e.logotype && !e.simpleIcons) {
+    throw new Error(`« ${e.slug} » est déclaré logotype mais n'a pas de marque officielle.`);
+  }
+}
+
 // La grammaire de formes est normative : une forme inconnue arrête le build.
 for (const e of [...produits, ...roles]) {
   if (e.forme && !formes[e.forme]) throw new Error(`Forme inconnue pour « ${e.slug} » : « ${e.forme} ». Voir formes.json.`);

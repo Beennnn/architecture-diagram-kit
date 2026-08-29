@@ -109,6 +109,23 @@ avec le symbole et le nom posés *sur* le trait, qui s'interrompt derrière eux 
 voir [`docs/rendus-fleches.svg`](docs/rendus-fleches.svg) pour l'arbitrage, et
 `annotation()` dans `scripts/schema.mjs` pour la primitive.
 
+### Les logotypes n'écrivent pas leur nom deux fois
+
+3 marques du jeu — `.NET`, `Go`, `vmware` — n'ont pas de symbole : elles
+**écrivent** le nom, un point c'est tout. Leur accoler notre libellé l'écrirait
+deux fois. Le codage double demande un signe **et** un texte, pas deux textes.
+Ces entrées portent `"logotype": true` dans `produits.json` ; leur bloc-marque
+est la marque seule, et le build refuse d'y reposer le mot.
+
+Encore fallait-il que la marque soit lisible. Inscrite dans le carré du
+`viewBox`, la bande « vmware » — 24 × 3,8 unités — s'écrivait en 4,7 px de
+haut : on gardait le mot parce que la marque ne parlait pas. Elle est
+maintenant posée par son **encre mesurée** (`scripts/boite-encre.mjs`, qui
+aplatit le tracé, arcs compris), à la hauteur de capitale qu'avait le mot.
+
+Helm et MySQL restent en dehors : leur marque porte un symbole — une roue, un
+dauphin — et son lettrage est illisible à nos tailles. Le mot y travaille.
+
 Ces fichiers sont **autonomes** : couleurs en dur, texte vectorisé, aucune
 dépendance. Glissez-les dans Figma, une diapositive, un README, une page web.
 
@@ -143,9 +160,17 @@ de poids très inégal — à 14 %, le noir de BitTorrent tombe à 0,72 de lumin
 quand l'orange de RSS reste à 0,90. Chaque fond est donc **calé sur la même
 luminance** (0,87) : l'écart sur les 32 passe de 0,184 à 0,012.
 
-L'encre est ensuite assombrie jusqu'à **3,5:1 de contraste** sur son propre
+L'encre est ensuite assombrie jusqu'à **4,5:1 de contraste** sur son propre
 fond. C'est ce qui rend lisibles des marques claires comme RSS ou IPFS sans
 toucher aux marques sombres.
+
+Égaliser la luminance ne suffisait pas. À luminance égale, un jaune saturé
+porte dix fois plus de chroma qu'un gris et crie donc bien plus fort : dans une
+grille de 163 badges, DuckDB, Vault ou ClickHouse sautaient au visage sans rien
+signifier de plus. La chroma est donc **plafonnée à 0,20** — la médiane du jeu
+est à 0,047 et le 95e centile à 0,137, le plafond ne touche que six entrées —
+puis la luminance est recalée, l'un désaturant l'autre à tour de rôle. Aucun
+fond ne sort de ±0,02 autour de 0,87.
 
 Six couches portent la couleur des pictos — Web & temps réel, API, Fichiers,
 Messages & mail, Accès & sécurité, Infrastructure. **Six teintes, pas
@@ -170,8 +195,8 @@ lockups/mono/             163 SVG · encre unique
 symboles/                 163 SVG · signe seul
 
 drawio/protocoles.xml     bibliothèque de formes draw.io · 32
-drawio/produits.xml       bibliothèque de formes draw.io · 25
-drawio/roles.xml          bibliothèque de formes draw.io · 25
+drawio/produits.xml       bibliothèque de formes draw.io · 78
+drawio/roles.xml          bibliothèque de formes draw.io · 53
 
 sources/tabler/           glyphes bruts · MIT
 sources/lucide/           glyphes bruts · ISC

@@ -10,7 +10,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './schema.mjs';
 
+import { CHROMA_MAX } from './couleurs.mjs';
+
 const mapping = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
+// Deux seuils vivent dans le code ; le README les cite. On les compare à la
+// source plutôt qu'à une constante recopiée ici, sans quoi la copie dériverait.
+const lockups = fs.readFileSync(path.join(ROOT, 'scripts/lockups.mjs'), 'utf8');
+const contrasteMin = Number(lockups.match(/const CONTRASTE_MIN = ([\d.]+)/)[1]);
 const compte = (type) => mapping.filter((e) => e.type === type).length;
 const fichiers = (d) => fs.readdirSync(path.join(ROOT, d)).filter((f) => f.endsWith('.svg')).length;
 
@@ -24,6 +30,11 @@ const REGLES = [
   ['README.md', /lockups\/empile\/\s+(\d+) SVG/, fichiers('lockups/empile'), 'fichiers dans lockups/empile'],
   ['README.md', /lockups\/mono\/\s+(\d+) SVG/, fichiers('lockups/mono'), 'fichiers dans lockups/mono'],
   ['README.md', /symboles\/\s+(\d+) SVG/, fichiers('symboles'), 'fichiers dans symboles'],
+  ['README.md', /drawio\/produits\.xml\s+bibliothèque de formes draw\.io · (\d+)/, compte('produit'), 'produits dans produits.json'],
+  ['README.md', /drawio\/roles\.xml\s+bibliothèque de formes draw\.io · (\d+)/, compte('role'), 'rôles dans roles.json'],
+  ['README.md', /^(\d+) marques du jeu/m, mapping.filter((e) => e.logotype).length, 'entrées déclarées logotype'],
+  ['README.md', /jusqu'à \*\*(\d,\d):1 de contraste\*\*/, contrasteMin, 'seuil CONTRASTE_MIN de scripts/lockups.mjs'],
+  ['README.md', /chroma est donc \*\*plafonnée à (\d,\d\d)\*\*/, CHROMA_MAX, 'plafond CHROMA_MAX de scripts/couleurs.mjs'],
   ['excalidraw/README.md', /les (\d+) signes/, mapping.length, 'entrées dans mapping.json'],
 ];
 
@@ -35,7 +46,7 @@ for (const [fichier, motif, attendu, quoi] of REGLES) {
     erreurs.push(`  ${fichier} : la formulation attendue par ${motif} a disparu — la règle ne vérifie plus rien.`);
     continue;
   }
-  if (Number(m[1]) !== attendu) {
+  if (Number(m[1].replace(',', '.')) !== attendu) {
     erreurs.push(`  ${fichier} : annonce ${m[1]}, il y a ${attendu} ${quoi}.`);
   }
 }

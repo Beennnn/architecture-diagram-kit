@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { encreLisible } from './couleurs.mjs';
+import { poserMarque } from './boite-encre.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const ENCRE = '#16181A', DOUX = '#5B6873', TRAIT = '#3E444A', LIGNE = '#8896A2';
@@ -69,8 +70,28 @@ export function libelle(texte, cx, cy, zones = [], ancre = 'middle', taille = 11
 // seule réserve, intention au-dessus, comme le fait le rendu de C4-PlantUML :
 // sur une ligne, « consulte ses recharges · HTTPS / TLS » ferait 200 px pour une
 // flèche qui en fait 82.
+export const estLogotype = (slug) => Boolean(_PAR_SLUG[slug] && _PAR_SLUG[slug].logotype);
+
+// La même règle que dans les bloc-marques : quand la marque ÉCRIT le nom, elle
+// tient lieu d'étiquette. On la pose à la hauteur d'encre du texte qu'elle
+// remplace, sinon elle serait inscrite dans un carré de 17 px et illisible.
+const CAP_ANNOTATION = 8.2;   // capitale d'un libellé de 11,5 px en 600
+
+function marqueSeule(slug, cx, cy, encre) {
+  const brut = fs.readFileSync(path.join(ROOT, 'sources/marques', `${slug}.svg`), 'utf8');
+  const m = poserMarque(brut, { yCentre: cy, hauteurEncre: CAP_ANNOTATION, largeurMax: 78, encre });
+  return { largeur: m.w, svg: poserMarque(brut, { x: cx - m.w / 2, yCentre: cy, hauteurEncre: CAP_ANNOTATION, largeurMax: 78, encre }).svg };
+}
+
 export function annotation(slug, cx, cy, zones = [], verbe = null) {
   const t = 17, texte = _PAR_SLUG[slug].label;
+  if (estLogotype(slug)) {
+    const m = marqueSeule(slug, cx, verbe ? cy + 9 : cy, encreCouche(slug));
+    const largeur = Math.max(m.largeur, verbe ? verbe.length * 5.3 : 0);
+    return reserve(cx - largeur / 2 - 5, verbe ? cy - 19 : cy - 11, largeur + 10, verbe ? 36 : 22, zones)
+      + (verbe ? `<text x="${cx}" y="${cy - 6}" text-anchor="middle" font-size="10.5" fill="${DOUX}">${esc(verbe)}</text>` : '')
+      + m.svg;
+  }
   const lgProto = t + 5 + texte.length * 6.6;
   const lgVerbe = verbe ? verbe.length * 5.3 : 0;
   const largeur = Math.max(lgProto, lgVerbe);
