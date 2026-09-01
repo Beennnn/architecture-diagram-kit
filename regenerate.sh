@@ -69,7 +69,10 @@ echo "→ Example views (docs/)"
 node scripts/example.mjs
 node scripts/example-layers.mjs
 node scripts/example-systems.mjs
+node scripts/example-custody.mjs
 node scripts/dark.mjs
+# after the views: it reads what they recorded
+node scripts/drawio-examples.mjs
 
 echo "→ README figures (docs/figures/)"
 node scripts/readme-figures.mjs

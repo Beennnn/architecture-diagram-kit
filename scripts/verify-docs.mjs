@@ -32,6 +32,29 @@ const files = (d) => fs.readdirSync(path.join(ROOT, d)).filter((f) => f.endsWith
   }
 }
 
+// The example views: each one must be reachable from the README's table AND
+// present as a page of the draw.io file. A view that exists but that nobody can
+// find, or that the editable file forgot, is a view that will rot.
+const drawioExamples = fs.readFileSync(path.join(ROOT, 'drawio/examples.drawio'), 'utf8');
+const exampleViews = fs.readdirSync(path.join(ROOT, 'docs'))
+  .filter((f) => /^example-.*\.svg$/.test(f) && !f.endsWith('-dark.svg'));
+{
+  const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+  const unlisted = exampleViews.filter((f) => !readme.includes(`(docs/${f})`));
+  if (unlisted.length) {
+    throw new Error(`Example views absent from the README's table:\n  ${unlisted.join('\n  ')}`);
+  }
+  const pages = new Set([...drawioExamples.matchAll(/<diagram id="([^"]+)"/g)].map((m) => m[1]));
+  const absent = exampleViews.map((f) => f.replace(/^example-|\.svg$/g, ''))
+    .filter((slug) => !pages.has(slug));
+  if (absent.length) {
+    throw new Error(`Example views with no page in drawio/examples.drawio:\n  ${absent.join('\n  ')}`);
+  }
+}
+
+const edges = [...drawioExamples.matchAll(/<mxCell[^>]*edge="1"[^>]*>/g)].map((m) => m[0]);
+const bothEnds = edges.filter((e) => e.includes(' source="') && e.includes(' target="')).length;
+
 // Every rule: a file, an expression capturing the number, the expected value,
 // and enough to tell the author what is wrong.
 const RULES = [
@@ -48,6 +71,13 @@ const RULES = [
   ['README.md', /darkened until it reaches (\d\.\d):1 on its own fill/, minContrast, 'the MIN_CONTRAST threshold in scripts/lockups.mjs'],
   ['README.md', /chroma capped at (\d\.\d\d)/, CHROMA_MAX, 'the CHROMA_MAX ceiling in scripts/colors.mjs'],
   ['excalidraw/README.md', /the (\d+) signs/, mapping.length, 'entries in mapping.json'],
+  ['README.md', /The (\d+) views below/, exampleViews.length, 'example views in docs/'],
+  ['drawio/README.md', /the (\d+) example views, one per page/, exampleViews.length, 'example views in docs/'],
+  ['drawio/README.md', /The (\d+) views appear as/, exampleViews.length, 'example views in docs/'],
+  ['drawio/README.md', /here all (\d+) are white/, exampleViews.length, 'pages in examples.drawio'],
+  ['drawio/README.md', /(\d+) of the \d+ arrows are bound at both/, bothEnds, 'arrows bound at both ends'],
+  ['drawio/README.md', /\d+ of the (\d+) arrows are bound at both/, edges.length, 'arrows in examples.drawio'],
+  ['drawio/README.md', /and the (\d+) that are not leave from/, edges.length - bothEnds, 'arrows free at one end'],
 ];
 
 const errors = [];

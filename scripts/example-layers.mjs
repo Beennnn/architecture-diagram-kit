@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, INK, SOFT, RULE, esc, symbol, box, arrowHead, ACCENT, annotation, legend } from './diagram.mjs';
+import { record } from './view-spec.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const LAYERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/layers.json'), 'utf8')).layers;
@@ -120,5 +121,20 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 </svg>
 `;
 fs.writeFileSync(path.join(ROOT, 'docs/example-layers.svg'), svg);
+// The bands are zones like any other; the sizing line `r` becomes a third line
+// of the label, as it is in the SVG.
+record({
+  file: 'example-layers.svg', w: W, h: H,
+  title: 'Marketplace — layered architecture',
+  sub: 'The sizing follows the load profile, not the size of the code',
+  zones: BANDS.map((z) => ({ ...z, shape: 'boundary' })),
+  nodes: N,
+  links: L.map((e) => ({
+    d: e.d, mark: e.b || null,
+    note: e.l && e.l[0] ? [e.l[1], e.l[2], e.l[0], 'middle'] : null,
+  })),
+  marks: [], notes: [],
+  footer: ['Total', TOTAL],
+});
 const compute = N.filter((n) => n.r && n.shape === 'service');
 console.log(`  docs/example-layers.svg · ${(svg.length / 1024).toFixed(0)} kB · ${N.length} nodes · ${compute.length} sized services`);

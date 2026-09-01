@@ -11,7 +11,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { readableInk } from './colors.mjs';
-import { FILLS, NESTED_FILL, ACCENT, ACCENT_WEIGHT, STROKE, RULE } from './diagram.mjs';
+import { FILLS, NESTED_FILL, ACCENT, ACCENT_WEIGHT, STROKE, RULE, RX, strokeWeight } from './diagram.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const rows = JSON.parse(fs.readFileSync(path.join(ROOT, '.cache/rows.json'), 'utf8'));
@@ -41,7 +41,7 @@ const escXml = (s) => String(s)
 // decodes it — verified: naturalWidth = 0. What remains is the URL-encoded SVG,
 // where encodeURIComponent escapes precisely “;” (%3B) and “=” (%3D), and
 // which every browser decodes.
-function imageDataUri(slug) {
+export function imageDataUri(slug) {
   const svg = fs.readFileSync(path.join(ROOT, 'symbols', `${slug}.svg`), 'utf8')
     .replace(/<title>[\s\S]*?<\/title>/, '')   // draw.io supplies the label
     .replace(/>\s+</g, '><')
@@ -114,18 +114,48 @@ function library(file, entries) {
 // Non-obvious correspondences: arcSize is a DIAMETER when absoluteArcSize=1,
 // hence 2 × rx; draw.io's cylinder is called cylinder3 and its `size` is the
 // vertical semi-axis of the ellipse, which is our ry of 13.
+// One shape, one style — derived from the same RX table and the same fills as
+// the SVG renderer, so that ADR 0003 and ADR 0007 cannot mean two things.
+//
+// Non-obvious correspondences: arcSize is a DIAMETER when absoluteArcSize=1,
+// hence 2 × rx, and for a capsule it is simply the height; draw.io's cylinder is
+// called cylinder3 and its `size` is the vertical semi-axis of the ellipse,
+// which is our ry of 13.
+export function shapeStyle(shape, { h = 80, featured = false, nested = false } = {}) {
+  const fill = (nested && NESTED_FILL[shape]) || FILLS[shape] || '#FFFFFF';
+  const stroke = featured ? ACCENT : (shape === 'external' || shape === 'boundary' ? RULE : STROKE);
+  const parts = [];
+  if (shape === 'store') {
+    parts.push('shape=cylinder3', 'boundedLbl=1', 'backgroundOutline=1', 'size=13');
+  } else {
+    const rx = RX[shape] === 'half' ? h / 2 : (RX[shape] ?? 0);
+    if (rx) parts.push('rounded=1', 'absoluteArcSize=1', `arcSize=${Math.round(rx * 2)}`);
+    else parts.push('rounded=0');
+  }
+  parts.push(`fillColor=${fill}`, `strokeColor=${stroke}`, `strokeWidth=${strokeWeight(shape, featured)}`);
+  if (shape === 'external') parts.push('dashed=1', 'dashPattern=5 4');
+  if (shape === 'boundary') parts.push('dashed=1', 'dashPattern=8 6');
+  if (featured) parts.push(`fontColor=${ACCENT}`, 'fontStyle=1');
+  return parts.join(';') + ';';
+}
+
+// The palette entries: one sample per shape, at a size that shows its geometry.
+// “Zone” and “Deployment node” label at the top so their contents do not cover
+// the name.
+const TOP_LEFT = 'verticalAlign=top;align=left;spacingLeft=10;spacingTop=6;';
+const TOP_RIGHT = 'verticalAlign=top;align=right;spacingRight=12;spacingTop=6;';
 const GRAMMAR = [
-  ['Service', 160, 80, `rounded=0;fillColor=${FILLS.service};strokeColor=${STROKE};strokeWidth=1.6;`],
-  ['Application', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=20;fillColor=${FILLS.application};strokeColor=${STROKE};strokeWidth=1.6;`],
-  ['Stream', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=80;fillColor=${FILLS.stream};strokeColor=${STROKE};strokeWidth=1.6;`],
-  ['Store', 160, 100, `shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=13;fillColor=${FILLS.store};strokeColor=${STROKE};strokeWidth=1.6;`],
-  ['Actor', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=20;fillColor=${FILLS.actor};strokeColor=${STROKE};strokeWidth=1.6;`],
-  ['Device', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=6;fillColor=${FILLS.device};strokeColor=${STROKE};strokeWidth=1.6;`],
-  ['Deployment node', 240, 140, `rounded=1;absoluteArcSize=1;arcSize=4;fillColor=${FILLS.node};strokeColor=${STROKE};strokeWidth=2.4;verticalAlign=top;align=left;spacingLeft=10;spacingTop=6;`],
-  ['External', 160, 80, `rounded=1;absoluteArcSize=1;arcSize=16;fillColor=${FILLS.external};strokeColor=${RULE};strokeWidth=1.6;dashed=1;dashPattern=5 4;`],
-  ['Zone', 320, 200, `rounded=1;absoluteArcSize=1;arcSize=24;fillColor=${FILLS.boundary};strokeColor=${RULE};strokeWidth=1.3;dashed=1;dashPattern=8 6;verticalAlign=top;align=right;spacingRight=12;spacingTop=6;`],
-  ['Nested zone', 280, 160, `rounded=1;absoluteArcSize=1;arcSize=24;fillColor=${NESTED_FILL.boundary};strokeColor=${RULE};strokeWidth=1.3;dashed=1;dashPattern=8 6;verticalAlign=top;align=right;spacingRight=12;spacingTop=6;`],
-  ['Subject of the diagram', 160, 80, `rounded=0;fillColor=${FILLS.service};strokeColor=${ACCENT};strokeWidth=${ACCENT_WEIGHT};fontColor=${ACCENT};fontStyle=1;`],
+  ['Service', 160, 80, shapeStyle('service')],
+  ['Application', 160, 80, shapeStyle('application')],
+  ['Stream', 160, 80, shapeStyle('stream')],
+  ['Store', 160, 100, shapeStyle('store')],
+  ['Actor', 160, 80, shapeStyle('actor')],
+  ['Device', 160, 80, shapeStyle('device')],
+  ['Deployment node', 240, 140, shapeStyle('node') + TOP_LEFT],
+  ['External', 160, 80, shapeStyle('external')],
+  ['Zone', 320, 200, shapeStyle('boundary') + TOP_RIGHT],
+  ['Nested zone', 280, 160, shapeStyle('boundary', { nested: true }) + TOP_RIGHT],
+  ['Subject of the diagram', 160, 80, shapeStyle('service', { featured: true })],
 ];
 const COMMON_STYLE = 'whiteSpace=wrap;html=1;fontSize=13;fontColor=#16181A;';
 
@@ -142,9 +172,11 @@ function shapeEntry([title, w, h, style]) {
 
 // The arrow annotation: the line breaks behind its label, which draw.io does
 // natively through labelBackgroundColor. See docs/candidates-arrows.svg.
+export const EDGE_STYLE = 'edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;'
+  + `strokeColor=${RULE};strokeWidth=1.5;fontSize=11;fontColor=#5B6873;labelBackgroundColor=#FFFFFF;`;
+
 function arrowEntry() {
-  const style = 'edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;'
-    + `strokeColor=${RULE};strokeWidth=1.5;fontSize=11;fontColor=#5B6873;labelBackgroundColor=#FFFFFF;`;
+  const style = EDGE_STYLE;
   const xml = `<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>`
     + `<mxCell id="2" value="${escXml('intent')}" style="${escXml(style)}" edge="1" parent="1">`
     + `<mxGeometry relative="1" as="geometry">`
@@ -171,8 +203,13 @@ function grammarLibrary() {
   return entries.length;
 }
 
-for (const [type, file] of [['protocol', 'protocols.xml'], ['product', 'products.xml'], ['role', 'roles.xml']]) {
-  const { n, kb } = library(file, rows.filter((r) => r.type === type));
-  console.log(`  drawio/${file.padEnd(15)} · ${String(n).padStart(2)} shapes · ${kb} kB`);
+// Imported by scripts/drawio-examples.mjs for shapeStyle() and imageDataUri():
+// writing the libraries is the job of `node scripts/drawio.mjs`, not of a
+// module that only wants the styles.
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  for (const [type, file] of [['protocol', 'protocols.xml'], ['product', 'products.xml'], ['role', 'roles.xml']]) {
+    const { n, kb } = library(file, rows.filter((r) => r.type === type));
+    console.log(`  drawio/${file.padEnd(15)} · ${String(n).padStart(2)} shapes · ${kb} kB`);
+  }
+  console.log(`  drawio/grammar.xml     · ${grammarLibrary()} shapes · the grammar, fills and accent included`);
 }
-console.log(`  drawio/grammar.xml     · ${grammarLibrary()} shapes · the grammar, fills and accent included`);

@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, INK, SOFT, RULE, esc, symbol, box, ACCENT, annotation, label, arrowHead, marker, legend } from './diagram.mjs';
+import { record } from './view-spec.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const LAYERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/layers.json'), 'utf8')).layers;
@@ -163,6 +164,7 @@ function render({ f, w, h, title, sub, zones = [], nodes = [], links = [], marks
 </svg>
 `;
   fs.writeFileSync(path.join(ROOT, 'docs', f), svg);
+  record({ file: f, w, h, title, sub, zones, nodes, links, marks, notes });
   console.log(`  docs/${f} · ${(svg.length / 1024).toFixed(0)} kB · ${nodes.length} nodes · ${zones.length} zones`);
 }
 

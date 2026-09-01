@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { ROOT, INK, SOFT, RULE, esc, symbol, box, arrowHead, ACCENT, annotation, label, legend } from './diagram.mjs';
+import { record } from './view-spec.mjs';
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'mapping.json'), 'utf8'));
 const LAYERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/layers.json'), 'utf8')).layers;
@@ -154,6 +155,17 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 </svg>
 `;
 fs.writeFileSync(path.join(ROOT, 'docs/example-voltis.svg'), svg);
+// The links carry their annotation inline here, the seven views of
+// example-systems.mjs keep theirs in separate arrays: normalised on the way out
+// so the draw.io renderer sees a single shape of data.
+record({
+  file: 'example-voltis.svg', w: W, h: H,
+  title: 'Voltis — electric vehicle charging',
+  sub: 'Runtime view · the readings from the charge points become monthly invoices',
+  zones: Z, nodes: N,
+  links: L.map((e) => ({ d: e.d, mark: e.b || null, note: e.l ? [e.l[1], e.l[2], e.l[0], 'middle'] : null })),
+  marks: [], notes: [],
+});
 const withoutBadge = N.filter((n) => !n.ico).map((n) => n.t);
 if (withoutBadge.length) console.log(`  ⚠ nodes with no badge available: ${withoutBadge.join(', ')}`);
 console.log(`  docs/example-voltis.svg · ${(svg.length / 1024).toFixed(0)} kB`);

@@ -153,17 +153,27 @@ export const ACCENT = '#A3196F';
 // Thicker than any normal stroke, the node's 2.4 included.
 export const ACCENT_WEIGHT = 3.2;
 
+// Corner radii, in SVG terms. draw.io expresses the same thing as a DIAMETER
+// (arcSize with absoluteArcSize=1), hence exactly twice these values — see
+// scripts/drawio.mjs. Declared once so the two renderers cannot disagree.
+export const RX = { stream: 'half', external: 8, actor: 10, application: 10, device: 3, node: 2, boundary: 12 };
+
+// The stroke weight follows the shape, and the accent overrides it: the thick
+// stroke is constitutive of the accent, not decorative.
+export const strokeWeight = (shape, featured) =>
+  featured ? ACCENT_WEIGHT : shape === 'node' ? 2.4 : shape === 'boundary' ? 1.3 : 1.6;
+
 export const box = ({ x, y, w, h, shape, featured, nested }) => {
   const fill = (nested && NESTED_FILL[shape]) || FILLS[shape] || '#FFFFFF';
   const stroke = featured ? ACCENT : (shape === 'external' || shape === 'boundary' ? RULE : STROKE);
-  const weight = featured ? ACCENT_WEIGHT : shape === 'node' ? 2.4 : shape === 'boundary' ? 1.3 : 1.6;
+  const weight = strokeWeight(shape, featured);
   if (shape === 'store') {
     // below 60 px, the cylinder's two ellipses cover the label
     if (h < 60) throw new Error(`Cylinder too short (${h} px): a “store” needs at least 60 px of height.`);
     return `<path d="M${x} ${y + 14} v${h - 28} a${w / 2} 13 0 0 0 ${w} 0 v-${h - 28}" fill="${fill}" stroke="${stroke}" stroke-width="${weight}"/>`
          + `<ellipse cx="${x + w / 2}" cy="${y + 14}" rx="${w / 2}" ry="13" fill="${fill}" stroke="${stroke}" stroke-width="${weight}"/>`;
   }
-  const rx = { stream: h / 2, external: 8, actor: 10, application: 10, device: 3, node: 2, boundary: 12 }[shape] ?? 0;
+  const rx = RX[shape] === 'half' ? h / 2 : (RX[shape] ?? 0);
   const dashes = shape === 'external' ? ' stroke-dasharray="5 4"' : shape === 'boundary' ? ' stroke-dasharray="8 6"' : '';
   return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}" stroke="${stroke}" stroke-width="${weight}"${dashes}/>`;
 };
